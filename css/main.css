@@ -26,11 +26,52 @@ main {
         height: 5000px;
 
         .task{
+            font-family: sans-serif;
+            
             width: 250px;
             height: 250px;
 
             background-color: rgb(255, 235, 122);
             box-shadow: 5px 10px 20px 0 rgba(0, 0, 0, 0.5);
+            padding: 0 12px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: start;
+            align-items: center;
+
+            p{
+                margin: 0;
+            }
+
+            .task-block{
+                width: 100%;
+                margin-top: 8px;
+            }
+
+            .title{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                font-size: 18px;
+            }
+
+            .description{
+                height: 45%;
+            }
+
+            .create-time{
+                font-size: 14px;
+            }
+
+            .assigned-person{
+                font-size: 14px;
+            }
+
+            .dead-line{
+                font-size: 14px;
+            }
         }
 
         .task:hover{

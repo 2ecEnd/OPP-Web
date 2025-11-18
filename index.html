@@ -17,14 +17,7 @@
             </button>
             <div id="viewport">
                 <div id="canvas">
-                    <div class="draggable task" style="left: 0px; top: 0px;">
-                        <div>
-                            
-                        </div>
-                    </div>
-                    <div class="draggable task" style="left: 0px; top: 0px;">
-
-                    </div>
+                    
                 </div>
             </div>
         </main>
@@ -36,11 +29,11 @@
             <form class="add-task-form" id="add-task-form">
                 <div class="first-form-block">
                     <label for="formTitleInput">Заголовок </label><br>
-                    <input placeholder="Value" type="text" name="formTitleInput" id="formTitleInput">
+                    <input required placeholder="Value" type="text" name="formTitleInput" id="formTitleInput">
                 </div>
                 <div class="form-block">
                     <label for="formDescriptionInput">Описание </label><br>
-                    <textarea placeholder="Value" name="formDescriptionInput" id="formDescriptionInput" rows="5" cols="50"></textarea>
+                    <textarea required placeholder="Value" name="formDescriptionInput" id="formDescriptionInput" rows="5" cols="50"></textarea>
                 </div>
                 <div class="form-block">
                     <div class="custom-checkbox">
@@ -53,7 +46,7 @@
                 </div>
                 <div class="form-block">
                     <label for="formDeadLineInput">Дедлайн </label><br>
-                    <input type="date" name="formDeadLineInput" id="formDeadLineInput">
+                    <input required type="date" name="formDeadLineInput" id="formDeadLineInput">
                 </div>
                 <div class="button-group">
                     <button type="reset">Очистить</button>
