@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>OPP</title>
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/contextMenu.css">
+    </head>
+    <body>
+        <nav>
+
+        </nav>
+        <main>
+            <button class="add-task-button" id="add-task-button">
+                <img src="images/window-plus.svg" alt="" class="add-task-image">
+            </button>
+            <div id="viewport">
+                <div id="canvas">
+                    <div class="draggable task" style="left: 0px; top: 0px;">
+
+                    </div>
+                    <div class="draggable task" style="left: 0px; top: 0px;">
+
+                    </div>
+                </div>
+            </div>
+        </main>
+        <div class="add-task-context-menu" id="add-task-context-menu">
+            <div class="close-context-menu-button" id="close-context-menu-button">
+                <img src="" alt="">
+            </div>
+            <form class="add-task-form" id="add-task-form">
+                <div class="form-block">
+                    <label for="taskTitle">Заголовок: </label>
+                    <input type="text" name="taskTitle" id="taskTitle">
+                </div><br>
+                <div class="form-block">
+                    <label for="taskDescription">Описание: </label><br>
+                    <textarea name="taskDescription" id="taskDescription" rows="5" cols="50"></textarea>
+                </div><br>
+                <div class="form-block">
+                    <label for="taskDeadLine">Дедлайн: </label>
+                    <input type="date" name="taskDeadLine" id="taskDeadLine">
+                </div><br>
+                <div class="form-block">
+                    <button type="submit">Добавить</button>
+                    <button type="reset">Очистить</button>
+                </div>
+            </form>
+        </div>
+    </body>
+    <script src="javaScript/Canvas.js"></script>
+</html>

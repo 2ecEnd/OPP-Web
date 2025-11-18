@@ -1,0 +1,28 @@
+.add-task-context-menu{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    padding: 10px;
+    min-width: 400px;
+    max-width: 90vw;
+    z-index: 1000;
+    display: none;
+    animation: fadeIn 0.2s ease;
+}
+
+.add-task-form{
+    
+}
+
+.form-block{
+    margin: 5px;
+}
+
+.close-context-menu-button{
+    position: absolute;
+
+}
