@@ -18,7 +18,9 @@
             <div id="viewport">
                 <div id="canvas">
                     <div class="draggable task" style="left: 0px; top: 0px;">
-
+                        <div>
+                            
+                        </div>
                     </div>
                     <div class="draggable task" style="left: 0px; top: 0px;">
 
@@ -28,27 +30,40 @@
         </main>
         <div class="add-task-context-menu" id="add-task-context-menu">
             <div class="close-context-menu-button" id="close-context-menu-button">
-                <img src="" alt="">
+                <img class="img-black" src="images/X.svg" alt="">
+                <img class="img-white" src="images/X_white.svg" alt="">
             </div>
             <form class="add-task-form" id="add-task-form">
+                <div class="first-form-block">
+                    <label for="formTitleInput">Заголовок </label><br>
+                    <input placeholder="Value" type="text" name="formTitleInput" id="formTitleInput">
+                </div>
                 <div class="form-block">
-                    <label for="taskTitle">Заголовок: </label>
-                    <input type="text" name="taskTitle" id="taskTitle">
-                </div><br>
+                    <label for="formDescriptionInput">Описание </label><br>
+                    <textarea placeholder="Value" name="formDescriptionInput" id="formDescriptionInput" rows="5" cols="50"></textarea>
+                </div>
                 <div class="form-block">
-                    <label for="taskDescription">Описание: </label><br>
-                    <textarea name="taskDescription" id="taskDescription" rows="5" cols="50"></textarea>
-                </div><br>
+                    <div class="custom-checkbox">
+                        <input type="checkbox" name="formDeadLineCheck" id="formDeadLineCheck">
+                        <span class="custom-checkbox-graphics">
+                            <img class="custom-checkbox-image" src="images/Check.svg" alt="">
+                        </span>
+                        <label for="formDeadLineCheck">Будет ли дедлайн у задачи</label><br>
+                    </div>
+                </div>
                 <div class="form-block">
-                    <label for="taskDeadLine">Дедлайн: </label>
-                    <input type="date" name="taskDeadLine" id="taskDeadLine">
-                </div><br>
-                <div class="form-block">
-                    <button type="submit">Добавить</button>
+                    <label for="formDeadLineInput">Дедлайн </label><br>
+                    <input type="date" name="formDeadLineInput" id="formDeadLineInput">
+                </div>
+                <div class="button-group">
                     <button type="reset">Очистить</button>
+                    <button type="submit">Добавить</button>
                 </div>
             </form>
         </div>
+        <div class="overlay" id="overlay"></div>
     </body>
     <script src="javaScript/Canvas.js"></script>
+    <script src="javaScript/AddTaskContextMenu.js"></script>
+    <script src="javaScript/AddTaskButton.js"></script>
 </html>
