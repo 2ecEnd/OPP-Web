@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>OPP</title>
+        <link rel="stylesheet" href="../css/registration.css">
+    </head>
+    <body>
+        <div class="option-choice-container form-container active" id="option-choice-container">
+            <div class="button-column">
+                <button id="option-authentication">Войти</button>
+                <button id="option-registration">Зарегестрироваться</button>
+            </div>
+        </div>
+        <div class="registration-form-container form-container" id="registration-form-container">
+            <form class="registration-form" id="registration-form">
+                <div class="form-block first">
+                    <label for="registrationEmailInput">Email </label><br>
+                    <input required placeholder="Value" type="email" name="registrationEmailInput" id="registrationEmailInput">
+                </div>
+                <div class="form-block">
+                    <label for="registrationPasswordInput">Пароль </label><br>
+                    <input required placeholder="Value" type="password" name="registrationPasswordInput" id="registrationPasswordInput">
+                </div>
+                <div class="button-group">
+                    <button type="submit">Зарегестрироваться</button>
+                </div>
+            </form>
+        </div>
+        <div class="authentication-form-container form-container" id="authentication-form-container">
+            <form class="authentication-form" id="authentication-form">
+                <div class="form-block first">
+                    <label for="authenticationEmailInput">Email </label><br>
+                    <input required placeholder="Value" type="email" name="authenticationEmailInput" id="authenticationEmailInput">
+                </div>
+                <div class="form-block">
+                    <label for="authenticationPasswordInput">Пароль </label><br>
+                    <input required placeholder="Value" type="password" name="authenticationPasswordInput" id="authenticationPasswordInput">
+                </div>
+                <div class="button-group">
+                    <button type="submit">Войти</button>
+                </div>
+            </form>
+        </div>
+    </body>
+    <script src="../javaScript/Login.js"></script>
+    <script src="../javaScript/Registration.js"></script>
+    <script src="../javaScript/ChooseAuthOption.js"></script>
+</html>
