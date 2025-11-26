@@ -14,8 +14,10 @@ class Registration{
         this.container.classList.toggle('active');
     }
 
-    async register(){
-        const api = 'https://localhost:5000/api/Auth';
+    async register(e){
+        e.preventDefault();
+
+        const api = 'http://localhost:5000/api/Auth';
 
         const email = document.getElementById('registrationEmailInput').value;
         const password = document.getElementById('registrationPasswordInput').value;

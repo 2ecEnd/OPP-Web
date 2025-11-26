@@ -95,7 +95,7 @@ main {
 
         background-color: rgb(65, 65, 65);
 
-        transition: transform 0.1s ease, box-shadow 0.1s ease;
+        transition: border 0.1s ease, transform 0.1s ease, box-shadow 0.1s ease;
 
         .add-task-image{
             width: 7vh;
