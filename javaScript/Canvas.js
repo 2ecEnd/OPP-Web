@@ -87,8 +87,6 @@ class Canvas{
         `;
         this.draggedObject.style.left = x + 'px';
         this.draggedObject.style.top = y + 'px';
-
-        console.log(x, y);
     }
 
     onMouseDown(e) {

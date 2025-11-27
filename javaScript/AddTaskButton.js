@@ -1,18 +1,18 @@
 class AddTaskButton{
     constructor(){
         this.button = document.getElementById('add-task-button');
-        this.contextMenu = null;
+        this.menu = null;
 
         this.init();
     }
 
     init(){
-        this.button.addEventListener('click', this.openContextMenu.bind(this));
-        this.contextMenu = new AddTaskContextMenu();
+        this.button.addEventListener('click', this.openMenu.bind(this));
+        this.menu = addTaskMenu;
     }
 
-    openContextMenu(){
-        this.contextMenu.showSelf();
+    openMenu(){
+        this.menu.showSelf("create", null);
     }
 }
 
