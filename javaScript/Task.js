@@ -8,6 +8,12 @@ class Task{
         this.dependsOn = [];
         this.id = crypto.randomUUID();
 
+        this.moreVertButton = null;
+        this.changeTaskButton = null;
+        this.deleteTaskButton = null;
+        this.dependsOnButton = null;
+        this.contextMenu = null;
+
         this.container = null;
         this.titleElement = null;
         this.descriptionElement = null;
@@ -25,6 +31,11 @@ class Task{
         console.log(this);
     }
 
+    startLinking() {
+        this.openContextMenu();
+        canvas.startLinking(this);
+    }
+
     createOpenContextButton(){
         const openContextButton = document.createElement('div');
 
@@ -40,20 +51,25 @@ class Task{
         const contextMenu = document.createElement('div');
         const changeTaskButton = document.createElement('button');
         const deleteTaskButton = document.createElement('button');
+        const dependsOnButton = document.createElement('button');
 
         changeTaskButton.innerHTML = 'Изменить';
         deleteTaskButton.innerHTML = 'Удалить';
+        dependsOnButton.innerHTML = 'Добавить зависимость';
 
         contextMenu.className = 'task-context-menu';
         contextMenu.appendChild(changeTaskButton);
         contextMenu.appendChild(deleteTaskButton);
+        contextMenu.appendChild(dependsOnButton);
 
         this.contextMenu = contextMenu;
         this.changeTaskButton = changeTaskButton;
         this.deleteTaskButton = deleteTaskButton;
+        this.dependsOnButton = dependsOnButton;
 
         this.changeTaskButton.addEventListener('click', this.openEditMenu.bind(this));
         this.deleteTaskButton.addEventListener('click', this.deleteTask.bind(this));
+        this.dependsOnButton.addEventListener('click', this.startLinking.bind(this));
     }
 
     createTask(){

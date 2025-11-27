@@ -2,6 +2,7 @@ class Canvas{
     constructor(){
         this.viewport = document.getElementById('viewport');
         this.canvas = document.getElementById('canvas');
+        this.connectionsLayer = document.getElementById('connections-layer');
         
         this.x = 0;
         this.y = 0;
@@ -12,8 +13,12 @@ class Canvas{
 
         this.objectLastX = 0;
         this.objectLastY = 0;
+
         this.isDraggingObject = false;
+        this.linkingMode = false;
+
         this.draggedObject = null;
+        this.linkingStartTask = null;
         
         this.init();
     }
@@ -22,6 +27,11 @@ class Canvas{
         this.initCanvasEvents();
         this.initObjectsEvents();
         this.updateTransform();
+        this.initLinkingEvents();
+    }
+
+    initLinkingEvents(){
+        document.addEventListener('mousemove', this.updateTempLine.bind(this));
     }
 
     initCanvasEvents(){
@@ -129,6 +139,43 @@ class Canvas{
         this.canvas.style.transform = `
             translate(${this.x}px, ${this.y}px)
         `;
+    }
+
+    startLinking(task) {
+        this.linkingMode = true;
+        this.linkingStartTask = task;
+        this.viewport.style.cursor = 'crosshair';
+        
+        this.tempLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        this.tempLine.classList.add('temp-line');
+        this.connectionsLayer.appendChild(this.tempLine);
+    }
+
+    updateTempLine(e){
+        if (!this.linkingMode) return;
+
+        const start = this.getCenter(this.linkingStartTask.container);
+
+        const canvasRect = this.canvas.getBoundingClientRect();
+        const mouseX = e.clientX - canvasRect.left;
+        const mouseY = e.clientY - canvasRect.top;
+
+        this.tempLine.setAttribute('x1', start.x);
+        this.tempLine.setAttribute('y1', start.y);
+        this.tempLine.setAttribute('x2', mouseX);
+        this.tempLine.setAttribute('y2', mouseY);
+    }
+
+    getCenter(element) {
+        const left = parseInt(element.style.left) || 0;
+        const top = parseInt(element.style.top) || 0;
+        const width = element.offsetWidth;
+        const height = element.offsetHeight;
+        
+        return {
+            x: left + width / 2,
+            y: top + height / 2
+        };
     }
 }
 
