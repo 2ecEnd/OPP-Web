@@ -15,6 +15,34 @@ document.addEventListener('DOMContentLoaded', function() {
             contentArea.appendChild(addButton);
         }
     }
+
+    function setUserTeams() {
+        var teams = getTeams();
+        const contentArea = document.querySelector('.contentArea');
+
+        teams.forEach(team => {
+            const newElement = document.createElement('div');
+            newElement.classList.add('contentItem');
+            newElement.textContent = team.Name;
+            newElement.setAttribute('data-type', 'team');
+            newElement.setAttribute('data-id', team.Id);
+            contentArea.appendChild(newElement);
+        });
+    }
+
+    function setUserSubjects() {
+        var subjects = getSubjects();
+        const contentArea = document.querySelector('.contentArea');
+
+        subjects.forEach(subject => {
+            const newElement = document.createElement('div');
+            newElement.classList.add('contentItem');
+            newElement.textContent = subject.Name;
+            newElement.setAttribute('data-type', 'subject');
+            newElement.setAttribute('data-id', subject.Id);
+            contentArea.appendChild(newElement);
+        });
+    }
     
     function switchActiveItem(activeItem, inactiveItem) {
         inactiveItem.classList.remove('selectedActionPanelItem');
@@ -43,6 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!teamsItem.classList.contains('selectedActionPanelItem')) {
             switchActiveItem(teamsItem, subjectsItem);
             clearContentArea();
+            setUserTeams();
         }
     });
     
@@ -50,6 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!subjectsItem.classList.contains('selectedActionPanelItem')) {
             switchActiveItem(subjectsItem, teamsItem);
             clearContentArea();
+            setUserSubjects();
         }
     });
 
@@ -60,7 +90,6 @@ document.addEventListener('DOMContentLoaded', function() {
         teamContent.style.gap = '20px';
         teamContent.style.padding = '20px';
 
-        // Колонка участников
         const participantsColumn = document.createElement('div');
         participantsColumn.className = 'teamColumn';
         participantsColumn.innerHTML = '<h3>Участники команды</h3>';
