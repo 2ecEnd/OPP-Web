@@ -37,6 +37,9 @@ class Login{
             if (response.status === 201) {
                 const data = await response.json();
 
+                localStorage.setItem('AccessToken', data.AccessToken);
+                localStorage.setItem('RefreshToken', data.RefreshToken);
+
                 alert(`Успешный вход 
                         AccessToken: ${data.AccessToken}
                         RefreshToken: ${data.RefreshToken}`);

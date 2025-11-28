@@ -3,12 +3,14 @@ var user = null;
 async function getUserData(){
 
     const api = 'http://localhost:5000/api/Auth';
+    const token = localStorage.getItem('AccessToken');
 
     try{
         const response = await fetch(`${api}/me`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
             }
         });
 
