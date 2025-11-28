@@ -12,7 +12,7 @@ async function getUserData(){
             }
         });
 
-        if (response.status === 201) {
+        if (response.status === 200) {
             const userData = await response.json();
             if (!userData.Teams) userData.Teams = [];
             if (!userData.Subjects) userData.Subjects = [];
@@ -45,7 +45,7 @@ async function saveUserData(){
             })
         });
 
-        if (response.status === 201) {
+        if (response.status === 200) {
             return response;
         } 
         else {

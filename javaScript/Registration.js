@@ -37,6 +37,7 @@ class Registration{
             if (response.status === 201) {
                 alert('Регистрация успешна');
                 this.form.reset();
+                window.location.href = '../MainPage/screen.html';
             } 
             else {
                 alert('Ошибка регистрации');

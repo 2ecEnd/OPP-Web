@@ -41,6 +41,7 @@ class Login{
                         AccessToken: ${data.AccessToken}
                         RefreshToken: ${data.RefreshToken}`);
                 this.form.reset();
+                window.location.href = '../MainPage/screen.html';
             } 
             else {
                 alert('Ошибка входа');
