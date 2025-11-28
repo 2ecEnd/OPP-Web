@@ -38,7 +38,7 @@ async function saveUserData(){
 
     try{
         const response = await fetch(`${api}/save`, {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
