@@ -1,0 +1,78 @@
+class AddTaskMenu{
+    constructor(){
+        this.container = document.getElementById('add-task-context-menu');
+        this.closeMenuButton = document.getElementById('close-context-menu-button');
+        this.form = document.getElementById('add-task-form');
+        this.overlay = document.getElementById('overlay');
+        this.formSubmitButton = document.getElementById('formSubmitButton');
+        this.canvas = canvas;
+
+        this.type = "";
+        this.currentTask = null;
+
+        this.init();
+    }
+
+    init(){
+        this.form.addEventListener('submit', this.handleSubmit.bind(this));
+        this.closeMenuButton.addEventListener('click', this.closeSelf.bind(this));
+    }
+
+    handleSubmit(event){
+        event.preventDefault();
+
+        const title = document.getElementById('formTitleInput').value;
+        const description = document.getElementById('formDescriptionInput').value;
+        const hasDeadline = document.getElementById('formDeadLineCheck').checked;
+        const deadline = document.getElementById('formDeadLineInput').value;
+
+        if(this.type === "create") this.createTask(title, description, hasDeadline, deadline, new Date().toLocaleDateString('ru-RU'));
+        else if(this.type === "edit") this.changeTask(this.currentTask, title, description, hasDeadline, deadline);
+
+        this.form.reset();
+        this.formSubmitButton.innerHTML = "Добавить";
+
+        this.closeSelf();
+    }
+
+    createTask(title, description, hasDeadline, deadline, currentDate){
+        const newTask = new Task(title, description, hasDeadline, deadline, currentDate);
+
+        this.canvas.canvas.appendChild(newTask.createTask());
+    }
+
+    changeTask(task, title, description, hasDeadline, deadline){
+        task.changeTask(title, description, hasDeadline, deadline);
+    }
+
+    showSelf(type, currentTask){
+        this.container.classList.add('active');
+        this.overlay.classList.add('active');
+
+        this.type = type;
+        this.currentTask = currentTask;
+
+        if(this.type === "edit") this.fillTheForm();
+    }
+
+    fillTheForm(){
+        const title = document.getElementById('formTitleInput');
+        const description = document.getElementById('formDescriptionInput');
+        const hasDeadline = document.getElementById('formDeadLineCheck');
+        const deadline = document.getElementById('formDeadLineInput');
+
+        title.value = this.currentTask.title;
+        description.value = this.currentTask.description;
+        hasDeadline.checked = this.currentTask.hasDeadline;
+        deadline.value = this.currentTask.deadline;
+
+        this.formSubmitButton.innerHTML = "Изменить";
+    }
+
+    closeSelf(){
+        this.container.classList.remove('active');
+        this.overlay.classList.remove('active');
+    }
+}
+
+const addTaskMenu = new AddTaskMenu();
