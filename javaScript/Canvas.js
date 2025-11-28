@@ -4,8 +4,8 @@ class Canvas{
         this.canvas = document.getElementById('canvas');
         this.connectionsLayer = document.getElementById('connections-layer');
         
-        this.x = 0;
-        this.y = 0;
+        this.x = -2500;
+        this.y = -2500;
         this.dragModeIsActive = false;
         this.isDraggingCanvas = false;
         this.lastX = 0;
@@ -19,6 +19,7 @@ class Canvas{
 
         this.draggedObject = null;
         this.linkingStartTask = null;
+        this.tempLine = null;
         
         this.init();
     }
@@ -67,17 +68,20 @@ class Canvas{
 
     onObjectMouseDown(e){
         if(this.dragModeIsActive) return;
-        
+
         const target = e.target.closest('.draggable');
         if (!target) return;
 
         e.preventDefault();
         e.stopPropagation();
-
-        this.isDraggingObject = true;
-        this.objectLastX = e.clientX;
-        this.objectLastY = e.clientY;
-        this.draggedObject = target; 
+        
+        if (!this.linkingMode){
+            this.isDraggingObject = true;
+            this.objectLastX = e.clientX;
+            this.objectLastY = e.clientY;
+            this.draggedObject = target; 
+        }
+        else this.linkTasks(target);
     }
 
     onObjectMouseMove(e){
@@ -86,8 +90,8 @@ class Canvas{
         const deltaX = e.clientX - this.objectLastX;
         const deltaY = e.clientY - this.objectLastY;
 
-        var x = parseInt(this.draggedObject.style.left) + deltaX;
-        var y = parseInt(this.draggedObject.style.top) + deltaY;
+        var x = parseInt(this.draggedObject.dataset.x) + deltaX;
+        var y = parseInt(this.draggedObject.dataset.y) + deltaY;
 
         this.objectLastX = e.clientX;
         this.objectLastY = e.clientY;
@@ -95,8 +99,8 @@ class Canvas{
         this.draggedObject.style.transform = `
             translate(${x}px, ${y}px)
         `;
-        this.draggedObject.style.left = x + 'px';
-        this.draggedObject.style.top = y + 'px';
+        this.draggedObject.dataset.x = x;
+        this.draggedObject.dataset.y = y;
     }
 
     onMouseDown(e) {
@@ -166,9 +170,43 @@ class Canvas{
         this.tempLine.setAttribute('y2', mouseY);
     }
 
+    linkTasks(targetTaskDom){
+        if (!this.linkingMode) return;
+
+        const targetTask = taskManager.getTask(targetTaskDom.id)
+
+        if(this.linkingStartTask === targetTask){
+            this.stopLinking();
+            return;
+        }
+
+        const newLinkLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        newLinkLine.classList.add('link-line');
+
+        const start = this.getCenter(this.linkingStartTask.container);
+        const end = this.getCenter(targetTask.container);
+
+        newLinkLine.setAttribute('x1', start.x);
+        newLinkLine.setAttribute('y1', start.y);
+        newLinkLine.setAttribute('x2', end.x);
+        newLinkLine.setAttribute('y2', end.y);
+
+        this.connectionsLayer.appendChild(newLinkLine);
+        this.stopLinking();
+    }
+
+    stopLinking(){
+        this.linkingMode = false;
+        this.linkingStartTask = null;
+        this.viewport.style.cursor = 'default';
+
+        this.tempLine.remove();
+        this.tempLine = null;
+    }
+
     getCenter(element) {
-        const left = parseInt(element.style.left) || 0;
-        const top = parseInt(element.style.top) || 0;
+        const left = parseInt(element.dataset.x) || 0;
+        const top = parseInt(element.dataset.y) || 0;
         const width = element.offsetWidth;
         const height = element.offsetHeight;
         
