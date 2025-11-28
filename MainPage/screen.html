@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="main_screen_style.css">
+        <title></title>
+    </head>
+    <body>
+        <div class="container">
+            <div class="toolbar">
+                <div class="homeBtn selectedToolbarItem">
+                    <img class="house" src="house.svg" alt="Иконка дома">
+                </div>
+            </div>
+            <div class="mainPanel">
+                <div class="actionPanel">
+                    <div class="userBlock">
+                        <div class="userName">User Name</div>
+                        <div class="userIcon">
+                            <img src="ellipse.png" alt="Иконка пользователя">
+                        </div>
+                    </div>
+                    <div class="unselectedActionPanelItem">
+                        <div class="point"></div>
+                        <div class="actionPanelItemText">Teams</div>
+                        <img class="arrow" src="arrow.svg" alt="Иконка стрелки">
+                    </div>
+                    <div class="selectedActionPanelItem">
+                        <div class="point"></div>
+                        <div class="actionPanelItemText">Subjects</div>
+                    </div>
+                </div>
+                <div class="contentArea">
+                    <button class="addButton">+</button>
+                </div>
+            </div>
+        </div>
+        <div id="modalOverlay" class="modal-overlay">
+            <div class="modal">
+                <input type="text" id="modalInput" placeholder="Введите название" class="modal-input">
+                <div class="modal-buttons">
+                    <button id="createBtn" class="modal-btn create-btn">Создать</button>
+                    <button id="cancelBtn" class="modal-btn cancel-btn">Отмена</button>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script src="userInterface.js"></script>
+    <script src="screenScript.js"></script>
+    <script src="addDialog.js"></script>
+</html>
