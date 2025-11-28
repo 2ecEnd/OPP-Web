@@ -1,4 +1,12 @@
 class Canvas{
+    static LinkData = class {
+        constructor(line, startTask, endTask){
+            this.line = line;
+            this.startTask = startTask;
+            this.endTask = endTask;
+        }
+    }
+
     constructor(){
         this.viewport = document.getElementById('viewport');
         this.canvas = document.getElementById('canvas');
@@ -18,8 +26,12 @@ class Canvas{
         this.linkingMode = false;
 
         this.draggedObject = null;
+        this.draggedTask = null;
         this.linkingStartTask = null;
         this.tempLine = null;
+
+        this.links = [];
+        this.editingLinks = [];
         
         this.init();
     }
@@ -79,7 +91,15 @@ class Canvas{
             this.isDraggingObject = true;
             this.objectLastX = e.clientX;
             this.objectLastY = e.clientY;
-            this.draggedObject = target; 
+            this.draggedObject = target;
+            this.editingLinks = [];
+
+            this.draggedTask = taskManager.getTask(this.draggedObject.id);
+            if (!this.draggedTask) return;
+            
+            this.links.forEach(link => {
+                if(link.startTask === this.draggedTask || link.endTask === this.draggedTask) this.editingLinks.push(link);
+            });
         }
         else this.linkTasks(target);
     }
@@ -101,6 +121,19 @@ class Canvas{
         `;
         this.draggedObject.dataset.x = x;
         this.draggedObject.dataset.y = y;
+
+        this.editingLinks.forEach(link => {
+            const center = this.getCenter(this.draggedObject);
+
+            if (this.draggedTask === link.startTask){
+                link.line.setAttribute('x1', center.x);
+                link.line.setAttribute('y1', center.y);
+            }
+            else{
+                link.line.setAttribute('x2', center.x);
+                link.line.setAttribute('y2', center.y);
+            }
+        });
     }
 
     onMouseDown(e) {
@@ -190,6 +223,9 @@ class Canvas{
         newLinkLine.setAttribute('y1', start.y);
         newLinkLine.setAttribute('x2', end.x);
         newLinkLine.setAttribute('y2', end.y);
+
+        this.links.push(new Canvas.LinkData(newLinkLine, this.linkingStartTask, targetTask));
+        this.linkingStartTask.dependsOn.push(targetTask);
 
         this.connectionsLayer.appendChild(newLinkLine);
         this.stopLinking();
