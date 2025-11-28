@@ -79,7 +79,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         participantsColumn.appendChild(participantsList);
 
-        // Колонка назначенных предметов
         const subjectsColumn = document.createElement('div');
         subjectsColumn.className = 'teamColumn';
         subjectsColumn.innerHTML = '<h3>Назначенные предметы</h3>';
