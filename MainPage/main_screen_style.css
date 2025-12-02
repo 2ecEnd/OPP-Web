@@ -9,64 +9,6 @@ body {
     height: 100vh;
 }
 
-.toolbar {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    height: 5%;
-    background-color: #383838;
-    border-bottom: 3px solid #4B4B4B;
-}
-
-.toolbarItem {
-    width: fit-content;
-    height: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding-left: 15px;
-    padding-right: 15px;
-    border-right: 3px solid #4B4B4B;
-}
-
-.selectedToolbarItem {
-    background-color: #2C2C2C;
-}
-
-.unselectedToolbarItem {
-    background-color: #383838;
-}
-
-.terminal {
-    height: 56%;
-    aspect-ratio: 1 / 1;
-}
-
-.toolbarItemText {
-    color: white;
-    margin-left: 25px;
-    margin-right: 40px;
-}
-
-.x {
-    height: 32%;
-    aspect-ratio: 1 / 1;
-}
-
-.homeBtn {
-    width: 80px;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-right: 3px solid #4B4B4B;
-}
-
-.house {
-    height: 62.5%;
-    aspect-ratio: 1 / 1;
-}
-
 .mainPanel {
     flex: 1;
     display: flex;

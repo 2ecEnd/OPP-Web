@@ -11,10 +11,64 @@ document.addEventListener('DOMContentLoaded', function() {
 
     initScreen();
     function initScreen(){
-        if (!teamsItem.classList.contains('selectedActionPanelItem')) {
+        const tab = localStorage.getItem("tab");
+        if (!teamsItem.classList.contains('selectedActionPanelItem') && !tab) {
             switchActiveItem(teamsItem, subjectsItem);
             clearContentArea();
             setUserTeams();
+        }
+
+        if(tab){
+
+            var currentToolbar = document.querySelector('.toolbar');
+            var newToolbar = loadAndRestoreElement("toolbar");
+
+            var tabElements = newToolbar.querySelectorAll('.toolbarItem');
+
+            tabElements.forEach(function(element) {
+                if(element.hasAttribute('data-subject-id')){
+                    var subject = getSubjectById(element.getAttribute('data-subject-id'));
+                    configureTab(element, "subject", subject);
+                    if(subject.Id == tab.itemId){
+                        setActiveTab(element);
+                    }
+                }
+
+                if(element.hasAttribute('data-team-id')){
+                    var team = getTeamById(element.getAttribute('data-team-id'));
+                    configureTab(element, "team", team);
+                    if(team.Id == tab.itemId){
+                        setActiveTab(element);
+                    }
+                }
+            });
+
+            var homeBtn = newToolbar.querySelector('.homeBtn');
+            homeBtn.addEventListener('click', function() {
+                setActiveTab(homeBtn);
+                restoreMainPanel();
+            });
+
+            currentToolbar.replaceWith(newToolbar);
+            
+
+            if (tab.itemType === 'team') {
+                const team = getTeamById(tab.itemId);
+                if (team) {
+                    localStorage.removeItem("tab");
+                    showTeamContent(team);
+                }else{
+                    localStorage.removeItem("tab");
+                }
+            } else if (tab.itemType === 'subject') {
+                const subject = getSubjectById(tab.itemId);
+                if (subject) {
+                    localStorage.removeItem("tab");
+                    showSubjectContent(subject);
+                }else{
+                    localStorage.removeItem("tab");
+                }
+            }
         }
     }
     
@@ -71,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (inactiveItem) {
             const arrow = document.createElement('img');
             arrow.className = 'arrow';
-            arrow.src = 'arrow.svg';
+            arrow.src = '../images/arrow.svg';
             arrow.alt = 'Иконка стрелки';
             inactiveItem.appendChild(arrow);
         }
@@ -157,9 +211,9 @@ document.addEventListener('DOMContentLoaded', function() {
         newTab.setAttribute('data-team-id', team.Id);
         
         newTab.innerHTML = `
-            <img class="terminal" src="terminal.svg" alt="Иконка терминала">
+            <img class="terminal" src="../images/terminal.svg" alt="Иконка терминала">
             <div class="toolbarItemText">${team.Name}</div>
-            <img class="x" src="x-lg.svg" alt="Иконка крестика">
+            <img class="x" src="../images/x-lg.svg" alt="Иконка крестика">
         `;
 
         const closeBtn = newTab.querySelector('.x');
@@ -186,9 +240,9 @@ document.addEventListener('DOMContentLoaded', function() {
         newTab.setAttribute('data-subject-id', subject.Id);
         
         newTab.innerHTML = `
-            <img class="terminal" src="terminal.svg" alt="Иконка терминала">
+            <img class="terminal" src="../images/terminal.svg" alt="Иконка терминала">
             <div class="toolbarItemText">${subject.Name}</div>
-            <img class="x" src="x-lg.svg" alt="Иконка крестика">
+            <img class="x" src="../images/x-lg.svg" alt="Иконка крестика">
         `;
 
         const closeBtn = newTab.querySelector('.x');
@@ -207,6 +261,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
         setActiveTab(newTab);
         showSubjectContent(subject);
+    }
+
+    function configureTab(tab, type, context){
+        const closeBtn = tab.querySelector('.x');
+        closeBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            closeTab(tab);
+        });
+
+        if(type == "team"){
+            tab.addEventListener('click', function() {
+                setActiveTab(tab);
+                showTeamContent(context);
+            });
+        }
+
+        if(type == "subject"){
+            tab.addEventListener('click', function() {
+                setActiveTab(tab);
+                showSubjectContent(context);
+            });
+        }
     }
 
     function closeTab(tabElement) {
@@ -230,36 +306,9 @@ document.addEventListener('DOMContentLoaded', function() {
         mainPanel.innerHTML = '';
         
         const homeBtn = document.querySelector('.homeBtn');
-        saveElementData(homeBtn.parentNode);
+        saveElementData(homeBtn.parentNode, "toolbar");
 
-        //window.location.href = '../pages/registrationPage.html';
-    }
-
-    function saveElementData(element, storageKey = 'elementData') {
-        const data = {
-            tagName: element.tagName.toLowerCase(),
-            id: element.id || null,
-            className: element.className || null,
-            text: element.textContent.trim() || null,
-            attributes: {},
-            children: []
-        };
-        
-        Array.from(element.attributes).forEach(attr => {
-            data.attributes[attr.name] = attr.value;
-        });
-        
-        if (element.children.length > 0) {
-            data.children = Array.from(element.children).map(child => 
-            saveElementData(child, null)
-            );
-        }
-        
-        if (storageKey) {
-            localStorage.setItem(storageKey, JSON.stringify(data, null, 2));
-        }
-        
-        return data;
+        window.location.href = '../index.html';
     }
 
     function restoreMainPanel() {
