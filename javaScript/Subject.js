@@ -1,6 +1,8 @@
-class TaskManager{
-    constructor(){
-        this.tasks = [];
+class Subject{
+    constructor(name, tasks){
+        this.tasks = tasks;
+        this.name = name;
+        this.id = crypto.randomUUID();
     }
 
     addTask(task){
@@ -16,4 +18,4 @@ class TaskManager{
     }
 }
 
-const taskManager = new TaskManager();
+const subjectTest = new Subject("test", []);

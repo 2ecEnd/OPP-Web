@@ -130,6 +130,6 @@ class Task{
 
     deleteTask(){
         this.container.remove();
-        taskManager.deleteTask(this.id);
+        subjectTest.deleteTask(this.id);
     }
 }

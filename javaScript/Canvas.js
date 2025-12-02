@@ -94,7 +94,7 @@ class Canvas{
             this.draggedObject = target;
             this.editingLinks = [];
 
-            this.draggedTask = taskManager.getTask(this.draggedObject.id);
+            this.draggedTask = subjectTest.getTask(this.draggedObject.id);
             if (!this.draggedTask) return;
             
             this.links.forEach(link => {
@@ -206,7 +206,7 @@ class Canvas{
     linkTasks(targetTaskDom){
         if (!this.linkingMode) return;
 
-        const targetTask = taskManager.getTask(targetTaskDom.id)
+        const targetTask = subjectTest.getTask(targetTaskDom.id)
 
         if(this.linkingStartTask === targetTask){
             this.stopLinking();

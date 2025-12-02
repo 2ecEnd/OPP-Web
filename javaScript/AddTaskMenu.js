@@ -48,7 +48,7 @@ class AddTaskMenu{
     createTask(title, description, hasDeadline, deadline, currentDate){
         const newTask = new Task(title, description, hasDeadline, deadline, currentDate);
 
-        taskManager.addTask(newTask);
+        subjectTest.addTask(newTask);
         this.canvas.canvas.appendChild(newTask.createDom());
     }
 
@@ -75,7 +75,10 @@ class AddTaskMenu{
         title.value = this.currentTask.title;
         description.value = this.currentTask.description;
         hasDeadline.checked = this.currentTask.hasDeadline;
+        hasDeadline.dispatchEvent(new Event('change'));
+        this.currentTask.hasDeadline ? this.deadlineContainer.classList.remove('disabled') : this.deadlineContainer.classList.add('disabled');
         deadline.value = this.currentTask.deadline;
+        deadline.disabled = !this.currentTask.hasDeadline;
 
         this.formSubmitButton.innerHTML = "Изменить";
     }
