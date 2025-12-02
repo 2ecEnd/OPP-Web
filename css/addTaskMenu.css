@@ -89,6 +89,13 @@
 }
 
 
+#deadline-container.disabled{
+    label{
+        opacity: 0.5;
+    }
+}
+
+
 .form-block{
     margin-top: 24px;
     font-size: 18px;
@@ -114,7 +121,7 @@
         cursor: pointer;
     }
 
-    input[type="date"]{
+    input[type="datetime-local"]{
         margin-top: 8px;
 
         border: solid 1px rgb(217, 217, 217);

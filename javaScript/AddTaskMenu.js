@@ -3,6 +3,8 @@ class AddTaskMenu{
         this.container = document.getElementById('add-task-context-menu');
         this.closeMenuButton = document.getElementById('close-context-menu-button');
         this.form = document.getElementById('add-task-form');
+        this.checkbox = document.getElementById('formDeadLineCheck');
+        this.deadlineContainer = document.getElementById('deadline-container');
         this.overlay = document.getElementById('overlay');
         this.formSubmitButton = document.getElementById('formSubmitButton');
         this.canvas = canvas;
@@ -16,6 +18,7 @@ class AddTaskMenu{
     init(){
         this.form.addEventListener('submit', this.handleSubmit.bind(this));
         this.closeMenuButton.addEventListener('click', this.closeSelf.bind(this));
+        this.checkbox.addEventListener('change', this.toggleDeadlineInput.bind(this));
     }
 
     handleSubmit(event){
@@ -35,10 +38,18 @@ class AddTaskMenu{
         this.closeSelf();
     }
 
+    toggleDeadlineInput(){
+        this.deadlineContainer.classList.toggle('disabled');
+
+        const input = this.deadlineContainer.querySelector('input');
+        input.disabled = !input.disabled;
+    }
+
     createTask(title, description, hasDeadline, deadline, currentDate){
         const newTask = new Task(title, description, hasDeadline, deadline, currentDate);
 
-        this.canvas.canvas.appendChild(newTask.createTask());
+        subjectTest.addTask(newTask);
+        this.canvas.canvas.appendChild(newTask.createDom());
     }
 
     changeTask(task, title, description, hasDeadline, deadline){
@@ -64,7 +75,10 @@ class AddTaskMenu{
         title.value = this.currentTask.title;
         description.value = this.currentTask.description;
         hasDeadline.checked = this.currentTask.hasDeadline;
+        hasDeadline.dispatchEvent(new Event('change'));
+        this.currentTask.hasDeadline ? this.deadlineContainer.classList.remove('disabled') : this.deadlineContainer.classList.add('disabled');
         deadline.value = this.currentTask.deadline;
+        deadline.disabled = !this.currentTask.hasDeadline;
 
         this.formSubmitButton.innerHTML = "Изменить";
     }

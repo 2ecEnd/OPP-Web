@@ -1,11 +1,19 @@
 class Canvas{
+    static LinkData = class {
+        constructor(line, startTask, endTask){
+            this.line = line;
+            this.startTask = startTask;
+            this.endTask = endTask;
+        }
+    }
+
     constructor(){
         this.viewport = document.getElementById('viewport');
         this.canvas = document.getElementById('canvas');
         this.connectionsLayer = document.getElementById('connections-layer');
         
-        this.x = 0;
-        this.y = 0;
+        this.x = -2500;
+        this.y = -2500;
         this.dragModeIsActive = false;
         this.isDraggingCanvas = false;
         this.lastX = 0;
@@ -18,7 +26,12 @@ class Canvas{
         this.linkingMode = false;
 
         this.draggedObject = null;
+        this.draggedTask = null;
         this.linkingStartTask = null;
+        this.tempLine = null;
+
+        this.links = [];
+        this.editingLinks = [];
         
         this.init();
     }
@@ -67,17 +80,28 @@ class Canvas{
 
     onObjectMouseDown(e){
         if(this.dragModeIsActive) return;
-        
+
         const target = e.target.closest('.draggable');
         if (!target) return;
 
         e.preventDefault();
         e.stopPropagation();
+        
+        if (!this.linkingMode){
+            this.isDraggingObject = true;
+            this.objectLastX = e.clientX;
+            this.objectLastY = e.clientY;
+            this.draggedObject = target;
+            this.editingLinks = [];
 
-        this.isDraggingObject = true;
-        this.objectLastX = e.clientX;
-        this.objectLastY = e.clientY;
-        this.draggedObject = target; 
+            this.draggedTask = subjectTest.getTask(this.draggedObject.id);
+            if (!this.draggedTask) return;
+            
+            this.links.forEach(link => {
+                if(link.startTask === this.draggedTask || link.endTask === this.draggedTask) this.editingLinks.push(link);
+            });
+        }
+        else this.linkTasks(target);
     }
 
     onObjectMouseMove(e){
@@ -86,8 +110,8 @@ class Canvas{
         const deltaX = e.clientX - this.objectLastX;
         const deltaY = e.clientY - this.objectLastY;
 
-        var x = parseInt(this.draggedObject.style.left) + deltaX;
-        var y = parseInt(this.draggedObject.style.top) + deltaY;
+        var x = parseInt(this.draggedObject.dataset.x) + deltaX;
+        var y = parseInt(this.draggedObject.dataset.y) + deltaY;
 
         this.objectLastX = e.clientX;
         this.objectLastY = e.clientY;
@@ -95,8 +119,21 @@ class Canvas{
         this.draggedObject.style.transform = `
             translate(${x}px, ${y}px)
         `;
-        this.draggedObject.style.left = x + 'px';
-        this.draggedObject.style.top = y + 'px';
+        this.draggedObject.dataset.x = x;
+        this.draggedObject.dataset.y = y;
+
+        this.editingLinks.forEach(link => {
+            const center = this.getCenter(this.draggedObject);
+
+            if (this.draggedTask === link.startTask){
+                link.line.setAttribute('x1', center.x);
+                link.line.setAttribute('y1', center.y);
+            }
+            else{
+                link.line.setAttribute('x2', center.x);
+                link.line.setAttribute('y2', center.y);
+            }
+        });
     }
 
     onMouseDown(e) {
@@ -166,9 +203,46 @@ class Canvas{
         this.tempLine.setAttribute('y2', mouseY);
     }
 
+    linkTasks(targetTaskDom){
+        if (!this.linkingMode) return;
+
+        const targetTask = subjectTest.getTask(targetTaskDom.id)
+
+        if(this.linkingStartTask === targetTask){
+            this.stopLinking();
+            return;
+        }
+
+        const newLinkLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        newLinkLine.classList.add('link-line');
+
+        const start = this.getCenter(this.linkingStartTask.container);
+        const end = this.getCenter(targetTask.container);
+
+        newLinkLine.setAttribute('x1', start.x);
+        newLinkLine.setAttribute('y1', start.y);
+        newLinkLine.setAttribute('x2', end.x);
+        newLinkLine.setAttribute('y2', end.y);
+
+        this.links.push(new Canvas.LinkData(newLinkLine, this.linkingStartTask, targetTask));
+        this.linkingStartTask.dependsOn.push(targetTask);
+
+        this.connectionsLayer.appendChild(newLinkLine);
+        this.stopLinking();
+    }
+
+    stopLinking(){
+        this.linkingMode = false;
+        this.linkingStartTask = null;
+        this.viewport.style.cursor = 'default';
+
+        this.tempLine.remove();
+        this.tempLine = null;
+    }
+
     getCenter(element) {
-        const left = parseInt(element.style.left) || 0;
-        const top = parseInt(element.style.top) || 0;
+        const left = parseInt(element.dataset.x) || 0;
+        const top = parseInt(element.dataset.y) || 0;
         const width = element.offsetWidth;
         const height = element.offsetHeight;
         

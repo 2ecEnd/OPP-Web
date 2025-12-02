@@ -83,7 +83,7 @@ async function addTeam(teamName) {
     return newTeam.Id;
 }
 
-async function addSubject(subjectName) {
+async function addSubject(subject) {
     if(user == null){
         user = await getUserData();
     }
@@ -93,7 +93,7 @@ async function addSubject(subjectName) {
 
     if (!user.Subjects) user.Subjects = [];
 
-    var newSubject = { Id: crypto.randomUUID(), Name: subjectName, TeamId: null, Tasks: [] };
+    var newSubject = { Id: subject.id, Name: subject.name, TeamId: null, Tasks: subject.tasks };
     user.Subjects.push(newSubject);
     await saveUserData();
 

@@ -72,7 +72,7 @@ class Task{
         this.dependsOnButton.addEventListener('click', this.startLinking.bind(this));
     }
 
-    createTask(){
+    createDom(){
         const newTask = document.createElement('div');
         this.container = newTask;
 
@@ -80,8 +80,6 @@ class Task{
         this.createContextMenu();
 
         newTask.className = 'draggable task';
-        newTask.style.left = 0 + 'px';
-        newTask.style.top = 0 + 'px';
         newTask.id = this.id;
         newTask.innerHTML = `
             <div class="title task-block">
@@ -97,7 +95,7 @@ class Task{
                 <p>Ответственный: name</p>
             </div>
             <div class="dead-line task-block">
-                <p>Дедлайн: ${this.deadline}</p>
+                <p>Дедлайн: ${this.deadline.replace('T', ' ')}</p>
             </div>
         `;
 
@@ -109,6 +107,12 @@ class Task{
         this.createTimeElement = newTask.querySelector('.create-time p');
         this.deadlineElement = newTask.querySelector('.dead-line p');
 
+        this.container.style.transform = `
+            translate(${2500}px, ${2500}px)
+        `;
+        this.container.dataset.x = 2500;
+        this.container.dataset.y = 2500;
+
         return newTask;
     }
 
@@ -119,12 +123,13 @@ class Task{
 
         this.titleElement.textContent = title;
         this.descriptionElement.textContent = description;
-        this.deadlineElement.textContent = `Дедлайн: ${deadline}`;
+        this.deadlineElement.textContent = `Дедлайн: ${deadline.replace('T', ' ')}`;
 
         this.openContextMenu();
     }
 
     deleteTask(){
         this.container.remove();
+        subjectTest.deleteTask(this.id);
     }
 }

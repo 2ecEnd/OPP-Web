@@ -1,6 +1,8 @@
 .task{
     font-family: sans-serif;
-    
+    position: absolute;
+    left: 0;
+    top: 0;
     width: 250px;
     height: 250px;
 
