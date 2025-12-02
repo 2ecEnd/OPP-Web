@@ -19,6 +19,16 @@
         margin: 0;
     }
 
+    .status-indicator{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 50px;
+        height: 50px;
+        clip-path: polygon(0 0, 100% 0, 0 100%);
+        z-index: 1;
+    }
+
     .more-vert-button{
         position: absolute;
         width: 30px;
@@ -40,14 +50,11 @@
             position: absolute;
         }
     }
-    
-    .task-context-menu{
+
+    .task-menu{
         font-size: 18px;
 
         position: absolute;
-        width: 40%;
-        height: 50%;
-        display: none;
         flex-direction: column;
         justify-content: space-between;
         align-items: center;
@@ -57,9 +64,6 @@
         background-color: white;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         outline: solid 1px rgb(217, 217, 217);
-
-        top: 15%;
-        right: 2%;
 
         button{
             width: 100%;
@@ -83,8 +87,32 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
     }
+    
+    .task-menu.task-context-menu{
+        width: 40%;
+        height: 70%;
 
-    .task-context-menu.active{
+        top: 15%;
+        right: 2%;
+
+        display: none;
+    }
+
+    .task-menu.task-status-menu{
+        width: 40%;
+        height: 43%;
+
+        top: 42%;
+        right: 51.5%;
+
+        display: none;
+    }
+
+    .task-menu.task-context-menu.active{
+        display: flex;
+    }
+
+    .task-menu.task-status-menu.active{
         display: flex;
     }
 

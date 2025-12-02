@@ -14,6 +14,11 @@ class Canvas{
         
         this.x = -2500;
         this.y = -2500;
+        this.scale = 1;
+        this.minScale = 0.1;
+        this.maxScale = 3;
+        this.scaleStep = 0.1;
+
         this.dragModeIsActive = false;
         this.isDraggingCanvas = false;
         this.lastX = 0;
@@ -51,7 +56,7 @@ class Canvas{
         this.viewport.addEventListener('mousedown', this.onMouseDown.bind(this));
         document.addEventListener('mousemove', this.onMouseMove.bind(this));
         document.addEventListener('mouseup', this.onMouseUp.bind(this));
-        //this.viewport.addEventListener('wheel', this.onWheel.bind(this));
+        this.viewport.addEventListener('wheel', this.onWheel.bind(this));
 
         document.addEventListener('keydown', this.onKeyDown.bind(this));
         document.addEventListener('keyup', this.onKeyUp.bind(this));
@@ -61,6 +66,35 @@ class Canvas{
         this.canvas.addEventListener('mousedown', this.onObjectMouseDown.bind(this));
         this.canvas.addEventListener('mousemove', this.onObjectMouseMove.bind(this));
         document.addEventListener('mouseup', this.onMouseUp.bind(this));
+    }
+
+    onWheel(e) {
+        e.preventDefault();
+        
+        const delta = e.deltaY > 0 ? -1 : 1;
+        
+        this.zoom(delta, e.clientX, e.clientY);
+    }
+
+    zoom(delta, clientX, clientY) {
+        const oldScale = this.scale;
+        
+        this.scale += delta * this.scaleStep;
+        this.scale = Math.min(Math.max(this.scale, this.minScale), this.maxScale);
+        
+        if (oldScale === this.scale) return;
+        
+        const rect = this.viewport.getBoundingClientRect();
+        const mouseX = clientX - rect.left;
+        const mouseY = clientY - rect.top;
+        
+        const canvasX = (mouseX - this.x) / oldScale;
+        const canvasY = (mouseY - this.y) / oldScale;
+        
+        this.x = mouseX - canvasX * this.scale;
+        this.y = mouseY - canvasY * this.scale;
+        
+        this.updateTransform();
     }
 
     onKeyDown(e){
@@ -107,8 +141,8 @@ class Canvas{
     onObjectMouseMove(e){
         if(!this.isDraggingObject || this.dragModeIsActive || !this.draggedObject) return;
 
-        const deltaX = e.clientX - this.objectLastX;
-        const deltaY = e.clientY - this.objectLastY;
+        const deltaX = (e.clientX - this.objectLastX) / this.scale;
+        const deltaY = (e.clientY - this.objectLastY) / this.scale;
 
         var x = parseInt(this.draggedObject.dataset.x) + deltaX;
         var y = parseInt(this.draggedObject.dataset.y) + deltaY;
@@ -175,7 +209,10 @@ class Canvas{
     updateTransform() {
         this.canvas.style.transform = `
             translate(${this.x}px, ${this.y}px)
+            scale(${this.scale})
         `;
+
+        this.canvas.style.transformOrigin = '0 0';
     }
 
     startLinking(task) {
@@ -194,8 +231,9 @@ class Canvas{
         const start = this.getCenter(this.linkingStartTask.container);
 
         const canvasRect = this.canvas.getBoundingClientRect();
-        const mouseX = e.clientX - canvasRect.left;
-        const mouseY = e.clientY - canvasRect.top;
+
+        const mouseX = (e.clientX - canvasRect.left) / this.scale;
+        const mouseY = (e.clientY - canvasRect.top) / this.scale;
 
         this.tempLine.setAttribute('x1', start.x);
         this.tempLine.setAttribute('y1', start.y);
