@@ -21,6 +21,7 @@ async function getUserData(){
             return userData;
         } 
         else {
+            window.location.href = '../pages/registrationPage.html';
             alert('Ошибка');
         }
     }
