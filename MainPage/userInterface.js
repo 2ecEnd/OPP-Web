@@ -30,7 +30,11 @@ async function getUserData(){
     }
 }
 
-user = getUserData();
+async function initUser(){
+    user = await getUserData();
+}
+
+initUser();
 
 async function saveUserData(){
 
@@ -38,12 +42,14 @@ async function saveUserData(){
 
     try{
         const response = await fetch(`${api}/save`, {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                user: user
+                Id: user.Id,
+                Subjects: user.Subjects,
+                Teams: user.Teams
             })
         });
 

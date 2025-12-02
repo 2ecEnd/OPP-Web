@@ -18,7 +18,7 @@ addButton.addEventListener('click', openModal);
 
 cancelBtn.addEventListener('click', closeModal);
 
-createBtn.addEventListener('click', function() {
+createBtn.addEventListener('click', async function() {
   const name = modalInput.value.trim();
   if (name) {
 
@@ -31,11 +31,11 @@ createBtn.addEventListener('click', function() {
     newElement.textContent = name;
     
     if (activeItemText === 'Teams') {
-        const teamId = addTeam(name);
+        const teamId = await addTeam(name);
         newElement.setAttribute('data-type', 'team');
         newElement.setAttribute('data-id', teamId);
     } else if (activeItemText === 'Subjects') {
-        const subjectId = addSubject(name);
+        const subjectId = await addSubject(name);
         newElement.setAttribute('data-type', 'subject');
         newElement.setAttribute('data-id', subjectId);
     }

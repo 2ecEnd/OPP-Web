@@ -15,6 +15,34 @@ document.addEventListener('DOMContentLoaded', function() {
             contentArea.appendChild(addButton);
         }
     }
+
+    function setUserTeams() {
+        var teams = getTeams();
+        const contentArea = document.querySelector('.contentArea');
+
+        teams.forEach(team => {
+            const newElement = document.createElement('div');
+            newElement.classList.add('contentItem');
+            newElement.textContent = team.Name;
+            newElement.setAttribute('data-type', 'team');
+            newElement.setAttribute('data-id', team.Id);
+            contentArea.appendChild(newElement);
+        });
+    }
+
+    function setUserSubjects() {
+        var subjects = getSubjects();
+        const contentArea = document.querySelector('.contentArea');
+
+        subjects.forEach(subject => {
+            const newElement = document.createElement('div');
+            newElement.classList.add('contentItem');
+            newElement.textContent = subject.Name;
+            newElement.setAttribute('data-type', 'subject');
+            newElement.setAttribute('data-id', subject.Id);
+            contentArea.appendChild(newElement);
+        });
+    }
     
     function switchActiveItem(activeItem, inactiveItem) {
         inactiveItem.classList.remove('selectedActionPanelItem');
@@ -43,6 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!teamsItem.classList.contains('selectedActionPanelItem')) {
             switchActiveItem(teamsItem, subjectsItem);
             clearContentArea();
+            setUserTeams();
         }
     });
     
@@ -50,6 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!subjectsItem.classList.contains('selectedActionPanelItem')) {
             switchActiveItem(subjectsItem, teamsItem);
             clearContentArea();
+            setUserSubjects();
         }
     });
 
@@ -60,7 +90,6 @@ document.addEventListener('DOMContentLoaded', function() {
         teamContent.style.gap = '20px';
         teamContent.style.padding = '20px';
 
-        // Колонка участников
         const participantsColumn = document.createElement('div');
         participantsColumn.className = 'teamColumn';
         participantsColumn.innerHTML = '<h3>Участники команды</h3>';
@@ -79,7 +108,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         participantsColumn.appendChild(participantsList);
 
-        // Колонка назначенных предметов
         const subjectsColumn = document.createElement('div');
         subjectsColumn.className = 'teamColumn';
         subjectsColumn.innerHTML = '<h3>Назначенные предметы</h3>';
@@ -115,11 +143,11 @@ document.addEventListener('DOMContentLoaded', function() {
     function openTeamTab(team) {
         const newTab = document.createElement('div');
         newTab.className = 'toolbarItem selectedToolbarItem';
-        newTab.setAttribute('data-team-id', team.id);
+        newTab.setAttribute('data-team-id', team.Id);
         
         newTab.innerHTML = `
             <img class="terminal" src="terminal.svg" alt="Иконка терминала">
-            <div class="toolbarItemText">${team.name}</div>
+            <div class="toolbarItemText">${team.Name}</div>
             <img class="x" src="x-lg.svg" alt="Иконка крестика">
         `;
 
@@ -144,11 +172,11 @@ document.addEventListener('DOMContentLoaded', function() {
     function openSubjectTab(subject) {
         const newTab = document.createElement('div');
         newTab.className = 'toolbarItem selectedToolbarItem';
-        newTab.setAttribute('data-subject-id', subject.id);
+        newTab.setAttribute('data-subject-id', subject.Id);
         
         newTab.innerHTML = `
             <img class="terminal" src="terminal.svg" alt="Иконка терминала">
-            <div class="toolbarItemText">${subject.name}</div>
+            <div class="toolbarItemText">${subject.Name}</div>
             <img class="x" src="x-lg.svg" alt="Иконка крестика">
         `;
 
@@ -232,12 +260,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const itemName = contentItem.textContent;
 
             if (itemType === 'team') {
-                const team = user.Teams.find(t => t.id == itemId);
+                const team = user.Teams.find(t => t.Id == itemId);
                 if (team) {
                     openTeamTab(team);
                 }
             } else if (itemType === 'subject') {
-                const subject = user.Subjects.find(s => s.id == itemId);
+                const subject = user.Subjects.find(s => s.Id == itemId);
                 if (subject) {
                     openSubjectTab(subject);
                 }
