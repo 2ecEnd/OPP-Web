@@ -1,3 +1,5 @@
+
+
 const addButton = document.querySelector('.addButton');
 const modalOverlay = document.getElementById('modalOverlay');
 const modalInput = document.getElementById('modalInput');
@@ -35,7 +37,8 @@ createBtn.addEventListener('click', async function() {
         newElement.setAttribute('data-type', 'team');
         newElement.setAttribute('data-id', teamId);
     } else if (activeItemText === 'Subjects') {
-        const subjectId = await addSubject(new Subject(name, []));
+        const newSubject = new Subject(name, []);
+        const subjectId = await addSubject(newSubject);
         newElement.setAttribute('data-type', 'subject');
         newElement.setAttribute('data-id', subjectId);
     }

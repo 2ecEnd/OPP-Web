@@ -7,6 +7,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const originalActionPanel = document.querySelector('.actionPanel');
     const originalContentArea = document.querySelector('.contentArea');
     const mainPanel = document.querySelector('.mainPanel');
+
+    initScreen();
+    function initScreen(){
+        if (!teamsItem.classList.contains('selectedActionPanelItem')) {
+            switchActiveItem(teamsItem, subjectsItem);
+            clearContentArea();
+            setUserTeams();
+        }
+    }
     
     function clearContentArea() {
         const addButton = contentArea.querySelector('.addButton');
@@ -16,8 +25,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    function setUserTeams() {
-        var teams = getTeams();
+    async function setUserTeams() {
+        var teams = await getTeams();
         const contentArea = document.querySelector('.contentArea');
 
         teams.forEach(team => {
@@ -30,8 +39,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    function setUserSubjects() {
-        var subjects = getSubjects();
+    async function setUserSubjects() {
+        var subjects = await getSubjects();
         const contentArea = document.querySelector('.contentArea');
 
         subjects.forEach(subject => {
