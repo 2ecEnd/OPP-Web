@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const subjectsItem = document.querySelector('.selectedActionPanelItem');
     const contentArea = document.querySelector('.contentArea');
     const toolbar = document.querySelector('.toolbar');
+    const homeBtn = document.querySelector('.homeBtn');
 
     const originalActionPanel = document.querySelector('.actionPanel');
     const originalContentArea = document.querySelector('.contentArea');
@@ -145,6 +146,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.toolbarItem').forEach(item => {
             item.classList.remove('selectedToolbarItem');
         });
+        homeBtn.classList.remove('selectedToolbarItem');
         
         tabElement.classList.add('selectedToolbarItem');
     }
@@ -227,7 +229,37 @@ document.addEventListener('DOMContentLoaded', function() {
     function showSubjectContent(subject) {
         mainPanel.innerHTML = '';
         
-        // Вставить сюда вызов холста
+        const homeBtn = document.querySelector('.homeBtn');
+        saveElementData(homeBtn.parentNode);
+
+        //window.location.href = '../pages/registrationPage.html';
+    }
+
+    function saveElementData(element, storageKey = 'elementData') {
+        const data = {
+            tagName: element.tagName.toLowerCase(),
+            id: element.id || null,
+            className: element.className || null,
+            text: element.textContent.trim() || null,
+            attributes: {},
+            children: []
+        };
+        
+        Array.from(element.attributes).forEach(attr => {
+            data.attributes[attr.name] = attr.value;
+        });
+        
+        if (element.children.length > 0) {
+            data.children = Array.from(element.children).map(child => 
+            saveElementData(child, null)
+            );
+        }
+        
+        if (storageKey) {
+            localStorage.setItem(storageKey, JSON.stringify(data, null, 2));
+        }
+        
+        return data;
     }
 
     function restoreMainPanel() {
@@ -255,7 +287,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    const homeBtn = document.querySelector('.homeBtn');
     homeBtn.addEventListener('click', function() {
         setActiveTab(homeBtn);
         restoreMainPanel();
