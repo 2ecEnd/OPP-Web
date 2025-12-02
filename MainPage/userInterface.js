@@ -132,3 +132,13 @@ async function getSubjects() {
     user = await getUserData();
     return user.Subjects;
 }
+
+function getTeamById(teamId){
+    initUser();
+    return user.Teams.find(team => team.Id === teamId);
+}
+
+function getSubjectById(subjectId){
+    initUser();
+    return user.Subjects.find(subject => subject.Id === subjectId);
+}
