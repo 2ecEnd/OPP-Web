@@ -7,7 +7,9 @@ class Canvas{
         }
     }
 
-    constructor(){
+    constructor(subject){
+        this.subject = subject;
+
         this.viewport = document.getElementById('viewport');
         this.canvas = document.getElementById('canvas');
         this.connectionsLayer = document.getElementById('connections-layer');
