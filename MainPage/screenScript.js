@@ -260,12 +260,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const itemName = contentItem.textContent;
 
             if (itemType === 'team') {
-                const team = user.Teams.find(t => t.id == itemId);
+                const team = user.Teams.find(t => t.Id == itemId);
                 if (team) {
                     openTeamTab(team);
                 }
             } else if (itemType === 'subject') {
-                const subject = user.Subjects.find(s => s.id == itemId);
+                const subject = user.Subjects.find(s => s.Id == itemId);
                 if (subject) {
                     openSubjectTab(subject);
                 }
