@@ -143,11 +143,11 @@ document.addEventListener('DOMContentLoaded', function() {
     function openTeamTab(team) {
         const newTab = document.createElement('div');
         newTab.className = 'toolbarItem selectedToolbarItem';
-        newTab.setAttribute('data-team-id', team.id);
+        newTab.setAttribute('data-team-id', team.Id);
         
         newTab.innerHTML = `
             <img class="terminal" src="terminal.svg" alt="Иконка терминала">
-            <div class="toolbarItemText">${team.name}</div>
+            <div class="toolbarItemText">${team.Name}</div>
             <img class="x" src="x-lg.svg" alt="Иконка крестика">
         `;
 
@@ -172,11 +172,11 @@ document.addEventListener('DOMContentLoaded', function() {
     function openSubjectTab(subject) {
         const newTab = document.createElement('div');
         newTab.className = 'toolbarItem selectedToolbarItem';
-        newTab.setAttribute('data-subject-id', subject.id);
+        newTab.setAttribute('data-subject-id', subject.Id);
         
         newTab.innerHTML = `
             <img class="terminal" src="terminal.svg" alt="Иконка терминала">
-            <div class="toolbarItemText">${subject.name}</div>
+            <div class="toolbarItemText">${subject.Name}</div>
             <img class="x" src="x-lg.svg" alt="Иконка крестика">
         `;
 
