@@ -134,9 +134,11 @@ async function getSubjects() {
 }
 
 function getTeamById(teamId){
+    initUser();
     return user.Teams.find(team => team.Id === teamId);
 }
 
 function getSubjectById(subjectId){
+    initUser();
     return user.Subjects.find(subject => subject.Id === subjectId);
 }

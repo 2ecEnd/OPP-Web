@@ -16,31 +16,42 @@ document.addEventListener('DOMContentLoaded', function() {
             switchActiveItem(teamsItem, subjectsItem);
             clearContentArea();
             setUserTeams();
+            setActiveTab(toolbar.querySelector('.homeBtn'));
+        }else if(!tab){
+            if (!subjectsItem.classList.contains('selectedActionPanelItem')) {
+                switchActiveItem(subjectsItem, teamsItem);
+                clearContentArea();
+                setUserSubjects();
+                setActiveTab(toolbar.querySelector('.homeBtn'));
+            }
         }
 
         if(tab){
 
             var currentToolbar = document.querySelector('.toolbar');
             var newToolbar = loadAndRestoreElement("toolbar");
+            localStorage.removeItem("toolbar");
 
             var tabElements = newToolbar.querySelectorAll('.toolbarItem');
 
             tabElements.forEach(function(element) {
-                if(element.hasAttribute('data-subject-id')){
-                    var subject = getSubjectById(element.getAttribute('data-subject-id'));
-                    configureTab(element, "subject", subject);
-                    if(subject.Id == tab.itemId){
-                        setActiveTab(element);
+                element.addEventListener('click', function() {
+                    if(element.hasAttribute('data-subject-id')){
+                        var subject = getSubjectById(element.getAttribute('data-subject-id'));
+                        configureTab(element, "subject", subject);
+                        if(subject.Id == tab.itemId){
+                            setActiveTab(element);
+                        }
                     }
-                }
 
-                if(element.hasAttribute('data-team-id')){
-                    var team = getTeamById(element.getAttribute('data-team-id'));
-                    configureTab(element, "team", team);
-                    if(team.Id == tab.itemId){
-                        setActiveTab(element);
+                    if(element.hasAttribute('data-team-id')){
+                        var team = getTeamById(element.getAttribute('data-team-id'));
+                        configureTab(element, "team", team);
+                        if(team.Id == tab.itemId){
+                            setActiveTab(element);
+                        }
                     }
-                }
+                });
             });
 
             var homeBtn = newToolbar.querySelector('.homeBtn');
@@ -69,6 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     localStorage.removeItem("tab");
                 }
             }
+            localStorage.removeItem("tab");
         }
     }
     
