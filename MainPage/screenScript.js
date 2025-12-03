@@ -121,6 +121,55 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
     }
 
+    // function openContextMenu(){
+    //     this.moreVertButton.classList.toggle('active');
+    //     this.contextMenu.classList.toggle('active');
+    //     this.statusMenu.classList.remove('active');
+    // }
+
+    // function createOpenContextButton(id){
+    //     const openContextButton = document.createElement('div');
+
+    //     openContextButton.className = 'more-vert-button';
+    //     openContextButton.id = `more-vert-button-${id}`;
+    //     openContextButton.innerHTML = '<img src="images/More vertical.svg" alt="">';
+
+    //     openContextButton.addEventListener('click', () => {
+            
+    //     });
+    // }
+
+    // function createContextMenu(){
+    //     const contextMenu = document.createElement('div');
+    //     const changeButton = document.createElement('button');
+    //     const deleteTaskButton = document.createElement('button');
+    //     const dependsOnButton = document.createElement('button');
+    //     const changeStatusButton = document.createElement('button');
+
+    //     changeTaskButton.innerHTML = 'Изменить';
+    //     deleteTaskButton.innerHTML = 'Удалить';
+    //     dependsOnButton.innerHTML = 'Добавить зависимость';
+    //     changeStatusButton.innerHTML = 'Изменить статус';
+
+    //     contextMenu.classList.add('task-context-menu');
+    //     contextMenu.classList.add('task-menu');
+    //     contextMenu.appendChild(changeTaskButton);
+    //     contextMenu.appendChild(deleteTaskButton);
+    //     contextMenu.appendChild(dependsOnButton);
+    //     contextMenu.appendChild(changeStatusButton);
+
+    //     this.contextMenu = contextMenu;
+    //     this.changeTaskButton = changeTaskButton;
+    //     this.deleteTaskButton = deleteTaskButton;
+    //     this.dependsOnButton = dependsOnButton;
+    //     this.changeStatusButton = changeStatusButton;
+
+    //     this.changeTaskButton.addEventListener('click', this.openEditMenu.bind(this));
+    //     this.deleteTaskButton.addEventListener('click', this.deleteTask.bind(this));
+    //     this.dependsOnButton.addEventListener('click', this.startLinking.bind(this));
+    //     this.changeStatusButton.addEventListener('click', this.openStatusMenu.bind(this));
+    // }
+
     async function setUserTeams() {
         var teams = await getTeams();
         const contentArea = document.querySelector('.contentArea');
