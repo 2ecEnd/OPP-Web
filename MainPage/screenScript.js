@@ -22,17 +22,15 @@ document.addEventListener('DOMContentLoaded', async function() {
 
                 tabElements.forEach(async function(element) {
 
-                    element.addEventListener('click', async function() {
-                        if(element.hasAttribute('data-subject-id')){
-                            var subject = await getSubjectById(element.getAttribute('data-subject-id'));
-                            configureTab(element, "subject", subject);
-                        }
+                    if(element.hasAttribute('data-subject-id')){
+                        var subject = await getSubjectById(element.getAttribute('data-subject-id'));
+                        configureTab(element, "subject", subject);
+                    }
 
-                        if(element.hasAttribute('data-team-id')){
-                            var team = await getTeamById(element.getAttribute('data-team-id'));
-                            configureTab(element, "team", team);
-                        }
-                    });
+                    if(element.hasAttribute('data-team-id')){
+                        var team = await getTeamById(element.getAttribute('data-team-id'));
+                        configureTab(element, "team", team);
+                    }
                 });
 
                 var homeBtn = newToolbar.querySelector('.homeBtn');
@@ -72,6 +70,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                     var subject = await getSubjectById(element.getAttribute('data-subject-id'));
                     if(subject.Id == tab.itemId){
                         setActiveTab(element);
+                        configureTab(element, "subject", subject);
                     }
                 }
 
@@ -79,20 +78,9 @@ document.addEventListener('DOMContentLoaded', async function() {
                     var team = await getTeamById(element.getAttribute('data-team-id'));
                     if(team.Id == tab.itemId){
                         setActiveTab(element);
-                    }
-                }
-
-                element.addEventListener('click', async function() {
-                    if(element.hasAttribute('data-subject-id')){
-                        var subject = await getSubjectById(element.getAttribute('data-subject-id'));
-                        configureTab(element, "subject", subject);
-                    }
-
-                    if(element.hasAttribute('data-team-id')){
-                        var team = await getTeamById(element.getAttribute('data-team-id'));
                         configureTab(element, "team", team);
                     }
-                });
+                }
             });
 
             var homeBtn = newToolbar.querySelector('.homeBtn');
@@ -105,7 +93,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             
 
             if (tab.itemType === 'team') {
-                const team = getTeamById(tab.itemId);
+                const team = await getTeamById(tab.itemId);
                 if (team) {
                     localStorage.removeItem("tab");
                     showTeamContent(team);
@@ -113,7 +101,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                     localStorage.removeItem("tab");
                 }
             } else if (tab.itemType === 'subject') {
-                const subject = getSubjectById(tab.itemId);
+                const subject = await getSubjectById(tab.itemId);
                 if (subject) {
                     localStorage.removeItem("tab");
                     showSubjectContent(subject);
