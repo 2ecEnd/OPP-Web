@@ -133,12 +133,16 @@ async function getSubjects() {
     return user.Subjects;
 }
 
-function getTeamById(teamId){
-    initUser();
+async function getTeamById(teamId){
+    if(!user){
+        user = await getUserData();
+    }
     return user.Teams.find(team => team.Id === teamId);
 }
 
-function getSubjectById(subjectId){
-    initUser();
+async function getSubjectById(subjectId){
+    if(!user){
+        user = await getUserData();
+    }
     return user.Subjects.find(subject => subject.Id === subjectId);
 }

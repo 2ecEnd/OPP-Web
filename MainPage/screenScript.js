@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     const teamsItem = document.querySelector('.unselectedActionPanelItem');
     const subjectsItem = document.querySelector('.selectedActionPanelItem');
     const contentArea = document.querySelector('.contentArea');
@@ -9,9 +9,42 @@ document.addEventListener('DOMContentLoaded', function() {
     const originalContentArea = document.querySelector('.contentArea');
     const mainPanel = document.querySelector('.mainPanel');
 
-    initScreen();
-    function initScreen(){
-        const tab = localStorage.getItem("tab");
+    await initScreen();
+    async function initScreen(){
+        const tab = JSON.parse(localStorage.getItem("tab"));
+        var newToolbar = loadAndRestoreElement("toolbar");
+
+        if(!tab){
+            if(newToolbar){
+                var currentToolbar = document.querySelector('.toolbar');
+
+                var tabElements = newToolbar.querySelectorAll('.toolbarItem');
+
+                tabElements.forEach(async function(element) {
+
+                    element.addEventListener('click', async function() {
+                        if(element.hasAttribute('data-subject-id')){
+                            var subject = await getSubjectById(element.getAttribute('data-subject-id'));
+                            configureTab(element, "subject", subject);
+                        }
+
+                        if(element.hasAttribute('data-team-id')){
+                            var team = await getTeamById(element.getAttribute('data-team-id'));
+                            configureTab(element, "team", team);
+                        }
+                    });
+                });
+
+                var homeBtn = newToolbar.querySelector('.homeBtn');
+                homeBtn.addEventListener('click', function() {
+                    setActiveTab(homeBtn);
+                    restoreMainPanel();
+                });
+
+                currentToolbar.replaceWith(newToolbar);
+            }
+        }
+
         if (!teamsItem.classList.contains('selectedActionPanelItem') && !tab) {
             switchActiveItem(teamsItem, subjectsItem);
             clearContentArea();
@@ -29,27 +62,35 @@ document.addEventListener('DOMContentLoaded', function() {
         if(tab){
 
             var currentToolbar = document.querySelector('.toolbar');
-            var newToolbar = loadAndRestoreElement("toolbar");
             localStorage.removeItem("toolbar");
 
             var tabElements = newToolbar.querySelectorAll('.toolbarItem');
 
-            tabElements.forEach(function(element) {
-                element.addEventListener('click', function() {
+            tabElements.forEach(async function(element) {
+
+                if(element.hasAttribute('data-subject-id')){
+                    var subject = await getSubjectById(element.getAttribute('data-subject-id'));
+                    if(subject.Id == tab.itemId){
+                        setActiveTab(element);
+                    }
+                }
+
+                if(element.hasAttribute('data-team-id')){
+                    var team = await getTeamById(element.getAttribute('data-team-id'));
+                    if(team.Id == tab.itemId){
+                        setActiveTab(element);
+                    }
+                }
+
+                element.addEventListener('click', async function() {
                     if(element.hasAttribute('data-subject-id')){
-                        var subject = getSubjectById(element.getAttribute('data-subject-id'));
+                        var subject = await getSubjectById(element.getAttribute('data-subject-id'));
                         configureTab(element, "subject", subject);
-                        if(subject.Id == tab.itemId){
-                            setActiveTab(element);
-                        }
                     }
 
                     if(element.hasAttribute('data-team-id')){
-                        var team = getTeamById(element.getAttribute('data-team-id'));
+                        var team = await getTeamById(element.getAttribute('data-team-id'));
                         configureTab(element, "team", team);
-                        if(team.Id == tab.itemId){
-                            setActiveTab(element);
-                        }
                     }
                 });
             });
