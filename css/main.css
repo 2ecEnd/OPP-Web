@@ -88,4 +88,6 @@ nav{
     height: 5%;
     margin: 0;
     background-color: rgb(56, 56, 56);
+    border-bottom: 3px solid #4B4B4B;
+    z-index: 10;
 }

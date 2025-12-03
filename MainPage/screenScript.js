@@ -154,7 +154,13 @@ document.addEventListener('DOMContentLoaded', async function() {
         subjects.forEach(subject => {
             const newElement = document.createElement('div');
             newElement.classList.add('contentItem');
-            newElement.textContent = subject.Name;
+            newElement.innerHTML = `
+                <div class="miniature"></div>
+                <div class="subject-info">
+                    <p>Название: ${subject.Name}</p>
+                    <p>Команда: </p>
+                </div>
+            `
             newElement.setAttribute('data-type', 'subject');
             newElement.setAttribute('data-id', subject.Id);
             contentArea.appendChild(newElement);
@@ -175,13 +181,13 @@ document.addEventListener('DOMContentLoaded', async function() {
             activeItem.removeChild(activeArrow);
         }
         
-        if (inactiveItem) {
-            const arrow = document.createElement('img');
-            arrow.className = 'arrow';
-            arrow.src = '../images/arrow.svg';
-            arrow.alt = 'Иконка стрелки';
-            inactiveItem.appendChild(arrow);
-        }
+        // if (inactiveItem) {
+        //     const arrow = document.createElement('img');
+        //     arrow.className = 'arrow';
+        //     arrow.src = '../images/arrow.svg';
+        //     arrow.alt = 'Иконка стрелки';
+        //     inactiveItem.appendChild(arrow);
+        // }
     }
     
     teamsItem.addEventListener('click', function() {
