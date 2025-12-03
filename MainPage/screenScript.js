@@ -23,12 +23,12 @@ document.addEventListener('DOMContentLoaded', async function() {
                 tabElements.forEach(async function(element) {
 
                     if(element.hasAttribute('data-subject-id')){
-                        var subject = await getSubjectById(element.getAttribute('data-subject-id'));
+                        var subject = await user.getSubjectById(element.getAttribute('data-subject-id'));
                         configureTab(element, "subject", subject);
                     }
 
                     if(element.hasAttribute('data-team-id')){
-                        var team = await getTeamById(element.getAttribute('data-team-id'));
+                        var team = await user.getTeamById(element.getAttribute('data-team-id'));
                         configureTab(element, "team", team);
                     }
                 });
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             tabElements.forEach(async function(element) {
 
                 if(element.hasAttribute('data-subject-id')){
-                    var subject = await getSubjectById(element.getAttribute('data-subject-id'));
+                    var subject = await user.getSubjectById(element.getAttribute('data-subject-id'));
                     if(subject.Id == tab.itemId){
                         setActiveTab(element);
                         configureTab(element, "subject", subject);
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                 }
 
                 if(element.hasAttribute('data-team-id')){
-                    var team = await getTeamById(element.getAttribute('data-team-id'));
+                    var team = await user.getTeamById(element.getAttribute('data-team-id'));
                     if(team.Id == tab.itemId){
                         setActiveTab(element);
                         configureTab(element, "team", team);
@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             
 
             if (tab.itemType === 'team') {
-                const team = await getTeamById(tab.itemId);
+                const team = await user.getTeamById(tab.itemId);
                 if (team) {
                     localStorage.removeItem("tab");
                     showTeamContent(team);
@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                     localStorage.removeItem("tab");
                 }
             } else if (tab.itemType === 'subject') {
-                const subject = await getSubjectById(tab.itemId);
+                const subject = await user.getSubjectById(tab.itemId);
                 if (subject) {
                     localStorage.removeItem("tab");
                     showSubjectContent(subject);
@@ -121,57 +121,8 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
     }
 
-    // function openContextMenu(){
-    //     this.moreVertButton.classList.toggle('active');
-    //     this.contextMenu.classList.toggle('active');
-    //     this.statusMenu.classList.remove('active');
-    // }
-
-    // function createOpenContextButton(id){
-    //     const openContextButton = document.createElement('div');
-
-    //     openContextButton.className = 'more-vert-button';
-    //     openContextButton.id = `more-vert-button-${id}`;
-    //     openContextButton.innerHTML = '<img src="images/More vertical.svg" alt="">';
-
-    //     openContextButton.addEventListener('click', () => {
-            
-    //     });
-    // }
-
-    // function createContextMenu(){
-    //     const contextMenu = document.createElement('div');
-    //     const changeButton = document.createElement('button');
-    //     const deleteTaskButton = document.createElement('button');
-    //     const dependsOnButton = document.createElement('button');
-    //     const changeStatusButton = document.createElement('button');
-
-    //     changeTaskButton.innerHTML = 'Изменить';
-    //     deleteTaskButton.innerHTML = 'Удалить';
-    //     dependsOnButton.innerHTML = 'Добавить зависимость';
-    //     changeStatusButton.innerHTML = 'Изменить статус';
-
-    //     contextMenu.classList.add('task-context-menu');
-    //     contextMenu.classList.add('task-menu');
-    //     contextMenu.appendChild(changeTaskButton);
-    //     contextMenu.appendChild(deleteTaskButton);
-    //     contextMenu.appendChild(dependsOnButton);
-    //     contextMenu.appendChild(changeStatusButton);
-
-    //     this.contextMenu = contextMenu;
-    //     this.changeTaskButton = changeTaskButton;
-    //     this.deleteTaskButton = deleteTaskButton;
-    //     this.dependsOnButton = dependsOnButton;
-    //     this.changeStatusButton = changeStatusButton;
-
-    //     this.changeTaskButton.addEventListener('click', this.openEditMenu.bind(this));
-    //     this.deleteTaskButton.addEventListener('click', this.deleteTask.bind(this));
-    //     this.dependsOnButton.addEventListener('click', this.startLinking.bind(this));
-    //     this.changeStatusButton.addEventListener('click', this.openStatusMenu.bind(this));
-    // }
-
     async function setUserTeams() {
-        var teams = await getTeams();
+        var teams = await user.getTeams();
         const contentArea = document.querySelector('.contentArea');
 
         teams.forEach(team => {
@@ -185,7 +136,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 
     async function setUserSubjects() {
-        var subjects = await getSubjects();
+        var subjects = await user.getSubjects();
         const contentArea = document.querySelector('.contentArea');
 
         subjects.forEach(subject => {
@@ -217,14 +168,6 @@ document.addEventListener('DOMContentLoaded', async function() {
         if (activeArrow) {
             activeItem.removeChild(activeArrow);
         }
-        
-        // if (inactiveItem) {
-        //     const arrow = document.createElement('img');
-        //     arrow.className = 'arrow';
-        //     arrow.src = '../images/arrow.svg';
-        //     arrow.alt = 'Иконка стрелки';
-        //     inactiveItem.appendChild(arrow);
-        // }
     }
     
     teamsItem.addEventListener('click', function() {
