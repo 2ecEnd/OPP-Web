@@ -349,6 +349,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             const homeBtn = document.querySelector('.homeBtn');
             setActiveTab(homeBtn);
             restoreMainPanel();
+            saveElementData(document.querySelector('.toolbar'), "toolbar")
         }
         
         tabElement.remove();
