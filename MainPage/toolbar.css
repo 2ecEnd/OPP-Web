@@ -16,6 +16,8 @@
     padding-left: 15px;
     padding-right: 15px;
     border-right: 3px solid #4B4B4B;
+
+    cursor: pointer;
 }
 
 .selectedToolbarItem {
@@ -49,6 +51,8 @@
     justify-content: center;
     align-items: center;
     border-right: 3px solid #4B4B4B;
+
+    cursor: pointer;
 }
 
 .house {
