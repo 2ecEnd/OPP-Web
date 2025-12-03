@@ -293,4 +293,4 @@ class Canvas{
     }
 }
 
-const canvas = new Canvas();
+const canvas = new Canvas(null);
