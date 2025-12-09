@@ -130,7 +130,7 @@ class ApiService{
                         Id: team.id,
                         Name: team.name,
                         Subjects: team.subjects ? team.subjects : [],
-                        MemberDto: membersData
+                        Members: membersData
                     }
                 );
             });
