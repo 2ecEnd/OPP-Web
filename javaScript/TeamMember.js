@@ -3,7 +3,7 @@ class TeamMember{
         this.name = name;
         this.surname = surname;
         this.email = email;
-        this.specialization;
+        this.specialization = specialization;
         this.id = crypto.randomUUID();
     }
 }
