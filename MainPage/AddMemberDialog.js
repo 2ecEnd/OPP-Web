@@ -68,8 +68,7 @@ function showAddMemberDialog(team){
       const email = input3.value.trim();
       const specialization = input4.value.trim();
 
-      team.members.push(new TeamMember(name, surname, email, specialization));
-      apiService.saveUserData(user);
+      user.addMemberInTeam(team, new TeamMember(name, surname, email, specialization));
 
       document.body.removeChild(overlay);
   };

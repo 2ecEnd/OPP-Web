@@ -70,6 +70,16 @@ class User{
         subject.name = name;
         await apiService.saveUserData(this);
     }
+
+    async addMemberInTeam(team, member){
+        for(var i = 0; i < this.teams.length; ++i){
+            if(this.teams[i].id === team.id){
+                this.teams[i].members.push(member);
+                await apiService.saveUserData(user);
+                break;
+            }
+        }
+    }
 }
 
 var user = null;

@@ -101,11 +101,11 @@ document.addEventListener('DOMContentLoaded', async function() {
         
         const participantsList = document.createElement('div');
         participantsList.className = 'participantsList';
-        if (team.participants && team.participants.length > 0) {
-            team.participants.forEach(participant => {
+        if (team.members && team.members.length > 0) {
+            team.members.forEach(member => {
                 const participantElement = document.createElement('div');
                 participantElement.className = 'participantItem';
-                participantElement.textContent = participant;
+                participantElement.textContent = member.name + " " + member.surname;
                 participantsList.appendChild(participantElement);
             });
         } else {

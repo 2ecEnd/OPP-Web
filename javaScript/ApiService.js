@@ -110,6 +110,31 @@ class ApiService{
                 );
             });
 
+            const teamsData = [];
+            user.teams.forEach(team => {
+                const membersData = [];
+                team.members.forEach(member =>{
+                    membersData.push(
+                        {
+                            Id: member.id,
+                            Name: member.name,
+                            Surname: member.surname,
+                            Email: member.email ? member.email : null,
+                            Specialization: member.specialization ? member.specialization : null,
+                            AssignedTasks: []
+                        }
+                    );
+                })
+                teamsData.push(
+                    {
+                        Id: team.id,
+                        Name: team.name,
+                        Subjects: team.subjects ? team.subjects : [],
+                        MemberDto: membersData
+                    }
+                );
+            });
+
             const response = await fetch(`${this.api}/save`, {
                 method: 'PUT',
                 headers: {
@@ -118,7 +143,7 @@ class ApiService{
                 body: JSON.stringify({
                     Id: user.id,
                     Subjects: subjectsData,
-                    Teams: user.teams
+                    Teams: teamsData
                 })
             });
 
