@@ -83,6 +83,16 @@ class User{
             }
         }
     }
+
+    async removeMemberFromTeam(team, member){
+        for(var i = 0; i < this.teams.length; ++i){
+            if(this.teams[i].id === team.id){
+                this.teams[i].members = this.teams[i].members.filter(m => m.id !== member.id);
+                await apiService.saveUserData(user);
+                break;
+            }
+        }
+    }
 }
 
 var user = null;
