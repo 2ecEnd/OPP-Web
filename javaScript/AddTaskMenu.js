@@ -32,7 +32,7 @@ class AddTaskMenu{
         if(this.type === "create") this.createTask(title, description, hasDeadline, deadline, new Date().toLocaleDateString('ru-RU'));
         else if(this.type === "edit") this.changeTask(this.currentTask, title, description, hasDeadline, deadline);
 
-        this.form.reset();
+        this.clearForm();
         this.formSubmitButton.innerHTML = "Добавить";
 
         this.closeSelf();
@@ -81,6 +81,21 @@ class AddTaskMenu{
         deadline.disabled = !this.currentTask.hasDeadline;
 
         this.formSubmitButton.innerHTML = "Изменить";
+    }
+
+    clearForm(){
+        const title = document.getElementById('formTitleInput');
+        const description = document.getElementById('formDescriptionInput');
+        const hasDeadline = document.getElementById('formDeadLineCheck');
+        const deadline = document.getElementById('formDeadLineInput');
+
+        title.value = null;
+        description.value = null;
+        hasDeadline.checked = false;
+        hasDeadline.dispatchEvent(new Event('change'));
+        deadline.value = null;
+        deadline.disabled = true;
+        this.deadlineContainer.classList.add('disabled')
     }
 
     closeSelf(){

@@ -4,9 +4,7 @@ class Subject{
         this.name = name;
         this.id = crypto.randomUUID();
 
-        this.container = null;
-        this.moreVertButton = null;
-        this.changeSubjectButton = null;
+        this.view = new SubjectView();
     }
 
     addTask(task){
@@ -35,20 +33,32 @@ class Subject{
     getTask(id){
         return this.tasks.find(task => task.id === id);
     }
+}
 
+class SubjectView{
+    constructor(model){
+        this.model = model;
+        this.container = null;
+    }
+
+    init(){
+
+    }
 
     createDom(){
         const newElement = document.createElement('div');
+        this.container = newElement;
+
         newElement.classList.add('contentItem');
         newElement.innerHTML = `
             <div class="miniature"></div>
             <div class="subject-info">
-                <p>Название: ${sthis.name}</p>
+                <p>Название: ${this.model.name}</p>
                 <p>Команда: </p>
             </div>
         `
         newElement.setAttribute('data-type', 'subject');
-        newElement.setAttribute('data-id', this.id);
+        newElement.setAttribute('data-id', this.model.id);
     }
 }
 
