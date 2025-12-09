@@ -98,6 +98,7 @@ class SubjectView{
         const newElement = document.createElement('div');
         this.container = newElement;
 
+        newElement.classList.add('contentItem');
         newElement.classList.add('subjectItem');
         newElement.innerHTML = `
             <div class="miniature"></div>

@@ -13,7 +13,10 @@ class User{
         const newData = await apiService.getUserData();
 
         this.id = newData.id;
-        this.subjects = newData.subjects;
+        this.subjects = [];
+        newData.subjects.forEach(subject => {
+            this.subjects.push(new Subject(subject.name, subject.tasks, subject.id, subject.teamId));
+        });
         this.teams = newData.teams;
     }
 
