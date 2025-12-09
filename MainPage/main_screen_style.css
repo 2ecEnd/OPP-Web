@@ -288,7 +288,7 @@ body {
     padding-bottom: 10px;
 }
 
-.participantItem, .subjectItem {
+.participantItem {
     padding: 10px;
     margin: 5px 0;
     background-color: #4B4B4B;

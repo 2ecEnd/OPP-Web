@@ -1,8 +1,12 @@
 class User{
     constructor(id, subjects, teams){
         this.id = id;
-        this.subjects = subjects;
+        this.subjects = [];
         this.teams = teams;
+
+        subjects.forEach(subject => {
+            this.subjects.push(new Subject(subject.name, subject.tasks, subject.id, subject.teamId));
+        });
     }
 
     async updateUserData(){
@@ -59,6 +63,12 @@ class User{
     async getSubjectById(subjectId){
         this.updateUserData();
         return this.subjects.find(subject => subject.id === subjectId);
+    }
+
+    async changeSubject(subjectId, name){
+        const subject = await this.getSubjectById(subjectId);
+        subject.name = name;
+        await apiService.saveUserData(this);
     }
 }
 

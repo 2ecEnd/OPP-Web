@@ -38,7 +38,7 @@ createBtn.addEventListener('click', async function() {
         newElement.setAttribute('data-type', 'team');
         newElement.setAttribute('data-id', teamId);
     } else if (activeItemText === 'Subjects') {
-        const newSubject = new Subject(name, []);
+        const newSubject = new Subject(name, [], null, null);
         const subjectId = await user.addSubject(newSubject);
         newElement.setAttribute('data-type', 'subject');
         newElement.setAttribute('data-id', subjectId);

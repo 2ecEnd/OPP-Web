@@ -5,6 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="main_screen_style.css">
         <link rel="stylesheet" type="text/css" href="toolbar.css">
+        <link rel="stylesheet" type="text/css" href="../css/addSubjectMenu.css">
+        <link rel="stylesheet" type="text/css" href="../css/subject.css">
         <title></title>
     </head>
     <body>
@@ -45,7 +47,25 @@
                 </div>
             </div>
         </div>
+        <div class="add-subject-menu" id="add-subject-menu">
+            <div class="close-menu-button" id="close-subject-menu-button">
+                <img class="img-black" src="images/X.svg" alt="">
+                <img class="img-white" src="images/X_white.svg" alt="">
+            </div>
+            <form class="add-subject-form" id="add-subject-form">
+                <div class="first-form-block">
+                    <label for="formTitleInput">Название </label><br>
+                    <input required placeholder="Value" type="text" name="formTitleInput" id="subjectFormTitleInput">
+                </div>
+                <div class="button-group">
+                    <button type="reset">Очистить</button>
+                    <button type="submit" id="subjectFormSubmitButton">Добавить</button>
+                </div>
+            </form>
+        </div>
+        <div class="overlay" id="overlay"></div>
     </body>
+    <script src="../javaScript/AddSubjectMenu.js"></script>
     <script src="../javaScript/Tab.js"></script>
     <script src="../javaScript/ToolBar.js"></script>
     <script src="../javaScript/ApiService.js"></script>
