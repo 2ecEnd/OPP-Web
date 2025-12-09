@@ -22,7 +22,7 @@ cancelBtn.addEventListener('click', closeModal);
 
 createBtn.addEventListener('click', async function() {
   const name = modalInput.value.trim();
-  if (name) {
+  if (name && user) {
 
     const activeItem = document.querySelector('.selectedActionPanelItem');
     const activeItemText = activeItem.querySelector('.actionPanelItemText').textContent;
@@ -33,12 +33,13 @@ createBtn.addEventListener('click', async function() {
     newElement.textContent = name;
     
     if (activeItemText === 'Teams') {
-        const teamId = await addTeam(name);
+        const newTeam = new Team(name, [], []);
+        const teamId = await user.addTeam(newTeam);
         newElement.setAttribute('data-type', 'team');
         newElement.setAttribute('data-id', teamId);
     } else if (activeItemText === 'Subjects') {
         const newSubject = new Subject(name, []);
-        const subjectId = await addSubject(newSubject);
+        const subjectId = await user.addSubject(newSubject);
         newElement.setAttribute('data-type', 'subject');
         newElement.setAttribute('data-id', subjectId);
     }

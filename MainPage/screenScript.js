@@ -23,12 +23,12 @@ document.addEventListener('DOMContentLoaded', async function() {
                 tabElements.forEach(async function(element) {
 
                     if(element.hasAttribute('data-subject-id')){
-                        var subject = await getSubjectById(element.getAttribute('data-subject-id'));
+                        var subject = await user.getSubjectById(element.getAttribute('data-subject-id'));
                         configureTab(element, "subject", subject);
                     }
 
                     if(element.hasAttribute('data-team-id')){
-                        var team = await getTeamById(element.getAttribute('data-team-id'));
+                        var team = await user.getTeamById(element.getAttribute('data-team-id'));
                         configureTab(element, "team", team);
                     }
                 });
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             tabElements.forEach(async function(element) {
 
                 if(element.hasAttribute('data-subject-id')){
-                    var subject = await getSubjectById(element.getAttribute('data-subject-id'));
+                    var subject = await user.getSubjectById(element.getAttribute('data-subject-id'));
                     if(subject.Id == tab.itemId){
                         setActiveTab(element);
                         configureTab(element, "subject", subject);
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                 }
 
                 if(element.hasAttribute('data-team-id')){
-                    var team = await getTeamById(element.getAttribute('data-team-id'));
+                    var team = await user.getTeamById(element.getAttribute('data-team-id'));
                     if(team.Id == tab.itemId){
                         setActiveTab(element);
                         configureTab(element, "team", team);
@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             
 
             if (tab.itemType === 'team') {
-                const team = await getTeamById(tab.itemId);
+                const team = await user.getTeamById(tab.itemId);
                 if (team) {
                     localStorage.removeItem("tab");
                     showTeamContent(team);
@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                     localStorage.removeItem("tab");
                 }
             } else if (tab.itemType === 'subject') {
-                const subject = await getSubjectById(tab.itemId);
+                const subject = await user.getSubjectById(tab.itemId);
                 if (subject) {
                     localStorage.removeItem("tab");
                     showSubjectContent(subject);
@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 
     async function setUserTeams() {
-        var teams = await getTeams();
+        var teams = await user.getTeams();
         const contentArea = document.querySelector('.contentArea');
 
         teams.forEach(team => {
@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 
     async function setUserSubjects() {
-        var subjects = await getSubjects();
+        var subjects = await user.getSubjects();
         const contentArea = document.querySelector('.contentArea');
 
         subjects.forEach(subject => {
@@ -168,14 +168,6 @@ document.addEventListener('DOMContentLoaded', async function() {
         if (activeArrow) {
             activeItem.removeChild(activeArrow);
         }
-        
-        // if (inactiveItem) {
-        //     const arrow = document.createElement('img');
-        //     arrow.className = 'arrow';
-        //     arrow.src = '../images/arrow.svg';
-        //     arrow.alt = 'Иконка стрелки';
-        //     inactiveItem.appendChild(arrow);
-        // }
     }
     
     teamsItem.addEventListener('click', function() {
