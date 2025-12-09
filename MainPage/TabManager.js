@@ -161,7 +161,17 @@ class TabManager{
             team.members.forEach(member => {
                 const participantElement = document.createElement('div');
                 participantElement.className = 'participantItem';
+                
+                const deleteBtn = document.createElement('img');
+                deleteBtn.src = "../images/x-lg.svg";
+                deleteBtn.className = 'x';
+                deleteBtn.addEventListener('mouseup', async function() {
+                    user.removeMemberFromTeam(team, member);
+                    participantsList.removeChild(participantElement);
+                });
+
                 participantElement.textContent = member.name + " " + member.surname;
+                participantElement.appendChild(deleteBtn);
                 participantsList.appendChild(participantElement);
             });
         } else {
