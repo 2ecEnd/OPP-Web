@@ -3,13 +3,30 @@ function showAddMemberDialog(team){
   const modal = document.createElement('div');
   const buttonContainer = document.createElement('div');
 
-  for (let i = 0; i < 4; i++) {
-      const input = document.createElement('input');
-      input.type = 'text';
-      input.placeholder = `Поле ${i + 1}`;
-      input.classList.add('modal-input');
-      modal.appendChild(input);
-  }
+  const input1 = document.createElement('input');
+  input1.type = 'text';
+  input1.placeholder = `name`;
+  input1.classList.add('modal-input');
+  modal.appendChild(input1);
+
+  const input2 = document.createElement('input');
+  input2.type = 'text';
+  input2.placeholder = `surname`;
+  input2.classList.add('modal-input');
+  modal.appendChild(input2);
+
+  const input3 = document.createElement('input');
+  input3.type = 'text';
+  input3.placeholder = `email`;
+  input3.classList.add('modal-input');
+  modal.appendChild(input3);
+
+  const input4 = document.createElement('input');
+  input4.type = 'text';
+  input4.placeholder = `specialization`;
+  input4.classList.add('modal-input');
+  modal.appendChild(input4);
+
 
   const button1 = document.createElement('button');
   button1.type = 'button';
@@ -45,8 +62,15 @@ function showAddMemberDialog(team){
 
   document.body.appendChild(overlay);
 
-  button1.onclick = () => {
-      console.log('Кнопка 1 нажата');
+  button1.onclick = async () =>  {
+      const name = input1.value.trim();
+      const surname = input2.value.trim();
+      const email = input3.value.trim();
+      const specialization = input4.value.trim();
+
+      team.members.push(new TeamMember(name, surname, email, specialization));
+      apiService.saveUserData(user);
+
       document.body.removeChild(overlay);
   };
 
