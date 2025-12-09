@@ -98,6 +98,18 @@ class ApiService{
 
     async saveUserData(user){
         try{
+            const subjectsData = [];
+            user.subjects.forEach(subject => {
+                subjectsData.push(
+                    {
+                        Id: subject.id,
+                        Name: subject.name,
+                        TeamId: subject.teamId ? subject.teamId : null,
+                        Tasks: subject.tasks
+                    }
+                );
+            });
+
             const response = await fetch(`${this.api}/save`, {
                 method: 'PUT',
                 headers: {
@@ -105,7 +117,7 @@ class ApiService{
                 },
                 body: JSON.stringify({
                     Id: user.id,
-                    Subjects: user.subjects,
+                    Subjects: subjectsData,
                     Teams: user.teams
                 })
             });

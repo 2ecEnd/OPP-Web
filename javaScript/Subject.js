@@ -1,12 +1,11 @@
 class Subject{
-    constructor(name, tasks){
+    constructor(name, tasks, id, teamId){
         this.tasks = tasks;
         this.name = name;
-        this.id = crypto.randomUUID();
+        this.id = id? id : crypto.randomUUID();
+        this.teamId = teamId;
 
-        this.container = null;
-        this.moreVertButton = null;
-        this.changeSubjectButton = null;
+        this.view = new SubjectView(this);
     }
 
     addTask(task){
@@ -32,23 +31,95 @@ class Subject{
         });
     }
 
+    changeSubject(newName){
+        user.changeSubject(this.id, newName);
+        this.name = newName;
+        this.view.updateView();
+    }
+
+    deleteSubject(){
+        this.view.container.remove();
+        user.removeSubject(this.id);
+    }
+
     getTask(id){
         return this.tasks.find(task => task.id === id);
     }
 
+    getView(){
+        return this.view;
+    }
+}
 
-    createDom(){
+class SubjectView{
+    constructor(model){
+        this.model = model;
+        this.container = null;
+
+        this.createView();
+    }
+
+    openContextMenu() {
+        const moreVertButton = this.container.querySelector('.more-vert-button');
+        const contextMenu = this.container.querySelector('.subject-context-menu');
+        
+        moreVertButton.classList.toggle('active');
+        contextMenu.classList.toggle('active');
+    }
+
+    openEditMenu(){
+        addSubjectMenu.showSelf("edit", this.model);
+    }
+
+    createContextMenu() {
+        const contextMenu = document.createElement('div');
+        contextMenu.className = 'subject-context-menu subject-menu';
+        
+        const actions = [
+            { text: 'Изменить', handler: this.openEditMenu.bind(this) },
+            { text: 'Удалить', handler: this.model.deleteSubject.bind(this.model) }
+        ];
+
+        actions.forEach(({ text, handler}) => {
+            const button = document.createElement('button');
+            button.textContent = text;
+            
+            if (handler) {
+                button.addEventListener('click', handler);
+            }
+            
+            contextMenu.appendChild(button);
+        });
+
+        return contextMenu;
+    }
+
+    createView(){
         const newElement = document.createElement('div');
-        newElement.classList.add('contentItem');
+        this.container = newElement;
+
+        newElement.classList.add('subjectItem');
         newElement.innerHTML = `
             <div class="miniature"></div>
             <div class="subject-info">
-                <p>Название: ${sthis.name}</p>
+                <p>Название: ${this.model.name}</p>
                 <p>Команда: </p>
+            </div>
+            <div class="more-vert-button">
+                <img src="../images/More vertical.svg" alt="">
             </div>
         `
         newElement.setAttribute('data-type', 'subject');
-        newElement.setAttribute('data-id', this.id);
+        newElement.setAttribute('data-id', this.model.id);
+
+        newElement.appendChild(this.createContextMenu());
+
+        newElement.querySelector('.more-vert-button').addEventListener('click', 
+            this.openContextMenu.bind(this));
+    }
+
+    updateView(){
+        this.container.querySelector('.subject-info').children[0].textContent = this.model.name;
     }
 }
 

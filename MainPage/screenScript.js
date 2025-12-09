@@ -52,18 +52,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         const contentArea = document.querySelector('.contentArea');
 
         subjects.forEach(subject => {
-            const newElement = document.createElement('div');
-            newElement.classList.add('contentItem');
-            newElement.innerHTML = `
-                <div class="miniature"></div>
-                <div class="subject-info">
-                    <p>Название: ${subject.name}</p>
-                    <p>Команда: </p>
-                </div>
-            `
-            newElement.setAttribute('data-type', subjectType);
-            newElement.setAttribute('data-id', subject.id);
-            contentArea.appendChild(newElement);
+            contentArea.appendChild(subject.view.container);
         });
     }
     
