@@ -11,11 +11,19 @@ document.addEventListener('DOMContentLoaded', async function() {
     const teamType = "team";
     const subjectType = "subject";
 
+    if(!user) await initUser();
+
     const toolbar = new ToolBar();
     toolbar.restoreToolbar();
 
-    setActiveTab(toolbar.homeBtnType, null);
-    setUserSubjects();
+    if(toolbar.getActiveTab() === null){
+        setActiveTab(toolbar.homeBtnType, null);
+        setUserSubjects();
+    }else{
+        var currentTab = toolbar.getActiveTab();
+        setActiveTab(currentTab.type, currentTab.id);
+        showTabContent(currentTab.type, currentTab.id);
+    }
     
     function clearContentArea() {
         const addButton = contentArea.querySelector('.addButton');
