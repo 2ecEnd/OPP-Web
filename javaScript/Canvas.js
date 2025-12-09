@@ -265,7 +265,7 @@ class Canvas{
         newLinkLine.setAttribute('y2', end.y);
 
         this.links.push(new Canvas.LinkData(newLinkLine, this.linkingStartTask, targetTask));
-        this.linkingStartTask.dependsOn.push(targetTask);
+        this.linkingStartTask.addDependency(targetTask);
 
         this.connectionsLayer.appendChild(newLinkLine);
         this.stopLinking();

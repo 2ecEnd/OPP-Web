@@ -5,45 +5,61 @@ const Status = Object.freeze({
 });
 
 class Task{
-    constructor(title, description, hasDeadline, deadline, currentDate){
+    constructor(title, description, hasDeadline, deadline, currentDate) {
         this.title = title;
         this.description = description;
         this.hasDeadline = hasDeadline;
         this.deadline = hasDeadline ? deadline : "отсутствует";
         this.currentDate = currentDate;
         this.dependsOn = [];
+        this.assignedTasks = [];
         this.id = crypto.randomUUID();
         this.status = Status.NOT_ACCEPTED;
 
-        this.moreVertButton = null;
-        this.changeTaskButton = null;
-        this.deleteTaskButton = null;
-        this.dependsOnButton = null;
-        this.changeStatusButton = null;
-        this.contextMenu = null;
-        this.statusMenu = null;
-
         this.container = null;
-        this.titleElement = null;
-        this.descriptionElement = null;
-        this.createTimeElement = null;
-        this.deadlineElement = null;
-        this.statusIndicator = null;
     }
 
-    openContextMenu(){
-        this.moreVertButton.classList.toggle('active');
-        this.contextMenu.classList.toggle('active');
-        this.statusMenu.classList.remove('active');
+    openContextMenu() {
+        const moreVertButton = this.container.querySelector('.more-vert-button');
+        const contextMenu = this.container.querySelector('.task-context-menu');
+        const statusMenu = this.container.querySelector('.task-status-menu');
+        const responsibleMenu = this.container.querySelector('.task-responsible-menu');
+        
+        moreVertButton.classList.toggle('active');
+        contextMenu.classList.toggle('active');
+        statusMenu.classList.remove('active');
+        responsibleMenu.classList.remove('active');
     }
 
-    openStatusMenu(){
-        this.statusMenu.classList.toggle('active');
+    openStatusMenu() {
+        this.closeAllMenus()
+        this.openContextMenu()
+        const statusMenu = this.container.querySelector('.task-status-menu');
+        statusMenu.classList.toggle('active');
+    }
+
+    openResponsibleMenu(){
+        this.closeAllMenus()
+        this.openContextMenu()
+        const responsibleMenu = this.container.querySelector('.task-responsible-menu');
+        responsibleMenu.classList.toggle('active');
+    }
+
+    closeAllMenus() {
+        const statusMenu = this.container?.querySelector('.task-status-menu');
+        const contextMenu = this.container?.querySelector('.task-context-menu');
+        const responsibleMenu = this.container?.querySelector('.task-responsible-menu');
+        
+        statusMenu?.classList.remove('active');
+        contextMenu?.classList.remove('active');
+        responsibleMenu?.classList.remove('active');
+        
+        const moreVertButton = this.container?.querySelector('.more-vert-button');
+        moreVertButton?.classList.remove('active');
     }
 
     openEditMenu(){
         addTaskMenu.showSelf("edit", this);
-        console.log(this);
     }
 
     startLinking() {
@@ -51,77 +67,105 @@ class Task{
         canvas.startLinking(this);
     }
 
-    createOpenContextButton(){
-        const openContextButton = document.createElement('div');
-
-        openContextButton.className = 'more-vert-button';
-        openContextButton.id = `more-vert-button-${this.id}`;
-        openContextButton.innerHTML = '<img src="images/More vertical.svg" alt="">';
-
-        this.moreVertButton = openContextButton;
-        this.moreVertButton.addEventListener('click', this.openContextMenu.bind(this));
-    }
-
-    createContextMenu(){
+    createContextMenu() {
         const contextMenu = document.createElement('div');
-        const changeTaskButton = document.createElement('button');
-        const deleteTaskButton = document.createElement('button');
-        const dependsOnButton = document.createElement('button');
-        const changeStatusButton = document.createElement('button');
+        contextMenu.className = 'task-context-menu task-menu';
+        
+        const actions = [
+            { text: 'Изменить', handler: this.openEditMenu.bind(this) },
+            { text: 'Удалить', handler: this.deleteTask.bind(this) },
+            { text: 'Добавить зависимость', handler: this.startLinking.bind(this) },
+            { text: 'Изменить статус', handler: this.openStatusMenu.bind(this) },
+            { text: 'Добавить ответственного', handler: this.openResponsibleMenu.bind(this) }
+        ];
 
-        changeTaskButton.innerHTML = 'Изменить';
-        deleteTaskButton.innerHTML = 'Удалить';
-        dependsOnButton.innerHTML = 'Добавить зависимость';
-        changeStatusButton.innerHTML = 'Изменить статус';
+        actions.forEach(({ text, handler}) => {
+            const button = document.createElement('button');
+            button.textContent = text;
+            
+            if (handler) {
+                button.addEventListener('click', handler);
+            }
+            
+            contextMenu.appendChild(button);
+        });
 
-        contextMenu.classList.add('task-context-menu');
-        contextMenu.classList.add('task-menu');
-        contextMenu.appendChild(changeTaskButton);
-        contextMenu.appendChild(deleteTaskButton);
-        contextMenu.appendChild(dependsOnButton);
-        contextMenu.appendChild(changeStatusButton);
-
-        this.contextMenu = contextMenu;
-        this.changeTaskButton = changeTaskButton;
-        this.deleteTaskButton = deleteTaskButton;
-        this.dependsOnButton = dependsOnButton;
-        this.changeStatusButton = changeStatusButton;
-
-        this.changeTaskButton.addEventListener('click', this.openEditMenu.bind(this));
-        this.deleteTaskButton.addEventListener('click', this.deleteTask.bind(this));
-        this.dependsOnButton.addEventListener('click', this.startLinking.bind(this));
-        this.changeStatusButton.addEventListener('click', this.openStatusMenu.bind(this));
+        return contextMenu;
     }
 
-    createStatusMenu(){
+    createStatusMenu() {
+        const statuses = [
+            { text: 'Выполнено', value: Status.DONE },
+            { text: 'В процессе', value: Status.IN_PROGRESS },
+            { text: 'Не принято', value: Status.NOT_ACCEPTED }
+        ];
+
         const statusMenu = document.createElement('div');
-        const statusDoneButton = document.createElement('button');
-        const statusInProgressButton = document.createElement('button');
-        const statusNotAcceptedButton = document.createElement('button');
+        statusMenu.classList.add('task-status-menu', 'task-menu');
 
-        statusDoneButton.innerHTML = 'Выполнено';
-        statusInProgressButton.innerHTML = 'В процессе';
-        statusNotAcceptedButton.innerHTML = 'Не принято';
+        statuses.forEach(({ text, value }) => {
+            const button = document.createElement('button');
+            button.textContent = text;
+            button.addEventListener('click', () => this.setStatus(value));
+            statusMenu.appendChild(button);
+        });
 
-        statusMenu.classList.add('task-status-menu');
-        statusMenu.classList.add('task-menu');
-        statusMenu.appendChild(statusDoneButton);
-        statusMenu.appendChild(statusInProgressButton);
-        statusMenu.appendChild(statusNotAcceptedButton);
+        return statusMenu;
+    }
 
-        this.statusMenu = statusMenu;
-        statusDoneButton.addEventListener('click', () => { this.setStatus(Status.DONE) });
-        statusInProgressButton.addEventListener('click', () => { this.setStatus(Status.IN_PROGRESS) });
-        statusNotAcceptedButton.addEventListener('click', () => { this.setStatus(Status.NOT_ACCEPTED) });
+    createResponsibleMenu(){
+        const responsibleMenu = document.createElement('div');
+        responsibleMenu.className = 'task-responsible-menu task-menu';
+
+        const availablePeople = [
+            { id: 1, name: 'Иван Иванов' },
+            { id: 2, name: 'Мария Петрова' },
+            { id: 3, name: 'Алексей Сидоров' },
+            { id: 4, name: 'Елена Кузнецова' },
+            { id: 5, name: 'Дмитрий Волков' }
+        ];
+
+        const select = document.createElement('select');
+        select.className = 'responsible-select';
+        select.name = 'select';
+
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = 'Выберите ответственного';
+        defaultOption.selected = true;
+        select.appendChild(defaultOption);
+
+        availablePeople.forEach(person => {
+            const option = document.createElement('option');
+            option.value = person.id;
+            option.textContent = person.name;
+            option.dataset.personName = person.name;
+            select.appendChild(option);
+        });
+
+        select.addEventListener('mousedown', (e) => {
+            e.stopPropagation();
+        });
+
+        select.addEventListener('change', (e) => {
+            if (select.value) {
+                const selectedOption = select.options[select.selectedIndex];
+                const selectedPerson = availablePeople.find(p => p.id == select.value);
+                
+                const assignedPersonBlock = this.container.querySelector('.assigned-person p');
+                if (assignedPersonBlock) {
+                    assignedPersonBlock.textContent = `Ответственный: ${selectedPerson.name}`;
+                }
+            }
+        });
+
+        responsibleMenu.appendChild(select);
+        return responsibleMenu;
     }
 
     createDom(){
         const newTask = document.createElement('div');
         this.container = newTask;
-
-        this.createOpenContextButton();
-        this.createContextMenu();
-        this.createStatusMenu()
 
         newTask.className = 'draggable task';
         newTask.id = this.id;
@@ -142,17 +186,17 @@ class Task{
             <div class="dead-line task-block">
                 <p>Дедлайн: ${this.deadline.replace('T', ' ')}</p>
             </div>
+            <div class="more-vert-button">
+                <img src="images/More vertical.svg" alt="">
+            </div>
         `;
 
-        newTask.appendChild(this.moreVertButton);
-        newTask.appendChild(this.contextMenu);
-        newTask.appendChild(this.statusMenu);
+        newTask.appendChild(this.createContextMenu());
+        newTask.appendChild(this.createStatusMenu());
+        newTask.appendChild(this.createResponsibleMenu());
 
-        this.titleElement = newTask.querySelector('.title p');
-        this.descriptionElement = newTask.querySelector('.description p');
-        this.createTimeElement = newTask.querySelector('.create-time p');
-        this.deadlineElement = newTask.querySelector('.dead-line p');
-        this.statusIndicator = newTask.querySelector('.status-indicator');
+        newTask.querySelector('.more-vert-button').addEventListener('click', 
+            this.openContextMenu.bind(this));
 
         this.container.style.transform = `
             translate(${2500}px, ${2500}px)
@@ -167,20 +211,21 @@ class Task{
 
     setStatus(status){
         this.status = status;
+        const indicator = this.container.querySelector('.status-indicator');
 
         switch (this.status){
             case Status.DONE:
-                this.statusIndicator.style.backgroundColor = 'green';
+                indicator.style.backgroundColor = 'green';
                 break;
             case Status.IN_PROGRESS:
-                this.statusIndicator.style.backgroundColor = 'orange';
+                indicator.style.backgroundColor = 'orange';
                 break;
             case Status.NOT_ACCEPTED:
-                this.statusIndicator.style.backgroundColor = 'firebrick';
+                indicator.style.backgroundColor = 'firebrick';
                 break;
         }
 
-        this.statusMenu.classList.remove('active');
+        this.closeAllMenus();
     }
 
     changeTask(title, description, hasDeadline, deadline){
@@ -188,16 +233,29 @@ class Task{
         this.description = description;
         this.deadline = deadline;
 
-        this.titleElement.textContent = title;
-        this.descriptionElement.textContent = description;
-        this.deadlineElement.textContent = `Дедлайн: ${deadline.replace('T', ' ')}`;
+        this.container.querySelector('.title p').textContent = title;
+        this.container.querySelector('.description p').textContent = description;
+        this.container.querySelector('.dead-line p').textContent = 
+            `Дедлайн: ${deadline.replace('T', ' ')}`;
 
-        this.openContextMenu();
-        this.statusMenu.classList.remove('active');
+        this.closeAllMenus();
+    }
+
+    addDependency(task){
+        this.dependsOn.push(task);
+    }
+
+    addAssignedTask(assignedTask){
+        this.assignedTasks.push(assignedTask);
     }
 
     deleteTask(){
         this.container.remove();
         subjectTest.deleteTask(this.id);
     }
+}
+
+
+class TaskView{
+
 }

@@ -90,7 +90,7 @@
     
     .task-menu.task-context-menu{
         width: 40%;
-        height: 70%;
+        height: 90%;
 
         top: 15%;
         right: 2%;
@@ -108,11 +108,29 @@
         display: none;
     }
 
+    .task-menu.task-responsible-menu{
+        width: 70%;
+        height: 43%;
+
+        top: 42%;
+        right: 51.5%;
+
+        display: none;
+
+        .responsible-select{
+            z-index: 100;
+        }
+    }
+
     .task-menu.task-context-menu.active{
         display: flex;
     }
 
     .task-menu.task-status-menu.active{
+        display: flex;
+    }
+
+    .task-menu.task-responsible-menu.active{
         display: flex;
     }
 
