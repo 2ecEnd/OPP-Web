@@ -1,39 +1,71 @@
 const nav = document.getElementById('nav');
+const toolbar = new ToolBar();
+updateToolbar();
 
-var toolbar = loadAndRestoreElement("toolbar");
-toolbar.style.height = '100%';
+function createTab(type, id, name) {
+        const newTab = document.createElement('div');
+        newTab.setAttribute('type', type);
+        newTab.setAttribute('id', id);
 
-var tabElements = toolbar.querySelectorAll('.toolbarItem');
+        if(type == toolbar.homeBtnType){
+            newTab.classList.add('toolbarItem');
+            newTab.innerHTML = `
+                <img class="house" src="../images/house.svg" alt="Иконка дома">
+            `;
+            newTab.addEventListener('click', function(e) {
+                toolbar.setHomeTab();
+                window.location.href = './MainPage/screen.html';
+            });
+            return newTab;
+        }
+        
+        newTab.className = 'toolbarItem';
+        newTab.innerHTML = `
+            <img class="terminal" src="../images/terminal.svg" alt="Иконка терминала">
+            <div class="toolbarItemText">${name}</div>
+            <img class="x" src="../images/x-lg.svg" alt="Иконка крестика">
+        `;
 
-tabElements.forEach(function(element) {
-    element.addEventListener('click', function() {
-        if(element.hasAttribute('data-subject-id')){
-            localStorage.setItem(
-                "tab",
-                JSON.stringify({
-                    itemId: element.getAttribute('data-subject-id'),
-                    itemType: "subject"
-                })
-            );
+        const closeBtn = newTab.querySelector('.x');
+        closeBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            var currentTab = toolbar.getActiveTab();
+            if(currentTab.id === id && currentTab.type === type){
+                closeTab(type, id);
+                window.location.href = './MainPage/screen.html';
+            }else{
+                closeTab(type, id);
+            }
+        });
+
+        newTab.addEventListener('click', async function() {
+            toolbar.changeTabByTypeAndId(type, id);
             window.location.href = './MainPage/screen.html';
+        });
+
+        return newTab;
+}
+
+function closeTab(type, id) {
+    toolbar.deleteTabByTypeAndId(type, id);
+    updateToolbar();
+}
+
+function updateToolbar(){
+        const tabs = toolbar.getAllTabs();
+        const currentTab = toolbar.activeTab;
+        const newToolbar = document.createElement('div');
+        newToolbar.classList.add('toolbar');
+        newToolbar.style.height = '100%';
+
+        for(var i = 0; i < tabs.length; ++i){
+            var tab = tabs[i];
+            var newTab = createTab(tab.type, tab.id, tab.name);
+
+            if(i == currentTab) newTab.classList.add('selectedToolbarItem');
+
+            newToolbar.appendChild(newTab)
         }
 
-        if(element.hasAttribute('data-team-id')){
-            localStorage.setItem(
-                "tab",
-                JSON.stringify({
-                    itemId: element.getAttribute('data-team-id'),
-                    itemType: "team"
-                })
-            );
-            window.location.href = './MainPage/screen.html';
-        }
-    });
-});
-
-var homeBtn = toolbar.querySelector('.homeBtn');
-homeBtn.addEventListener('click', function() {
-    window.location.href = './MainPage/screen.html';
-});
-
-nav.appendChild(toolbar);
+        nav.replaceChildren(newToolbar);
+}
