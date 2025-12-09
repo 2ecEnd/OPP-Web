@@ -2,8 +2,11 @@ class ToolBar{
     constructor(){
         this.tabs = [];
         this.activeTab = -1;
-        this.key = toolbarTabs;
+        this.key = 'toolbarTabs';
         this.homeBtnType = "HomeBtn";
+
+        this.restoreToolbar();
+        if(!this.tabs.length) this.initEmptyToolbar();
     }
 
     saveToolbar(storageKey = null) {
@@ -32,10 +35,11 @@ class ToolBar{
         try {
             const data = JSON.parse(savedData);
 
-            this.tabs = data.tabs;
-            this.activeTab = data.activeTab;
+            this.tabs = data.tabs.map(tabData => 
+                tabData instanceof Tab ? tabData : new Tab(tabData.type, tabData.id, tabData.name)
+            );
             
-            return restoredElement;
+            this.activeTab = data.activeTab || -1;
         } catch (error) {
             console.error('Error parsing data:', error);
             return null;
@@ -46,39 +50,64 @@ class ToolBar{
         localStorage.removeItem(storageKey == null ? this.key : storageKey);
     }
 
-    initToolbar(){
-        this.addTab(this.homeBtnType, null);
+    initEmptyToolbar(){
+        this.addTab(this.homeBtnType, null, null);
         this.setHomeTab()
     }
 
     setHomeTab(){
-        this.activeTab = 0;
         this.changeTab()
     }
 
     getActiveTab(){
         if(this.activeTab >= this.tabs.length || this.activeTab < 0) return null;
-        return this.tabs[this.activeTab];
+        var currentTab = this.tabs[this.activeTab];
+        return currentTab.copy();
+    }
+
+    getAllTabs(){
+        var tabsCopy = [];
+        this.tabs.forEach(tab => {
+            tabsCopy.push(tab.copy());
+        });
+        return tabsCopy;
     }
 
     changeTab(tabNumber = 0){
-        if(tabNumber = this.activeTab) return null;
+        if(tabNumber == this.activeTab) return null;
         if(tabNumber >= this.tabs.length || tabNumber < 0) return null;
 
         this.activeTab = tabNumber;
         this.saveToolbar();
-        return this.tabs[tabNumber];
+        return this.tabs[tabNumber].copy();
     }
 
-    deleteTab(tabNumber){
-        if(tabNumber >= this.tabs.length || tabNumber < 0) return null;
+    changeTabByTypeAndId(type, id){
+        const index = this.tabs.findIndex(tab => tab.type === type && tab.id === id);
+        return this.changeTab(index);
+    }
 
-        this.tabs.slice(tabNumber, 1);
-        this.setHomeTab();
+    deleteTabByNumber(tabNumber){
+        if(tabNumber >= this.tabs.length || tabNumber < 1) return null;
+
+        this.tabs.splice(tabNumber, 1);
+        if(tabNumber == this.activeTab) this.setHomeTab();
         this.saveToolbar();
     }
 
-    addTab(type, id){
-        this.tabs.push(new Tab(type, id));
+    deleteTabByTypeAndId(type, id){
+        const index = this.tabs.findIndex(tab => tab.type === type && tab.id === id);
+        this.deleteTabByNumber(index);
+    }
+
+    addTab(type, id, name){
+        if (this.tabExist(type, id)) return;
+        this.tabs.push(new Tab(type, id, name));
+        this.activeTab = this.tabs.length - 1;
+        this.saveToolbar();
+    }
+
+    tabExist(type, id){
+        return this.tabs.some(tab => tab.type === type && tab.id === id);
     }
 }

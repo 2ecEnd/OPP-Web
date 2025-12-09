@@ -8,9 +8,9 @@ class User{
     async updateUserData(){
         const newData = await apiService.getUserData();
 
-        this.id = newData.Id;
-        this.subjects = newData.Subjects;
-        this.teams = newData.Teams;
+        this.id = newData.id;
+        this.subjects = newData.subjects;
+        this.teams = newData.teams;
     }
 
     async addTeam(team) {
@@ -32,33 +32,33 @@ class User{
     }
 
     async removeTeam(teamId) {
-        this.teams = this.teams.filter(team => team.Id !== teamId);
+        this.teams = this.teams.filter(team => team.id !== teamId);
         await apiService.saveUserData(this);
     }
 
     async removeSubject(subjectId) {
-        this.subjects = this.subjects.filter(subject => subject.Id !== subjectId);
+        this.subjects = this.subjects.filter(subject => subject.id !== subjectId);
         await apiService.saveUserData(this);
     }
 
     async getTeams() {
-        updateUserData();
+        this.updateUserData();
         return this.teams;
     }
 
     async getSubjects() {
-        updateUserData();
+        this.updateUserData();
         return this.subjects;
     }
 
     async getTeamById(teamId){
-        updateUserData();
-        return this.teams.find(team => team.Id === teamId);
+        this.updateUserData();
+        return this.teams.find(team => team.id === teamId);
     }
 
     async getSubjectById(subjectId){
-        updateUserData();
-        return this.subjects.find(subject => subject.Id === subjectId);
+        this.updateUserData();
+        return this.subjects.find(subject => subject.id === subjectId);
     }
 }
 
@@ -68,7 +68,7 @@ async function initUser(){
     const userData = await apiService.getUserData();
     if(userData == null) return;
 
-    user = new User(userData.Id, userData.Subjects, userData.Teams);
+    user = new User(userData.id, userData.subjects, userData.teams);
 }
 
 initUser();
