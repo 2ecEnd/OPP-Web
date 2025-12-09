@@ -104,6 +104,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         teamContent.style.display = 'flex';
         teamContent.style.gap = '20px';
         teamContent.style.padding = '20px';
+        teamContent.style.height = 'auto';
 
         const participantsColumn = document.createElement('div');
         participantsColumn.className = 'teamColumn';
@@ -122,6 +123,34 @@ document.addEventListener('DOMContentLoaded', async function() {
             participantsList.textContent = 'Нет участников';
         }
         participantsColumn.appendChild(participantsList);
+
+
+        var btnContainer = document.createElement('div');
+        btnContainer.style.display = 'flex';
+        btnContainer.style.justifyContent = 'flex-end';
+
+        var addMemberBtn = document.createElement('button');
+        addMemberBtn.className = 'addButton';
+        addMemberBtn.style.position = 'relative';
+        addMemberBtn.style.bottom = '0px';
+        addMemberBtn.style.right = '0px';
+        addMemberBtn.textContent = '+';
+        addMemberBtn.style.backgroundColor = 'rgb(44, 44, 44)';
+        addMemberBtn.style.boxShadow = '0 2px 10px rgba(200, 200, 200, 0.3)';
+        addMemberBtn.addEventListener('mouseover', function() {
+            this.style.backgroundColor = '#6b6b8f';
+        });
+
+        addMemberBtn.addEventListener('mouseout', function() {
+            this.style.backgroundColor = 'rgb(44, 44, 44)';
+        });
+
+        addMemberBtn.addEventListener('mouseup', function() {
+            showAddMemberDialog(team);
+        });
+
+        btnContainer.appendChild(addMemberBtn);
+        participantsColumn.appendChild(btnContainer);
 
         const subjectsColumn = document.createElement('div');
         subjectsColumn.className = 'teamColumn';
