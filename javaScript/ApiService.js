@@ -80,9 +80,9 @@ class ApiService{
             });
 
             if (response.status === 200) {
-                const userData = await response.json();
-                if (!userData.Teams) userData.Teams = [];
-                if (!userData.Subjects) userData.Subjects = [];
+                const userData = this.toCamelCase(await response.json());
+                if (!userData.teams) userData.teams = [];
+                if (!userData.subjects) userData.subjects = [];
                 return userData;
             } 
             else {
@@ -121,6 +121,26 @@ class ApiService{
             console.error('Ошибка:', error);
             alert('Сетевая ошибка');
         }
+    }
+
+    toCamelCase(obj) {
+        const convert = (item) => {
+            if (Array.isArray(item)) {
+                return item.map(convert);
+            } else if (item !== null && typeof item === 'object') {
+                const newObj = {};
+                for (const key in item) {
+                    if (item.hasOwnProperty(key)) {
+                        const newKey = key.charAt(0).toLowerCase() + key.slice(1);
+                        newObj[newKey] = convert(item[key]);
+                    }
+                }
+                return newObj;
+            }
+            return item;
+        };
+        
+        return convert(obj);
     }
 }
 
