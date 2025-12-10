@@ -48,6 +48,13 @@ class Canvas{
         this.initObjectsEvents();
         this.updateTransform();
         this.initLinkingEvents();
+        this.initExistingTasks();
+    }
+
+    initExistingTasks(){
+        this.subject.tasks.forEach(task => {
+            this.canvas.appendChild(task.createDom());
+        });
     }
 
     initLinkingEvents(){
@@ -130,7 +137,7 @@ class Canvas{
             this.draggedObject = target;
             this.editingLinks = [];
 
-            this.draggedTask = subjectTest.getTask(this.draggedObject.id);
+            this.draggedTask = this.subject.getTask(this.draggedObject.id);
             if (!this.draggedTask) return;
             
             this.links.forEach(link => {
@@ -246,29 +253,33 @@ class Canvas{
     linkTasks(targetTaskDom){
         if (!this.linkingMode) return;
 
-        const targetTask = subjectTest.getTask(targetTaskDom.id)
+        const targetTask = this.subject.getTask(targetTaskDom.id)
 
         if(this.linkingStartTask === targetTask){
             this.stopLinking();
             return;
         }
 
+        this.linkingStartTask.addDependency(targetTask);
+
+        this.connectionsLayer.appendChild(this.createLine(this.linkingStartTask, targetTask));
+        this.stopLinking();
+    }
+
+    createLine(startTask, endTask){
         const newLinkLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
         newLinkLine.classList.add('link-line');
 
-        const start = this.getCenter(this.linkingStartTask.container);
-        const end = this.getCenter(targetTask.container);
+        const start = this.getCenter(startTask.container);
+        const end = this.getCenter(endTask.container);
 
         newLinkLine.setAttribute('x1', start.x);
         newLinkLine.setAttribute('y1', start.y);
         newLinkLine.setAttribute('x2', end.x);
         newLinkLine.setAttribute('y2', end.y);
 
-        this.links.push(new Canvas.LinkData(newLinkLine, this.linkingStartTask, targetTask));
-        this.linkingStartTask.addDependency(targetTask);
-
-        this.connectionsLayer.appendChild(newLinkLine);
-        this.stopLinking();
+        this.links.push(new Canvas.LinkData(newLinkLine, startTask, endTask));
+        return newLinkLine;
     }
 
     stopLinking(){
@@ -293,4 +304,4 @@ class Canvas{
     }
 }
 
-const canvas = new Canvas(null);
+var canvas = null;

@@ -28,23 +28,23 @@ createBtn.addEventListener('click', async function() {
     const activeItemText = activeItem.querySelector('.actionPanelItemText').textContent;
     
     const contentArea = document.querySelector('.contentArea');
-    const newElement = document.createElement('div');
-    newElement.classList.add('contentItem');
-    newElement.textContent = name;
     
-    if (activeItemText === 'Teams') {
-        const newTeam = new Team(name, [], []);
-        const teamId = await user.addTeam(newTeam);
-        newElement.setAttribute('data-type', 'team');
-        newElement.setAttribute('data-id', teamId);
-    } else if (activeItemText === 'Subjects') {
-        const newSubject = new Subject(name, [], null, null);
-        const subjectId = await user.addSubject(newSubject);
-        newElement.setAttribute('data-type', 'subject');
-        newElement.setAttribute('data-id', subjectId);
-    }
+    if (activeItemText === 'Teams'){
+      const newElement = document.createElement('div');
+      newElement.classList.add('contentItem');
+      newElement.textContent = name;
 
-    contentArea.appendChild(newElement);
+      const newTeam = new Team(name, [], []);
+      const teamId = await user.addTeam(newTeam);
+      newElement.setAttribute('data-type', 'team');
+      newElement.setAttribute('data-id', teamId);
+
+      contentArea.appendChild(newElement);
+    }
+    else if (activeItemText === 'Subjects'){
+      const newSubject = new Subject(name, [], null, null);
+      contentArea.appendChild(newSubject.view.container);
+    }
 
     closeModal();
   }

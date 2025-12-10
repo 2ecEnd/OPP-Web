@@ -100,12 +100,32 @@ class ApiService{
         try{
             const subjectsData = [];
             user.subjects.forEach(subject => {
+                const tasksData = [];
+                subject.tasks.forEach(task => {
+                    tasksData.push(
+                        {
+                            Id: task.id,
+                            Title: task.title,
+                            Description: task.description,
+                            CreateTime: task.currentDate,
+                            DeadLine: task.deadline == "отсутствует" ? null : task.deadline,
+                            LeadTime: null,
+                            Status: task.status,
+                            PosX: task.x,
+                            PosY: task.y,
+                            SuperTaskId: null,
+                            SubTasks: task.dependsOn.map(t => t.id),
+                            AssignedTasks: task.dependsOn.map(t => t.teamMember.id)
+                        }
+                    )
+                });
+
                 subjectsData.push(
                     {
                         Id: subject.id,
                         Name: subject.name,
                         TeamId: subject.teamId ? subject.teamId : null,
-                        Tasks: subject.tasks
+                        Tasks: tasksData
                     }
                 );
             });

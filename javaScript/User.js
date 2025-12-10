@@ -9,6 +9,12 @@ class User{
         });
     }
 
+    async saveUser(){
+        await apiService.saveUserData(this);
+
+        console.log(this.subjects);
+    }
+
     async updateUserData(){
         const newData = await apiService.getUserData();
 
@@ -24,7 +30,7 @@ class User{
         if (!this.teams) this.teams = [];
 
         this.teams.push(team);
-        await apiService.saveUserData(this);
+        await this.saveUser();
 
         return team.id;
     }
@@ -33,19 +39,19 @@ class User{
         if (!this.subjects) this.subjects = [];
 
         this.subjects.push(subject);
-        await apiService.saveUserData(this);
+        await this.saveUser();
 
         return subject.id;
     }
 
     async removeTeam(teamId) {
         this.teams = this.teams.filter(team => team.id !== teamId);
-        await apiService.saveUserData(this);
+        await this.saveUser();
     }
 
     async removeSubject(subjectId) {
         this.subjects = this.subjects.filter(subject => subject.id !== subjectId);
-        await apiService.saveUserData(this);
+        await this.saveUser();
     }
 
     async getTeams() {
@@ -71,14 +77,14 @@ class User{
     async changeSubject(subjectId, name){
         const subject = await this.getSubjectById(subjectId);
         subject.name = name;
-        await apiService.saveUserData(this);
+        await this.saveUser();
     }
 
     async addMemberInTeam(team, member){
         for(var i = 0; i < this.teams.length; ++i){
             if(this.teams[i].id === team.id){
                 this.teams[i].members.push(member);
-                await apiService.saveUserData(user);
+                await this.saveUser();
                 break;
             }
         }
@@ -88,7 +94,7 @@ class User{
         for(var i = 0; i < this.teams.length; ++i){
             if(this.teams[i].id === team.id){
                 this.teams[i].members = this.teams[i].members.filter(m => m.id !== member.id);
-                await apiService.saveUserData(user);
+                await this.saveUser();
                 break;
             }
         }

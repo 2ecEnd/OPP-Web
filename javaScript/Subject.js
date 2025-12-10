@@ -10,6 +10,8 @@ class Subject{
 
     addTask(task){
         this.tasks.push(task);
+        console.log(this);
+        user.saveUser();
     }
 
     deleteTask(id){
@@ -37,7 +39,9 @@ class Subject{
         this.view.updateView();
     }
 
-    deleteSubject(){
+    deleteSubject(e){
+        e.stopPropagation();
+
         this.view.container.remove();
         user.removeSubject(this.id);
     }
@@ -59,7 +63,9 @@ class SubjectView{
         this.createView();
     }
 
-    openContextMenu() {
+    openContextMenu(e) {
+        e.stopPropagation();
+
         const moreVertButton = this.container.querySelector('.more-vert-button');
         const contextMenu = this.container.querySelector('.subject-context-menu');
         
@@ -67,7 +73,9 @@ class SubjectView{
         contextMenu.classList.toggle('active');
     }
 
-    openEditMenu(){
+    openEditMenu(e){
+        e.stopPropagation();
+
         addSubjectMenu.showSelf("edit", this.model);
     }
 
@@ -124,4 +132,4 @@ class SubjectView{
     }
 }
 
-const subjectTest = new Subject("test", []);
+const subjectTest = new Subject("test", [], null, null);

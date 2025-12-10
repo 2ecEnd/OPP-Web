@@ -16,4 +16,4 @@ class AddTaskButton{
     }
 }
 
-const addTaskButton = new AddTaskButton();
+var addTaskButton = null;

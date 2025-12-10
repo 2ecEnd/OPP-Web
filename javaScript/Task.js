@@ -5,16 +5,18 @@ const Status = Object.freeze({
 });
 
 class Task{
-    constructor(title, description, hasDeadline, deadline, currentDate) {
+    constructor(title, description, hasDeadline, deadline, currentDate, x, y, dependsOn, assignedTasks) {
         this.title = title;
         this.description = description;
         this.hasDeadline = hasDeadline;
         this.deadline = hasDeadline ? deadline : "отсутствует";
         this.currentDate = currentDate;
-        this.dependsOn = [];
-        this.assignedTasks = [];
+        this.dependsOn = dependsOn;
+        this.assignedTasks = assignedTasks;
         this.id = crypto.randomUUID();
         this.status = Status.NOT_ACCEPTED;
+        this.x = x;
+        this.y = y;
 
         this.container = null;
     }
@@ -181,7 +183,10 @@ class Task{
                 <p>Дата добавления: ${this.currentDate}</p>
             </div>
             <div class="assigned-person task-block">
-                <p>Ответственный: name</p>
+                <p>Ответственный: ${this.assignedTasks.length > 0 
+                    ? this.assignedTasks[0].teamMember.surname + this.assignedTasks[0].teamMember.name 
+                    : "нет"}
+                </p>
             </div>
             <div class="dead-line task-block">
                 <p>Дедлайн: ${this.deadline.replace('T', ' ')}</p>
@@ -199,10 +204,10 @@ class Task{
             this.openContextMenu.bind(this));
 
         this.container.style.transform = `
-            translate(${2500}px, ${2500}px)
+            translate(${this.x}px, ${this.y}px)
         `;
-        this.container.dataset.x = 2500;
-        this.container.dataset.y = 2500;
+        this.container.dataset.x = this.x;
+        this.container.dataset.y = this.y;
 
         this.setStatus(Status.NOT_ACCEPTED)
 
@@ -251,7 +256,7 @@ class Task{
 
     deleteTask(){
         this.container.remove();
-        subjectTest.deleteTask(this.id);
+        canvas.subject.deleteTask(this.id);
     }
 }
 

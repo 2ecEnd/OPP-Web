@@ -46,10 +46,10 @@ class AddTaskMenu{
     }
 
     createTask(title, description, hasDeadline, deadline, currentDate){
-        const newTask = new Task(title, description, hasDeadline, deadline, currentDate);
+        const newTask = new Task(title, description, hasDeadline, deadline, currentDate, 2500, 2500, [], []);
 
-        subjectTest.addTask(newTask);
-        this.canvas.canvas.appendChild(newTask.createDom());
+        canvas.subject.addTask(newTask);
+        canvas.canvas.appendChild(newTask.createDom());
     }
 
     changeTask(task, title, description, hasDeadline, deadline){
@@ -104,4 +104,4 @@ class AddTaskMenu{
     }
 }
 
-const addTaskMenu = new AddTaskMenu();
+var addTaskMenu = null;
