@@ -29,7 +29,7 @@ class AddTaskMenu{
         const hasDeadline = document.getElementById('formDeadLineCheck').checked;
         const deadline = document.getElementById('formDeadLineInput').value;
 
-        if(this.type === "create") this.createTask(title, description, hasDeadline, deadline, new Date().toLocaleDateString('ru-RU'));
+        if(this.type === "create") this.createTask(title, description, hasDeadline, deadline, new Date());
         else if(this.type === "edit") this.changeTask(this.currentTask, title, description, hasDeadline, deadline);
 
         this.clearForm();

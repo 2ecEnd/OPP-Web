@@ -52,9 +52,9 @@ class ApiService{
                 localStorage.setItem('AccessToken', data.AccessToken);
                 localStorage.setItem('RefreshToken', data.RefreshToken);
 
-                alert(`Успешный вход 
-                        AccessToken: ${data.AccessToken}
-                        RefreshToken: ${data.RefreshToken}`);
+                // alert(`Успешный вход 
+                //         AccessToken: ${data.AccessToken}
+                //         RefreshToken: ${data.RefreshToken}`);
                 window.location.href = '../MainPage/screen.html';
             } 
             else {
@@ -107,7 +107,7 @@ class ApiService{
                             Id: task.id,
                             Title: task.title,
                             Description: task.description,
-                            CreateTime: task.currentDate,
+                            CreateTime: task.currentDate.toISOString(),
                             DeadLine: task.deadline == "отсутствует" ? null : task.deadline,
                             LeadTime: null,
                             Status: task.status,
@@ -119,6 +119,8 @@ class ApiService{
                         }
                     )
                 });
+
+                console.log(tasksData);
 
                 subjectsData.push(
                     {

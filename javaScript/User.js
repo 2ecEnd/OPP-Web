@@ -5,14 +5,19 @@ class User{
         this.teams = teams;
 
         subjects.forEach(subject => {
-            this.subjects.push(new Subject(subject.name, subject.tasks, subject.id, subject.teamId));
+            const tasks = [];
+            subject.tasks.forEach(task => {
+                tasks.push(
+                    new Task(task.id, task.title, task.deadLine == null ? false : true, task.deadLine, task.createTime, task.posX, task.posY, task.subTasks, task.assignedTasks)
+                )
+            });
+
+            this.subjects.push(new Subject(subject.name, tasks, subject.id, subject.teamId));
         });
     }
 
     async saveUser(){
         await apiService.saveUserData(this);
-
-        console.log(this.subjects);
     }
 
     async updateUserData(){

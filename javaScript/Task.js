@@ -180,7 +180,7 @@ class Task{
                 <p>${this.description}</p>
             </div>
             <div class="create-time task-block">
-                <p>Дата добавления: ${this.currentDate}</p>
+                <p>Дата добавления: ${this.currentDate.toLocaleDateString('ru-RU')}</p>
             </div>
             <div class="assigned-person task-block">
                 <p>Ответственный: ${this.assignedTasks.length > 0 
