@@ -84,9 +84,23 @@ function showAssignedTasksDialog(member, assignedTasks){
       const email = input3.value.trim();
       const specialization = input4.value.trim();
 
-      //user.addMemberInTeam(team, new TeamMember(name, surname, email, specialization));
-
-      document.body.removeChild(overlay);
+      if(name != member.name ||
+        surname != member.surname ||
+        email != member.email ||
+        specialization != member.specialization){
+            if(name !== "" && surname !== ""){
+                if(email === "" || isValidEmail(email)){
+                    member.changeData(name, surname, email, specialization);
+                    user.changeMemberInTeam(team, member);
+                    document.body.removeChild(overlay);
+                }else{
+                    alert("Пожалуйста, введите корректный email адрес");
+                }
+            }else{
+                alert("Пожалуйста, заполните имя и фамилию");
+            }
+            
+        }
   };
 
   overlay.onclick = (e) => {

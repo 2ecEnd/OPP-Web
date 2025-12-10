@@ -84,6 +84,21 @@ class User{
         }
     }
 
+    async changeMemberInTeam(team, member){
+        for(var i = 0; i < this.teams.length; ++i){
+            if(this.teams[i].id === team.id){
+                for(var j = 0; j < this.teams[i].members.length; ++j){
+                    if(this.teams[i].members[j].id === member.id){
+                        this.teams[i].members[j] = member;
+                        break;
+                    }
+                }
+                await apiService.saveUserData(user);
+                break;
+            }
+        }
+    }
+
     async removeMemberFromTeam(team, member){
         for(var i = 0; i < this.teams.length; ++i){
             if(this.teams[i].id === team.id){
