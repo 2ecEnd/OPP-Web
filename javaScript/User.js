@@ -98,12 +98,37 @@ class User{
         }
     }
 
+    async changeMemberInTeam(team, member){
+        for(var i = 0; i < this.teams.length; ++i){
+            if(this.teams[i].id === team.id){
+                for(var j = 0; j < this.teams[i].members.length; ++j){
+                    if(this.teams[i].members[j].id === member.id){
+                        this.teams[i].members[j] = member;
+                        break;
+                    }
+                }
+                await apiService.saveUserData(user);
+                break;
+            }
+        }
+    }
+
     async removeMemberFromTeam(team, member){
         for(var i = 0; i < this.teams.length; ++i){
             if(this.teams[i].id === team.id){
                 this.teams[i].members = this.teams[i].members.filter(m => m.id !== member.id);
                 await this.saveUser();
                 break;
+            }
+        }
+    }
+
+    async getTaskById(taskId){
+        this.updateUserData();
+        for(var i = 0; i < this.subjects.length; ++i){
+            for(var j = 0; j < this.subjects[i].tasks.length; j++)
+            if(this.subjects[i].tasks[j].id === taskId){
+                return this.subjects[i].tasks[j];
             }
         }
     }
