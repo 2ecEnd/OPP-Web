@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     //-=-=-=-=-Остальное-=-=-=-=-=-
     function clearContentArea() {
         const addButton = contentArea.querySelector('.addButton');
-        contentArea.innerHTML = '';
+        contentArea.innerHTML = 'x';
         if (addButton) {
             contentArea.appendChild(addButton);
         }
@@ -91,9 +91,24 @@ document.addEventListener('DOMContentLoaded', async function() {
         teams.forEach(team => {
             const newElement = document.createElement('div');
             newElement.classList.add('contentItem');
+            newElement.style.display = 'flex';
+            newElement.style.flexDirection = 'column';
+            newElement.style.justifyContent = 'space-between';
+
+            const delBtn = document.createElement('div');
+            delBtn.textContent = "X";
+            delBtn.style.color = "white";
+            delBtn.style.fontSize = '32px'
+            delBtn.addEventListener('mouseup', async function() {
+                await user.removeTeam(team.id);
+                tabManager.closeTab(teamType, team.id);
+                contentArea.removeChild(newElement);
+            });
+        
             newElement.textContent = team.name;
             newElement.setAttribute('data-type', teamType);
             newElement.setAttribute('data-id', team.id);
+            newElement.appendChild(delBtn);
             contentArea.appendChild(newElement);
         });
     }
