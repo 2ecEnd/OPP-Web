@@ -161,6 +161,25 @@ class TabManager{
             team.members.forEach(member => {
                 const participantElement = document.createElement('div');
                 participantElement.className = 'participantItem';
+
+                const btnContainer = document.createElement('div');
+                btnContainer.style.display = 'flex';
+                btnContainer.style.flexDirection = 'row';
+                btnContainer.style.alignItems = 'center';
+                btnContainer.style.columnGap = '10px';
+
+                const infoBtn = document.createElement('img');
+                infoBtn.src = "../images/eye.svg"
+                infoBtn.className = 'x';
+                infoBtn.addEventListener('mouseup', async function() {
+                    const assignedTasks = [];
+                    member.assignedTasks.forEach(taskId => {
+                        assignedTasks.push(user.getTaskById(taskId).title);
+                    });
+                    showAssignedTasksDialog(member, assignedTasks);
+                });
+
+                btnContainer.appendChild(infoBtn);
                 
                 const deleteBtn = document.createElement('img');
                 deleteBtn.src = "../images/x-lg.svg";
@@ -170,8 +189,10 @@ class TabManager{
                     participantsList.removeChild(participantElement);
                 });
 
+                btnContainer.appendChild(deleteBtn);
+
                 participantElement.textContent = member.name + " " + member.surname;
-                participantElement.appendChild(deleteBtn);
+                participantElement.appendChild(btnContainer);
                 participantsList.appendChild(participantElement);
             });
         } else {
@@ -213,16 +234,22 @@ class TabManager{
         
         const subjectsList = document.createElement('div');
         subjectsList.className = 'subjectsList';
-        if (team.assignedSubjects && team.assignedSubjects.length > 0) {
-            team.assignedSubjects.forEach(subject => {
-                const subjectElement = document.createElement('div');
-                subjectElement.className = 'subjectItem';
-                subjectElement.textContent = subject;
-                subjectsList.appendChild(subjectElement);
-            });
+        if (team.subjects && team.subjects.length > 0) {
+            const addSubject = async () => {
+                for (const subject of team.subjects) {
+                    const subjectElement = document.createElement('div');
+                    subjectElement.className = 'participantItem';
+                    var subj = await user.getSubjectById(subject);
+                    subjectElement.textContent = subj.name;
+                    subjectsList.appendChild(subjectElement);
+                }
+            };
+            
+            addSubject();
         } else {
             subjectsList.textContent = 'Нет назначенных предметов';
         }
+
         subjectsColumn.appendChild(subjectsList);
 
         teamContent.appendChild(participantsColumn);

@@ -63,14 +63,25 @@ function showAddMemberDialog(team){
   document.body.appendChild(overlay);
 
   button1.onclick = async () =>  {
-      const name = input1.value.trim();
-      const surname = input2.value.trim();
-      const email = input3.value.trim();
-      const specialization = input4.value.trim();
+    const name = input1.value.trim();
+    const surname = input2.value.trim();
+    const email = input3.value.trim();
+    const specialization = input4.value.trim();
 
-      user.addMemberInTeam(team, new TeamMember(name, surname, email, specialization));
+    if(name !== "" && surname !== ""){
+        if(email === "" || isValidEmail(email)){
+            user.addMemberInTeam(team, new TeamMember(name, surname, email, specialization));
+            document.body.removeChild(overlay);
+        }else{
+            alert("Пожалуйста, введите корректный email адрес");
+        }
+    }else{
+        alert("Пожалуйста, заполните имя и фамилию");
+    }
 
-      document.body.removeChild(overlay);
+      
+
+    document.body.removeChild(overlay);
   };
 
   button2.onclick = () => {
