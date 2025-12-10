@@ -43,6 +43,7 @@ createBtn.addEventListener('click', async function() {
     }
     else if (activeItemText === 'Subjects'){
       const newSubject = new Subject(name, [], null, null);
+      await user.addSubject(newSubject);
       contentArea.appendChild(newSubject.view.container);
     }
 

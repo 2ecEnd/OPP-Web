@@ -120,8 +120,6 @@ class ApiService{
                     )
                 });
 
-                console.log(tasksData);
-
                 subjectsData.push(
                     {
                         Id: subject.id,
@@ -156,6 +154,8 @@ class ApiService{
                     }
                 );
             });
+
+            console.log(subjectsData)
 
             const response = await fetch(`${this.api}/save`, {
                 method: 'PUT',
