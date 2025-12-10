@@ -93,6 +93,16 @@ class User{
             }
         }
     }
+
+    async getTaskById(taskId){
+        this.updateUserData();
+        for(var i = 0; i < this.subjects.length; ++i){
+            for(var j = 0; j < this.subjects[i].tasks.length; j++)
+            if(this.subjects[i].tasks[j].id === taskId){
+                return this.subjects[i].tasks[j];
+            }
+        }
+    }
 }
 
 var user = null;
