@@ -20,10 +20,11 @@ class AddSubjectMenu{
         event.preventDefault();
 
         const name = this.form.querySelector('#subjectFormTitleInput').value;
+        const teamId = this.form.querySelector('#subjectFormTeamInput').value;
         const submitButton = this.form.querySelector('#subjectFormSubmitButton');
 
         if(this.type === "create") this.createSubject(name);
-        else if(this.type === "edit") this.changeSubject(this.currentSubject, name);
+        else if(this.type === "edit") this.changeSubject(this.currentSubject, name, teamId);
 
         this.form.reset();
         submitButton.innerHTML = "Добавить";
@@ -31,8 +32,8 @@ class AddSubjectMenu{
         this.closeSelf();
     }
 
-    changeSubject(subject, name){
-        subject.changeSubject(name);
+    changeSubject(subject, name, teamId){
+        subject.changeSubject(name, teamId);
     }
 
     fillTheForm(){
@@ -40,12 +41,11 @@ class AddSubjectMenu{
         const submitButton = this.form.querySelector('#subjectFormSubmitButton');
 
         name.value = this.currentSubject.name;
-        console.log(this.currentSubject)
 
         submitButton.innerHTML = "Изменить";
     }
 
-    showSelf(type, currentSubject){
+    async showSelf(type, currentSubject){
         this.container.classList.add('active');
         this.overlay.classList.add('active');
 
@@ -53,6 +53,18 @@ class AddSubjectMenu{
         this.currentSubject = currentSubject;
 
         if(this.type === "edit") this.fillTheForm();
+
+        if(user == null) await initUser();
+        const teams = await user.getTeams();
+        const select = this.form.querySelector('#subjectFormTeamInput');
+        select.innerHTML = `<option value="">Выберите команду</option>`;
+
+        teams.forEach(team => {
+            const option = document.createElement('option');
+            option.value = team.id;
+            option.textContent = team.name;
+            select.appendChild(option);
+        });
     }
 
     closeSelf(){

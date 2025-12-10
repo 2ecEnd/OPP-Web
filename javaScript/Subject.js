@@ -35,9 +35,10 @@ class Subject{
         user.changeSubjectData(this.id, this);
     }
 
-    changeSubject(newName){
-        user.changeSubject(this.id, newName);
+    changeSubject(newName, teamId){
+        user.changeSubject(this.id, newName, teamId);
         this.name = newName;
+        this.teamId = teamId;
         this.view.updateView();
     }
 
@@ -129,9 +130,11 @@ class SubjectView{
             this.openContextMenu.bind(this));
     }
 
-    updateView(){
-        this.container.querySelector('.subject-info').children[0].textContent = this.model.name;
+    async updateView(){
+        this.container.querySelector('.subject-info').children[0].textContent = `Название: ${this.model.name}`;
+        this.container.querySelector('.subject-info').children[1].textContent = `Команда: ${(await user.getTeamById(this.model.teamId)).name}`;
     }
+
 }
 
 const subjectTest = new Subject("test", [], null, null);

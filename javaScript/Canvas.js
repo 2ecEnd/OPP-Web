@@ -165,6 +165,12 @@ class Canvas{
         this.draggedObject.dataset.x = x;
         this.draggedObject.dataset.y = y;
 
+        const currentTask = this.subject.getTask(this.draggedObject.id);
+        currentTask.x = x;
+        currentTask.y = y;
+
+        console.log(this.draggedTask.x);
+
         this.editingLinks.forEach(link => {
             const center = this.getCenter(this.draggedObject);
 
@@ -205,7 +211,9 @@ class Canvas{
         this.updateTransform();
     }
 
-    onMouseUp() {
+    async onMouseUp() {
+        await user.saveUser();
+        
         this.isDraggingCanvas = false;
         this.isDraggingObject = false;
         this.draggedObject = null;

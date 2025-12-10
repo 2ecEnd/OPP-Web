@@ -5,7 +5,7 @@ const Status = Object.freeze({
 });
 
 class Task{
-    constructor(title, description, hasDeadline, deadline, currentDate, x, y, dependsOn, assignedTasks) {
+    constructor(id, title, description, hasDeadline, deadline, currentDate, x, y, dependsOn, assignedTasks) {
         this.title = title;
         this.description = description;
         this.hasDeadline = hasDeadline;
@@ -13,7 +13,7 @@ class Task{
         this.currentDate = currentDate;
         this.dependsOn = dependsOn;
         this.assignedTasks = assignedTasks;
-        this.id = crypto.randomUUID();
+        this.id = id == null? crypto.randomUUID() : id;
         this.status = Status.NOT_ACCEPTED;
         this.x = x;
         this.y = y;
@@ -180,7 +180,7 @@ class Task{
                 <p>${this.description}</p>
             </div>
             <div class="create-time task-block">
-                <p>Дата добавления: ${this.currentDate.toLocaleDateString('ru-RU')}</p>
+                <p>Дата добавления: ${this.currentDate.toISOString()}</p>
             </div>
             <div class="assigned-person task-block">
                 <p>Ответственный: ${this.assignedTasks.length > 0 
