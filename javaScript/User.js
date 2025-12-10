@@ -80,6 +80,14 @@ class User{
         await this.saveUser();
     }
 
+    async changeSubjectData(subjectId, subjectData){
+        const subject = await this.getSubjectById(subjectId);
+        subject.tasks = subjectData.tasks;
+        subject.teamId = subjectData.teamId;
+
+        await this.saveUser();
+    }
+
     async addMemberInTeam(team, member){
         for(var i = 0; i < this.teams.length; ++i){
             if(this.teams[i].id === team.id){

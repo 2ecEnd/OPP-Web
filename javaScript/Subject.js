@@ -10,8 +10,8 @@ class Subject{
 
     addTask(task){
         this.tasks.push(task);
-        console.log(this);
-        user.saveUser();
+        
+        user.changeSubjectData(this.id, this);
     }
 
     deleteTask(id){
@@ -31,6 +31,8 @@ class Subject{
         this.tasks.forEach(task => {
             task.dependsOn.filter(t => t.id !== taskToDelete.id);
         });
+
+        user.changeSubjectData(this.id, this);
     }
 
     changeSubject(newName){
