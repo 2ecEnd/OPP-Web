@@ -74,7 +74,6 @@ class Canvas{
     initObjectsEvents(){
         this.canvas.addEventListener('mousedown', this.onObjectMouseDown.bind(this));
         this.canvas.addEventListener('mousemove', this.onObjectMouseMove.bind(this));
-        document.addEventListener('mouseup', this.onMouseUp.bind(this));
     }
 
     onWheel(e) {
