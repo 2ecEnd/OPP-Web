@@ -1,6 +1,7 @@
 class ApiService{
     constructor(){
         this.api = 'http://localhost:5000/api/Auth';
+        this.saved = true;
     }
 
     async register(email, password){
@@ -98,80 +99,84 @@ class ApiService{
 
     async saveUserData(user){
         try{
-            const subjectsData = [];
-            user.subjects.forEach(subject => {
-                const tasksData = [];
-                // subject.tasks.forEach(task => {
-                //     tasksData.push(
-                //         {
-                //             Id: task.id,
-                //             Title: task.title,
-                //             Description: task.description,
-                //             CreateTime: task.currentDate.toISOString(),
-                //             DeadLine: task.deadline == "отсутствует" ? null : task.deadline,
-                //             LeadTime: null,
-                //             Status: task.status,
-                //             PosX: task.x,
-                //             PosY: task.y,
-                //             SuperTaskId: null,
-                //             SubTasks: task.dependsOn.map(t => t.id),
-                //             AssignedTasks: task.dependsOn.map(t => t.teamMember.id)
-                //         }
-                //     )
-                // });
+            if(this.saved){
+                this.saved = false;
+                const subjectsData = [];
+                user.subjects.forEach(subject => {
+                    const tasksData = [];
+                    // subject.tasks.forEach(task => {
+                    //     tasksData.push(
+                    //         {
+                    //             Id: task.id,
+                    //             Title: task.title,
+                    //             Description: task.description,
+                    //             CreateTime: task.currentDate.toISOString(),
+                    //             DeadLine: task.deadline == "отсутствует" ? null : task.deadline,
+                    //             LeadTime: null,
+                    //             Status: task.status,
+                    //             PosX: task.x,
+                    //             PosY: task.y,
+                    //             SuperTaskId: null,
+                    //             SubTasks: task.dependsOn.map(t => t.id),
+                    //             AssignedTasks: task.dependsOn.map(t => t.teamMember.id)
+                    //         }
+                    //     )
+                    // });
 
-                subjectsData.push(
-                    {
-                        Id: subject.id,
-                        Name: subject.name,
-                        TeamId: subject.teamId ? subject.teamId : null,
-                        Tasks: tasksData
-                    }
-                );
-            });
-
-            const teamsData = [];
-            user.teams.forEach(team => {
-                const membersData = [];
-                team.members.forEach(member =>{
-                    membersData.push(
+                    subjectsData.push(
                         {
-                            Id: member.id,
-                            Name: member.name,
-                            Surname: member.surname,
-                            Email: member.email ? member.email : null,
-                            Specialization: member.specialization ? member.specialization : null,
-                            AssignedTasks: []
+                            Id: subject.id,
+                            Name: subject.name,
+                            TeamId: subject.teamId ? subject.teamId : null,
+                            Tasks: tasksData
                         }
                     );
-                })
-                teamsData.push(
-                    {
-                        Id: team.id,
-                        Name: team.name,
-                        Subjects: team.subjects ? team.subjects : [],
-                        Members: membersData
-                    }
-                );
-            });
+                });
 
-            const response = await fetch(`${this.api}/save`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    Id: user.id,
-                    Subjects: subjectsData,
-                    Teams: teamsData
-                })
-            });
+                const teamsData = [];
+                user.teams.forEach(team => {
+                    const membersData = [];
+                    team.members.forEach(member =>{
+                        membersData.push(
+                            {
+                                Id: member.id,
+                                Name: member.name,
+                                Surname: member.surname,
+                                Email: member.email ? member.email : null,
+                                Specialization: member.specialization ? member.specialization : null,
+                                AssignedTasks: []
+                            }
+                        );
+                    })
+                    teamsData.push(
+                        {
+                            Id: team.id,
+                            Name: team.name,
+                            Subjects: team.subjects ? team.subjects : [],
+                            Members: membersData
+                        }
+                    );
+                });
 
-            if (response.status === 200) {
-                return response;
-            } 
-            else {
-                alert('Ошибка');
+                const response = await fetch(`${this.api}/save`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        Id: user.id,
+                        Subjects: subjectsData,
+                        Teams: teamsData
+                    })
+                });
+
+                if (response.status === 200) {
+                    this.saved = true;
+                    return response;
+                } 
+                else {
+                    alert('Ошибка');
+                }
             }
         }
         catch (error){
