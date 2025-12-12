@@ -175,11 +175,13 @@ class ApiService{
                     return response;
                 } 
                 else {
+                    this.saved = true;
                     alert('Ошибка');
                 }
             }
         }
         catch (error){
+            this.saved = true;
             console.error('Ошибка:', error);
             alert('Сетевая ошибка');
         }
