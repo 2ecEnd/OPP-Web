@@ -89,14 +89,8 @@ document.addEventListener('DOMContentLoaded', async function() {
         const contentArea = document.querySelector('.contentArea');
 
         teams.forEach(team => {
-            const newElement = document.createElement('div');
-            newElement.classList.add('contentItem');
-            newElement.style.display = 'flex';
-            newElement.style.flexDirection = 'column';
-            newElement.style.justifyContent = 'space-between';
+            const newElement = createTeamView(teamType, team.id);
             newElement.textContent = team.name;
-            newElement.setAttribute('data-type', teamType);
-            newElement.setAttribute('data-id', team.id);
 
             const delBtn = document.createElement('div');
             delBtn.textContent = "X";

@@ -28,11 +28,10 @@ createBtn.addEventListener('click', async function() {
     const contentArea = document.querySelector('.contentArea');
     
     if (activeItemText === 'Teams'){
-      const newElement = document.createElement('div');
-      newElement.classList.add('contentItem');
-      newElement.style.display = 'flex';
-      newElement.style.flexDirection = 'column';
-      newElement.style.justifyContent = 'space-between';
+      const newTeam = new Team(name, [], []);
+      const teamId = await user.addTeam(newTeam);
+
+      const newElement = createTeamView('team', teamId);
       newElement.textContent = name;
 
       const buttons = document.createElement('div');
@@ -41,8 +40,6 @@ createBtn.addEventListener('click', async function() {
       buttons.style.flexDirection = 'row';
       buttons.style.justifyContent = 'space-between';
 
-      const newTeam = new Team(name, [], []);
-      const teamId = await user.addTeam(newTeam);
       newElement.setAttribute('data-type', 'team');
       newElement.setAttribute('data-id', teamId);
 
