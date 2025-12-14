@@ -34,7 +34,15 @@ class User{
         newData.subjects.forEach(subject => {
             this.subjects.push(new Subject(subject.name, subject.tasks, subject.id, subject.teamId));
         });
-        this.teams = newData.teams;
+
+        this.teams = [];
+        newData.teams.forEach(team => {
+            var members = [];
+            team.members.forEach(member => {
+                members.push(new TeamMember(member.name, member.surname, member.email, member.specialization, member.assignedTasks, member.id));
+            });
+            this.teams.push(new Team(team.name, team.subjects, members, team.id));
+        });
     }
 
     async addTeam(team) {
@@ -66,22 +74,22 @@ class User{
     }
 
     async getTeams() {
-        this.updateUserData();
+        await this.updateUserData();
         return this.teams;
     }
 
     async getSubjects() {
-        this.updateUserData();
+        await this.updateUserData();
         return this.subjects;
     }
 
     async getTeamById(teamId){
-        this.updateUserData();
+        await this.updateUserData();
         return this.teams.find(team => team.id === teamId);
     }
 
     async getSubjectById(subjectId){
-        this.updateUserData();
+        await this.updateUserData();
         return this.subjects.find(subject => subject.id === subjectId);
     }
 
@@ -135,7 +143,7 @@ class User{
     }
 
     async getTaskById(taskId){
-        this.updateUserData();
+        await this.updateUserData();
         for(var i = 0; i < this.subjects.length; ++i){
             for(var j = 0; j < this.subjects[i].tasks.length; j++)
             if(this.subjects[i].tasks[j].id === taskId){

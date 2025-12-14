@@ -1,4 +1,4 @@
-function showAssignedTasksDialog(member, assignedTasks){
+function showAssignedTasksDialog(team, member, assignedTasks){
   const overlay = document.createElement('div');
   const modal = document.createElement('div');
   const buttonContainer = document.createElement('div');

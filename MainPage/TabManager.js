@@ -176,7 +176,7 @@ class TabManager{
                     member.assignedTasks.forEach(taskId => {
                         assignedTasks.push(user.getTaskById(taskId).title);
                     });
-                    showAssignedTasksDialog(member, assignedTasks);
+                    showAssignedTasksDialog(team, member, assignedTasks);
                 });
 
                 btnContainer.appendChild(infoBtn);
