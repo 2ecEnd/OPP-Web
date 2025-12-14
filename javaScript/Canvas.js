@@ -49,6 +49,35 @@ class Canvas{
         this.updateTransform();
         this.initLinkingEvents();
         this.initExistingTasks();
+        this.initArrowMarker();
+    }
+
+    initArrowMarker() {
+        let svg = this.connectionsLayer;
+        if (!svg) return;
+        
+        let defs = svg.querySelector('defs');
+        if (!defs) {
+            defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+            svg.insertBefore(defs, svg.firstChild);
+        }
+        
+        if (!defs.querySelector('#arrowhead')) {
+            const marker = document.createElementNS('http://www.w3.org/2000/svg', 'marker');
+            marker.id = 'arrowhead';
+            marker.setAttribute('markerWidth', '10');
+            marker.setAttribute('markerHeight', '7');
+            marker.setAttribute('refX', '9');
+            marker.setAttribute('refY', '3.5');
+            marker.setAttribute('orient', 'auto');
+            
+            const polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+            polygon.setAttribute('points', '0 0, 10 3.5, 0 7');
+            polygon.setAttribute('fill', '#ffffff');
+            
+            marker.appendChild(polygon);
+            defs.appendChild(marker);
+        }
     }
 
     initExistingTasks(){
@@ -166,20 +195,27 @@ class Canvas{
         this.draggedObject.dataset.y = y;
 
         this.editingLinks.forEach(link => {
-            const center = this.getCenter(this.draggedObject);
+            const start = this.getCenter(link.startTask.container);
+            const end = this.getCenter(link.endTask.container);
+            const edgePoint = this.getEdgePoint(start, end, link.endTask.container)
 
             if (this.draggedTask === link.startTask){
+                const center = this.getCenter(this.draggedObject);
+
                 link.line.setAttribute('x1', center.x);
                 link.line.setAttribute('y1', center.y);
+                link.line.setAttribute('x2', edgePoint.x);
+                link.line.setAttribute('y2', edgePoint.y);
             }
             else{
-                link.line.setAttribute('x2', center.x);
-                link.line.setAttribute('y2', center.y);
+                link.line.setAttribute('x2', edgePoint.x);
+                link.line.setAttribute('y2', edgePoint.y);
             }
         });
     }
 
     onMouseDown(e) {
+        if(this.linkingMode) this.stopLinking();
         if(!this.dragModeIsActive) return;
 
         e.preventDefault();
@@ -259,6 +295,12 @@ class Canvas{
             this.stopLinking();
             return;
         }
+        
+        if(!this.validateLinking(this.linkingStartTask, targetTask)){
+            this.stopLinking();
+            alert("Нельзя связать с этой задачей");
+            return;
+        }
 
         this.linkingStartTask.addDependency(targetTask);
 
@@ -266,17 +308,33 @@ class Canvas{
         this.stopLinking();
     }
 
+    validateLinking(startTask, endTask){
+        if (endTask.dependsOn.some(task => task.id === startTask.id)) {
+            return false;
+        }
+        if (startTask.dependsOn.some(task => task.id === endTask.id)) {
+            return false;
+        }
+        return true;
+    }
+
     createLine(startTask, endTask){
-        const newLinkLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        const svgNS = 'http://www.w3.org/2000/svg';
+        const newLinkLine = document.createElementNS(svgNS, 'line');
         newLinkLine.classList.add('link-line');
 
         const start = this.getCenter(startTask.container);
         const end = this.getCenter(endTask.container);
 
+        const edgePoint = this.getEdgePoint(start, end, endTask.container);
+
         newLinkLine.setAttribute('x1', start.x);
         newLinkLine.setAttribute('y1', start.y);
-        newLinkLine.setAttribute('x2', end.x);
-        newLinkLine.setAttribute('y2', end.y);
+        newLinkLine.setAttribute('x2', edgePoint.x);
+        newLinkLine.setAttribute('y2', edgePoint.y);
+
+        newLinkLine.setAttribute('marker-end', 'url(#arrowhead)');
+        console.log(this.calculateAngleDegrees(start, end));
 
         this.links.push(new Canvas.LinkData(newLinkLine, startTask, endTask));
         return newLinkLine;
@@ -301,6 +359,98 @@ class Canvas{
             x: left + width / 2,
             y: top + height / 2
         };
+    }
+
+    getEdgePoint(start, end, element){
+        const width = element.offsetWidth;
+        const height = element.offsetHeight;
+        const left = parseInt(element.dataset.x) || 0;
+        const top = parseInt(element.dataset.y) || 0;
+
+        const angle = this.calculateAngleDegrees(start, end);
+        const line1 = {
+            x1: start.x,
+            y1: start.y,
+            x2: end.x,
+            y2: end.y
+        };
+        let line2 = null;
+
+        if(angle <= 42 || angle > 317.5){
+            const bottom = top + height;
+
+            line2 = {
+                x1: left,
+                y1: top,
+                x2: left,
+                y2: bottom
+            };
+            return this.findLineIntersection(line1, line2);
+        }
+        else if(angle > 42 && angle <= 138){
+            const right = left + width;
+
+            line2 = {
+                x1: left,
+                y1: top,
+                x2: right,
+                y2: top
+            };
+            return this.findLineIntersection(line1, line2);
+        }
+        else if(angle > 138 && angle <= 223){
+            const right = left + width;
+            const bottom = top + height;
+
+            line2 = {
+                x1: right,
+                y1: top,
+                x2: right,
+                y2: bottom
+            };
+            return this.findLineIntersection(line1, line2);
+        }
+        else if(angle > 223 && angle <= 317.5){
+            const right = left + width;
+            const bottom = top + height;
+
+            line2 = {
+                x1: left,
+                y1: bottom,
+                x2: right,
+                y2: bottom
+            };
+            return this.findLineIntersection(line1, line2);
+        }
+        
+        return this.getCenter(element);
+    }
+
+    calculateAngleDegrees(start, end) {
+        const dx = end.x - start.x;
+        const dy = end.y - start.y;
+        
+        const radians = Math.atan2(dy, dx);
+        const degrees = radians * (180 / Math.PI);
+        
+        return (degrees + 360) % 360;
+    }
+
+    findLineIntersection(line1, line2){
+        const A1 = line1.y2 - line1.y1;
+        const B1 = line1.x1 - line1.x2;
+        const C1 = A1 * line1.x1 + B1 * line1.y1;
+
+        const A2 = line2.y2 - line2.y1;
+        const B2 = line2.x1 - line2.x2;
+        const C2 = A2 * line2.x1 + B2 * line2.y2;
+
+        const determinant = A1 * B2 - A2 * B1;
+
+        const x = (B2 * C1 - B1 * C2) / determinant;
+        const y = (A1 * C2 - A2 * C1) / determinant;
+        
+        return { x, y };
     }
 }
 

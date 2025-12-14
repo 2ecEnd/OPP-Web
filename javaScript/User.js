@@ -1,8 +1,14 @@
+const Role = Object.freeze({
+    USER: 'Пользователь',
+    ADMIN: 'Админ'
+});
+
 class User{
     constructor(id, subjects, teams){
         this.id = id;
         this.subjects = [];
         this.teams = teams;
+        this.role = Role.ADMIN;
 
         subjects.forEach(subject => {
             const tasks = [];
