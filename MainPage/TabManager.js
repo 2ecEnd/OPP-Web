@@ -144,68 +144,125 @@ class TabManager{
     }
 
     createTeamContent(team) {
+        const teamContent = this.createTeamContainer();
+        
+        const participantsColumn = this.createParticipantsColumn(team);
+        const subjectsColumn = this.createSubjectsColumn(team);
+        
+        teamContent.appendChild(participantsColumn);
+        teamContent.appendChild(subjectsColumn);
+
+        return teamContent;
+    }
+
+    createTeamContainer() {
         const teamContent = document.createElement('div');
         teamContent.className = 'teamContent';
         teamContent.style.display = 'flex';
         teamContent.style.gap = '20px';
         teamContent.style.padding = '20px';
         teamContent.style.height = 'auto';
+        
+        return teamContent;
+    }
 
+    createParticipantsColumn(team) {
         const participantsColumn = document.createElement('div');
         participantsColumn.className = 'teamColumn';
         participantsColumn.innerHTML = '<h3>Участники команды</h3>';
         
+        const participantsList = this.createParticipantsList(team);
+        participantsColumn.appendChild(participantsList);
+        
+        const addMemberButton = this.createAddMemberButton(team);
+        participantsColumn.appendChild(addMemberButton);
+        
+        return participantsColumn;
+    }
+
+    createParticipantsList(team) {
         const participantsList = document.createElement('div');
         participantsList.className = 'participantsList';
+        
         if (team.members && team.members.length > 0) {
             team.members.forEach(member => {
-                const participantElement = document.createElement('div');
-                participantElement.className = 'participantItem';
-
-                const btnContainer = document.createElement('div');
-                btnContainer.style.display = 'flex';
-                btnContainer.style.flexDirection = 'row';
-                btnContainer.style.alignItems = 'center';
-                btnContainer.style.columnGap = '10px';
-
-                const infoBtn = document.createElement('img');
-                infoBtn.src = "../images/eye.svg"
-                infoBtn.className = 'x';
-                infoBtn.addEventListener('mouseup', async function() {
-                    const assignedTasks = [];
-                    member.assignedTasks.forEach(taskId => {
-                        assignedTasks.push(user.getTaskById(taskId).title);
-                    });
-                    showAssignedTasksDialog(team, member, assignedTasks);
-                });
-
-                btnContainer.appendChild(infoBtn);
-                
-                const deleteBtn = document.createElement('img');
-                deleteBtn.src = "../images/x-lg.svg";
-                deleteBtn.className = 'x';
-                deleteBtn.addEventListener('mouseup', async function() {
-                    user.removeMemberFromTeam(team, member);
-                    participantsList.removeChild(participantElement);
-                });
-
-                btnContainer.appendChild(deleteBtn);
-
-                participantElement.textContent = member.name + " " + member.surname;
-                participantElement.appendChild(btnContainer);
+                const participantElement = this.createParticipantElement(team, member);
                 participantsList.appendChild(participantElement);
             });
         } else {
             participantsList.textContent = 'Нет участников';
         }
-        participantsColumn.appendChild(participantsList);
+        
+        return participantsList;
+    }
 
+    createParticipantElement(team, member) {
+        const participantElement = document.createElement('div');
+        participantElement.className = 'participantItem';
+        
+        const btnContainer = this.createParticipantButtonContainer(team, member);
+        
+        participantElement.textContent = member.name + " " + member.surname;
+        participantElement.appendChild(btnContainer);
+        
+        return participantElement;
+    }
 
-        var btnContainer = document.createElement('div');
+    createParticipantButtonContainer(team, member) {
+        const btnContainer = document.createElement('div');
+        btnContainer.style.display = 'flex';
+        btnContainer.style.flexDirection = 'row';
+        btnContainer.style.alignItems = 'center';
+        btnContainer.style.columnGap = '10px';
+        
+        const infoBtn = this.createInfoButton(team, member);
+        const deleteBtn = this.createDeleteButton(team, member, btnContainer);
+        
+        btnContainer.appendChild(infoBtn);
+        btnContainer.appendChild(deleteBtn);
+        
+        return btnContainer;
+    }
+
+    createInfoButton(team, member) {
+        const infoBtn = document.createElement('img');
+        infoBtn.src = "../images/eye.svg";
+        infoBtn.className = 'x';
+        
+        infoBtn.addEventListener('mouseup', async function() {
+            const assignedTasks = [];
+            member.assignedTasks.forEach(taskId => {
+                assignedTasks.push(user.getTaskById(taskId).title);
+            });
+            showAssignedTasksDialog(team, member, assignedTasks);
+        });
+        
+        return infoBtn;
+    }
+
+    createDeleteButton(team, member, btnContainer) {
+        const deleteBtn = document.createElement('img');
+        deleteBtn.src = "../images/x-lg.svg";
+        deleteBtn.className = 'x';
+        
+        deleteBtn.addEventListener('mouseup', async function() {
+            user.removeMemberFromTeam(team, member);
+            // Найдем родительский элемент participantItem для удаления
+            const participantElement = btnContainer.closest('.participantItem');
+            if (participantElement && participantElement.parentNode) {
+                participantElement.parentNode.removeChild(participantElement);
+            }
+        });
+        
+        return deleteBtn;
+    }
+
+    createAddMemberButton(team) {
+        const btnContainer = document.createElement('div');
         btnContainer.style.display = 'flex';
         btnContainer.style.justifyContent = 'flex-end';
-
-        var addMemberBtn = document.createElement('button');
+        
+        const addMemberBtn = document.createElement('button');
         addMemberBtn.className = 'addButton';
         addMemberBtn.style.position = 'relative';
         addMemberBtn.style.bottom = '0px';
@@ -213,49 +270,55 @@ class TabManager{
         addMemberBtn.textContent = '+';
         addMemberBtn.style.backgroundColor = 'rgb(44, 44, 44)';
         addMemberBtn.style.boxShadow = '0 2px 10px rgba(200, 200, 200, 0.3)';
+        
         addMemberBtn.addEventListener('mouseover', function() {
             this.style.backgroundColor = '#6b6b8f';
         });
-
+        
         addMemberBtn.addEventListener('mouseout', function() {
             this.style.backgroundColor = 'rgb(44, 44, 44)';
         });
-
+        
         addMemberBtn.addEventListener('mouseup', function() {
             showAddMemberDialog(team);
         });
-
+        
         btnContainer.appendChild(addMemberBtn);
-        participantsColumn.appendChild(btnContainer);
+        return btnContainer;
+    }
 
+    createSubjectsColumn(team) {
         const subjectsColumn = document.createElement('div');
         subjectsColumn.className = 'teamColumn';
         subjectsColumn.innerHTML = '<h3>Назначенные предметы</h3>';
         
+        const subjectsList = this.createSubjectsList(team);
+        subjectsColumn.appendChild(subjectsList);
+        
+        return subjectsColumn;
+    }
+
+    createSubjectsList(team) {
         const subjectsList = document.createElement('div');
         subjectsList.className = 'subjectsList';
+        
         if (team.subjects && team.subjects.length > 0) {
-            const addSubject = async () => {
-                for (const subject of team.subjects) {
-                    const subjectElement = document.createElement('div');
-                    subjectElement.className = 'participantItem';
-                    var subj = await user.getSubjectById(subject);
-                    subjectElement.textContent = subj.name;
-                    subjectsList.appendChild(subjectElement);
-                }
-            };
-            
-            addSubject();
+            this.addSubjectsToList(team, subjectsList);
         } else {
             subjectsList.textContent = 'Нет назначенных предметов';
         }
+        
+        return subjectsList;
+    }
 
-        subjectsColumn.appendChild(subjectsList);
-
-        teamContent.appendChild(participantsColumn);
-        teamContent.appendChild(subjectsColumn);
-
-        return teamContent;
+    async addSubjectsToList(team, subjectsList) {
+        for (const subjectId of team.subjects) {
+            const subjectElement = document.createElement('div');
+            subjectElement.className = 'participantItem';
+            const subject = await user.getSubjectById(subjectId);
+            subjectElement.textContent = subject.name;
+            subjectsList.appendChild(subjectElement);
+        }
     }
     
     switchActiveItem(activeItem, inactiveItem) {
