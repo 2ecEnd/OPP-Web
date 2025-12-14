@@ -107,6 +107,12 @@ class User{
         await this.saveUser();
     }
 
+    async changeTeam(teamId, name){
+        const team = await this.getTeamById(teamId);
+        team.name = name;
+        await this.saveUser();
+    }
+
     async addMemberInTeam(team, member){
         for(var i = 0; i < this.teams.length; ++i){
             if(this.teams[i].id === team.id){

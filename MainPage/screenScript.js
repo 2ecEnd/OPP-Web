@@ -105,9 +105,16 @@ document.addEventListener('DOMContentLoaded', async function() {
             });
 
             const changeBtn = document.createElement('div');
+            changeBtn.style.height = '40px';
+            changeBtn.style.width = '40px';
             changeBtn.textContent = "R";
             changeBtn.style.color = "white";
             changeBtn.style.fontSize = '32px'
+            changeBtn.addEventListener('mouseup', async function() {
+                await changeTeamDialog(team);
+                var t = await user.getTeamById(team.id);
+                team.name = t.name;
+            });
 
             const buttons = document.createElement('div');
             buttons.style.display = 'flex';
