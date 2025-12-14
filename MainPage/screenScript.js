@@ -94,6 +94,9 @@ document.addEventListener('DOMContentLoaded', async function() {
             newElement.style.display = 'flex';
             newElement.style.flexDirection = 'column';
             newElement.style.justifyContent = 'space-between';
+            newElement.textContent = team.name;
+            newElement.setAttribute('data-type', teamType);
+            newElement.setAttribute('data-id', team.id);
 
             const delBtn = document.createElement('div');
             delBtn.textContent = "X";
@@ -104,11 +107,21 @@ document.addEventListener('DOMContentLoaded', async function() {
                 tabManager.closeTab(teamType, team.id);
                 contentArea.removeChild(newElement);
             });
+
+            const changeBtn = document.createElement('div');
+            delBtn.textContent = "R";
+            delBtn.style.color = "white";
+            delBtn.style.fontSize = '32px'
+
+            const buttons = document.createElement('div');
+            buttons.classList.add('contentItem');
+            buttons.style.display = 'flex';
+            buttons.style.flexDirection = 'row';
+            buttons.style.justifyContent = 'space-between';
         
-            newElement.textContent = team.name;
-            newElement.setAttribute('data-type', teamType);
-            newElement.setAttribute('data-id', team.id);
-            newElement.appendChild(delBtn);
+            buttons.appendChild(delBtn);
+            buttons.appendChild(changeBtn);
+            newElement.appendChild(buttons);
             contentArea.appendChild(newElement);
         });
     }
