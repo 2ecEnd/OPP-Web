@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     //-=-=-=-=-Остальное-=-=-=-=-=-
     function clearContentArea() {
         const addButton = contentArea.querySelector('.addButton');
-        contentArea.innerHTML = 'x';
+        contentArea.innerHTML = '';
         if (addButton) {
             contentArea.appendChild(addButton);
         }
