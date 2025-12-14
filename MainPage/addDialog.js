@@ -35,10 +35,9 @@ createBtn.addEventListener('click', async function() {
       newElement.textContent = name;
 
       const buttons = document.createElement('div');
-      buttons.classList.add('contentItem');
       buttons.style.display = 'flex';
       buttons.style.flexDirection = 'row';
-      buttons.style.justifyContent = 'space-between';
+      buttons.style.justifyContent = 'space-around';
 
       newElement.setAttribute('data-type', 'team');
       newElement.setAttribute('data-id', teamId);

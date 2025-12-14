@@ -103,15 +103,14 @@ document.addEventListener('DOMContentLoaded', async function() {
             });
 
             const changeBtn = document.createElement('div');
-            delBtn.textContent = "R";
-            delBtn.style.color = "white";
-            delBtn.style.fontSize = '32px'
+            changeBtn.textContent = "R";
+            changeBtn.style.color = "white";
+            changeBtn.style.fontSize = '32px'
 
             const buttons = document.createElement('div');
-            buttons.classList.add('contentItem');
             buttons.style.display = 'flex';
             buttons.style.flexDirection = 'row';
-            buttons.style.justifyContent = 'space-between';
+            buttons.style.justifyContent = 'space-around';
         
             buttons.appendChild(delBtn);
             buttons.appendChild(changeBtn);
