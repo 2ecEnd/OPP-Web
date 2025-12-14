@@ -99,6 +99,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             delBtn.style.color = "white";
             delBtn.style.fontSize = '32px'
             delBtn.addEventListener('mouseup', async function() {
+                event.stopPropagation();
                 await user.removeTeam(team.id);
                 tabManager.closeTab(teamType, team.id);
                 contentArea.removeChild(newElement);
@@ -111,9 +112,8 @@ document.addEventListener('DOMContentLoaded', async function() {
             changeBtn.style.color = "white";
             changeBtn.style.fontSize = '32px'
             changeBtn.addEventListener('mouseup', async function() {
-                await changeTeamDialog(team);
-                var t = await user.getTeamById(team.id);
-                team.name = t.name;
+                event.stopPropagation();
+                await changeTeamDialog(team, newElement);
             });
 
             const buttons = document.createElement('div');

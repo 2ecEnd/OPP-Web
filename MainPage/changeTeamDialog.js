@@ -1,4 +1,4 @@
-async function changeTeamDialog(team){
+async function changeTeamDialog(team, element){
   const overlay = document.createElement('div');
   const modal = document.createElement('div');
   const buttonContainer = document.createElement('div');
@@ -50,6 +50,8 @@ async function changeTeamDialog(team){
     if(name !== ""){
         if(name != team.name){
             await user.changeTeam(team.id, name);
+            team.name = name;
+            element.textContent = name;
             document.body.removeChild(overlay);
         }else{
             document.body.removeChild(overlay);
@@ -57,10 +59,6 @@ async function changeTeamDialog(team){
     }else{
         alert("Пожалуйста, заполните название");
     }
-
-      
-
-    document.body.removeChild(overlay);
   };
 
   button2.onclick = () => {
