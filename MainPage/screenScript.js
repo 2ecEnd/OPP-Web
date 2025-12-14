@@ -10,9 +10,11 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     if(toolbar.getActiveTab() === null){
         tabManager.setActiveTab(toolbar.homeBtnType, null);
-        setUserSubjects();
+        await setUserSubjects();
     }else{
         var currentTab = toolbar.getActiveTab();
+        tabManager.setActiveTab(toolbar.homeBtnType, null);
+        await setUserSubjects();
         tabManager.setActiveTab(currentTab.type, currentTab.id);
         tabManager.showTabContent(currentTab.type, currentTab.id);
 
