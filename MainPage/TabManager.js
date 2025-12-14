@@ -34,7 +34,6 @@ class TabManager{
         }
     }
 
-    //обновил
     createTab(type, id, name) {
         const newTab = document.createElement('div');
         newTab.setAttribute('type', type);
@@ -80,7 +79,6 @@ class TabManager{
         return newTab;
     }
 
-    //обновил
     closeTab(type, id) {
         toolbar.deleteTabByTypeAndId(type, id);
         this.updateToolbar();
@@ -96,7 +94,6 @@ class TabManager{
         this.updateToolbar();
     }
 
-    //обновил
     updateToolbar(){
         this.toolbarView = document.querySelector('.toolbar');
         const tabs = toolbar.getAllTabs();
@@ -116,7 +113,6 @@ class TabManager{
         this.toolbarView.replaceWith(newToolbar);
     }
 
-    //обновил
     async showTabContent(type, id) {
         if(type == this.teamType){
             const team = await user.getTeamById(id);
@@ -247,7 +243,6 @@ class TabManager{
         
         deleteBtn.addEventListener('mouseup', async function() {
             user.removeMemberFromTeam(team, member);
-            // Найдем родительский элемент participantItem для удаления
             const participantElement = btnContainer.closest('.participantItem');
             if (participantElement && participantElement.parentNode) {
                 participantElement.parentNode.removeChild(participantElement);
