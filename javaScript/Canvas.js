@@ -350,9 +350,9 @@ class Canvas{
             visited.push(currentTaskId);
 
             const currentTask = this.subject.getTask(currentTaskId);
-            currentTask.dependsOn.forEach(t => {
-                if(!visited.some(x => x.id === t.id)){
-                    stack.push(t.id);
+            currentTask.dependsOn.forEach(id => {
+                if(!visited.some(x => x === id)){
+                    stack.push(id);
                 }
             });
         }
