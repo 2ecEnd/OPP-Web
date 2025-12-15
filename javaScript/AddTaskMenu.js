@@ -46,7 +46,7 @@ class AddTaskMenu{
     }
 
     createTask(title, description, hasDeadline, deadline, currentDate){
-        const newTask = new Task(title, description, hasDeadline, deadline, currentDate, 2500, 2500, [], []);
+        const newTask = new Task(null, title, description, hasDeadline, deadline, currentDate, 2500, 2500, [], []);
 
         canvas.subject.addTask(newTask);
         canvas.canvas.appendChild(newTask.createDom());

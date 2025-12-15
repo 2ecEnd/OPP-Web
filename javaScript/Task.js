@@ -5,7 +5,7 @@ const Status = Object.freeze({
 });
 
 class Task{
-    constructor(title, description, hasDeadline, deadline, currentDate, x, y, dependsOn, assignedTasks) {
+    constructor(id, title, description, hasDeadline, deadline, currentDate, x, y, dependsOn, assignedTasks) {
         this.title = title;
         this.description = description;
         this.hasDeadline = hasDeadline;
@@ -13,7 +13,7 @@ class Task{
         this.currentDate = currentDate;
         this.dependsOn = dependsOn;
         this.assignedTasks = assignedTasks;
-        this.id = crypto.randomUUID();
+        this.id = id == null? crypto.randomUUID() : id;
         this.status = Status.NOT_ACCEPTED;
         this.x = x;
         this.y = y;
@@ -65,8 +65,13 @@ class Task{
     }
 
     startLinking() {
-        this.openContextMenu();
+        this.closeAllMenus();
         canvas.startLinking(this);
+    }
+
+    enableDeletingLinksMode() {
+        this.closeAllMenus();
+        canvas.enableDeletingLinksMode(this);
     }
 
     createContextMenu() {
@@ -77,6 +82,7 @@ class Task{
             { text: 'Изменить', handler: this.openEditMenu.bind(this) },
             { text: 'Удалить', handler: this.deleteTask.bind(this) },
             { text: 'Добавить зависимость', handler: this.startLinking.bind(this) },
+            { text: 'Удалить зависимость', handler: this.startLinking.bind(this) },
             { text: 'Изменить статус', handler: this.openStatusMenu.bind(this) },
             { text: 'Добавить ответственного', handler: this.openResponsibleMenu.bind(this) }
         ];
@@ -118,6 +124,8 @@ class Task{
     createResponsibleMenu(){
         const responsibleMenu = document.createElement('div');
         responsibleMenu.className = 'task-responsible-menu task-menu';
+
+        
 
         const availablePeople = [
             { id: 1, name: 'Иван Иванов' },
@@ -247,7 +255,7 @@ class Task{
     }
 
     addDependency(task){
-        this.dependsOn.push(task);
+        this.dependsOn.push(task.id);
     }
 
     addAssignedTask(assignedTask){

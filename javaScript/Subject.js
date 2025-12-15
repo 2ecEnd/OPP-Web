@@ -8,10 +8,13 @@ class Subject{
         this.view = new SubjectView(this);
     }
 
+    changeData(){
+        user.changeSubjectData(this.id, this);
+    }
+
     addTask(task){
         this.tasks.push(task);
-        
-        user.changeSubjectData(this.id, this);
+        this.changeData();
     }
 
     deleteTask(id){

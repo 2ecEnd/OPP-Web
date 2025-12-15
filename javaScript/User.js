@@ -14,9 +14,10 @@ class User{
             const tasks = [];
             subject.tasks.forEach(task => {
                 tasks.push(
-                    new Task(task.id, task.title, task.deadLine == null ? false : true, task.deadLine, task.createTime, task.posX, task.posY, task.subTasks, task.assignedTasks)
+                    new Task(task.id, task.title, task.description, task.deadLine == null ? false : true, new Date(task.deadLine), new Date(task.createTime), task.posX, task.posY, task.subTasks, task.assignedTasks)
                 )
             });
+            
 
             this.subjects.push(new Subject(subject.name, tasks, subject.id, subject.teamId));
         });
@@ -32,7 +33,14 @@ class User{
         this.id = newData.id;
         this.subjects = [];
         newData.subjects.forEach(subject => {
-            this.subjects.push(new Subject(subject.name, subject.tasks, subject.id, subject.teamId));
+            const tasks = [];
+            subject.tasks.forEach(task => {
+                tasks.push(
+                    new Task(task.id, task.title, task.description, task.deadLine == null ? false : true, new Date(task.deadLine), new Date(task.createTime), task.posX, task.posY, task.subTasks, task.assignedTasks)
+                )
+            });
+
+            this.subjects.push(new Subject(subject.name, tasks, subject.id, subject.teamId));
         });
 
         this.teams = [];

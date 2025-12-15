@@ -31,6 +31,7 @@ class Canvas{
 
         this.isDraggingObject = false;
         this.linkingMode = false;
+        this.deletinglinksMode = false;
 
         this.draggedObject = null;
         this.draggedTask = null;
@@ -84,10 +85,18 @@ class Canvas{
         this.subject.tasks.forEach(task => {
             this.canvas.appendChild(task.createDom());
         });
+        
     }
 
     initLinkingEvents(){
         document.addEventListener('mousemove', this.updateTempLine.bind(this));
+
+        this.connectionsLayer.addEventListener('mousemove', (e) => {
+            if (!this.deletinglinksMode) return;
+            
+            const linkElement = e.target.closest('.link-line');
+            this.highlightLink(linkElement);
+        });
     }
 
     initCanvasEvents(){
@@ -103,7 +112,6 @@ class Canvas{
     initObjectsEvents(){
         this.canvas.addEventListener('mousedown', this.onObjectMouseDown.bind(this));
         this.canvas.addEventListener('mousemove', this.onObjectMouseMove.bind(this));
-        document.addEventListener('mouseup', this.onMouseUp.bind(this));
     }
 
     onWheel(e) {
@@ -193,6 +201,8 @@ class Canvas{
         `;
         this.draggedObject.dataset.x = x;
         this.draggedObject.dataset.y = y;
+        this.draggedTask.x = x;
+        this.draggedTask.y = y;
 
         this.editingLinks.forEach(link => {
             const start = this.getCenter(link.startTask.container);
@@ -242,6 +252,10 @@ class Canvas{
     }
 
     onMouseUp() {
+        if(this.isDraggingObject){
+            this.subject.changeData();
+        }
+
         this.isDraggingCanvas = false;
         this.isDraggingObject = false;
         this.draggedObject = null;
@@ -258,6 +272,25 @@ class Canvas{
         `;
 
         this.canvas.style.transformOrigin = '0 0';
+    }
+
+    enableDeletingLinksMode(task){
+        this.deletinglinksMode = true;
+    }
+
+    highlightLink(linkElement) {
+        document.querySelectorAll('.link-line').forEach(link => {
+            link.style.strokeWidth = '2';
+            link.style.stroke = '#ffffff';
+        });
+        
+        if (linkElement) {
+            linkElement.style.strokeWidth = '4';
+            linkElement.style.stroke = '#ff4444';
+            this.selectedLink = linkElement;
+        } else {
+            this.selectedLink = null;
+        }
     }
 
     startLinking(task) {
@@ -305,20 +338,21 @@ class Canvas{
 
     validateLinking(startTask, endTask){
         if(startTask.id === endTask.id) return false;
-        if (endTask.dependsOn.some(task => task.id === startTask.id)) return false;
-        if (startTask.dependsOn.some(task => task.id === endTask.id)) return false;
+        if (endTask.dependsOn.some(taskId => taskId === startTask.id)) return false;
+        if (startTask.dependsOn.some(taskId => taskId === endTask.id)) return false;
 
-        const visited = [endTask];
+        const visited = [endTask.id];
         const stack = [...endTask.dependsOn];
         while(stack.length > 0){
-            const currentTask = stack.pop();
+            const currentTaskId = stack.pop();
 
-            if(currentTask.id === startTask.id) return false;
-            visited.push(currentTask);
+            if(currentTaskId === startTask.id) return false;
+            visited.push(currentTaskId);
 
+            const currentTask = this.subject.getTask(currentTaskId);
             currentTask.dependsOn.forEach(t => {
                 if(!visited.some(x => x.id === t.id)){
-                    stack.push(t);
+                    stack.push(t.id);
                 }
             });
         }
@@ -342,7 +376,6 @@ class Canvas{
         newLinkLine.setAttribute('y2', edgePoint.y);
 
         newLinkLine.setAttribute('marker-end', 'url(#arrowhead)');
-        console.log(this.calculateAngleDegrees(start, end));
 
         this.links.push(new Canvas.LinkData(newLinkLine, startTask, endTask));
         return newLinkLine;
