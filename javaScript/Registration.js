@@ -17,8 +17,8 @@ class Registration{
     async register(e){
         e.preventDefault();
 
-        const email = document.getElementById('authenticationEmailInput').value;
-        const password = document.getElementById('authenticationPasswordInput').value;
+        const email = document.getElementById('registrationEmailInput').value;
+        const password = document.getElementById('registrationPasswordInput').value;
 
         if(await apiService.register(email, password)) this.form.reset();
     }
