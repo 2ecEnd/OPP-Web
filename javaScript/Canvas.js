@@ -291,11 +291,6 @@ class Canvas{
 
         const targetTask = this.subject.getTask(targetTaskDom.id)
 
-        if(this.linkingStartTask === targetTask){
-            this.stopLinking();
-            return;
-        }
-        
         if(!this.validateLinking(this.linkingStartTask, targetTask)){
             this.stopLinking();
             alert("Нельзя связать с этой задачей");
@@ -309,12 +304,25 @@ class Canvas{
     }
 
     validateLinking(startTask, endTask){
-        if (endTask.dependsOn.some(task => task.id === startTask.id)) {
-            return false;
+        if(startTask.id === endTask.id) return false;
+        if (endTask.dependsOn.some(task => task.id === startTask.id)) return false;
+        if (startTask.dependsOn.some(task => task.id === endTask.id)) return false;
+
+        const visited = [endTask];
+        const stack = [...endTask.dependsOn];
+        while(stack.length > 0){
+            const currentTask = stack.pop();
+
+            if(currentTask.id === startTask.id) return false;
+            visited.push(currentTask);
+
+            currentTask.dependsOn.forEach(t => {
+                if(!visited.some(x => x.id === t.id)){
+                    stack.push(t);
+                }
+            });
         }
-        if (startTask.dependsOn.some(task => task.id === endTask.id)) {
-            return false;
-        }
+
         return true;
     }
 
