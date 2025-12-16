@@ -1,7 +1,8 @@
 class ApiService{
     constructor(){
         //this.api = 'https://localhost:7000/api/Auth';
-        this.api = 'https://opp-back.onrender.com/api/Auth';
+        this.api = 'http://localhost:5000/api/Auth';
+        //this.api = 'https://opp-back.onrender.com/api/Auth';
         this.saved = true;
     }
 
@@ -85,7 +86,6 @@ class ApiService{
                 const userData = this.toCamelCase(await response.json());
                 if (!userData.teams) userData.teams = [];
                 if (!userData.subjects) userData.subjects = [];
-                console.log(userData);
                 return userData;
             } 
             else {
@@ -160,6 +160,8 @@ class ApiService{
                         }
                     );
                 });
+
+                console.log("save")
 
                 const response = await fetch(`${this.api}/save`, {
                     method: 'PUT',

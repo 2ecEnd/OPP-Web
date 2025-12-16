@@ -85,7 +85,11 @@ class Canvas{
         this.subject.tasks.forEach(task => {
             this.canvas.appendChild(task.createDom());
         });
-        
+        this.subject.tasks.forEach(task => {
+            task.dependsOn.forEach(element => {
+                this.connectionsLayer.appendChild(this.createLine(task, this.subject.getTask(element)));
+            });
+        });
     }
 
     initLinkingEvents(){
@@ -333,6 +337,7 @@ class Canvas{
         this.linkingStartTask.addDependency(targetTask);
 
         this.connectionsLayer.appendChild(this.createLine(this.linkingStartTask, targetTask));
+        this.subject.changeData();
         this.stopLinking();
     }
 
