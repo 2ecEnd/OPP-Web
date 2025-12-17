@@ -1,6 +1,7 @@
 import { Task } from "./Task";
 import { Team } from "./Team";
 import { Subject } from "./Subject";
+import { apiService } from './Services/ApiService';
 
 export enum Role {
     USER = 'Пользователь',

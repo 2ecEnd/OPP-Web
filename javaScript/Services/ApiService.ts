@@ -1,96 +1,10 @@
-import type { Task } from "./Task";
-import type { User } from "./User";
-import type { Subject } from "./Subject";
-import type { Team } from "./Team";
-import type { TeamMember } from "./TeamMember";
+import type { User } from "../User";
+import { ConverterService } from "./ConverterService";
+import type {
+    UserDto
+} from "../Dto/DtoTypes";
 
-interface MemberDto{
-    Id: string;
-    Name: string;
-    Surname: string;
-    Email: string | null;
-    Specialization: string | null;
-    AssignedTasks: string[];
-}
-
-interface TaskDto{
-    Id: string;
-    Title: string;
-    Description: string;
-    CreateTime: string;
-    DeadLine: string | null | Date;
-    LeadTime: string | null;
-    Status: string;
-    PosX: number;
-    PosY: number;
-    SubTasks: string[];
-    AssignedTasks: string[];
-}
-
-interface SubjectDto{
-    Id: string;
-    Name: string;
-    TeamId: string | null;
-    Tasks: TaskDto[];
-}
-
-interface TeamDto{
-    Id: string;
-    Name: string;
-    Subjects: string[];
-    Members: MemberDto[];
-}
-
-interface UserDto{
-    Id: string;
-    Teams: TeamDto[];
-    Subjects: SubjectDto[];
-}
-
-const memberToDto = (member: TeamMember): MemberDto => ({
-    Id: member.id,
-    Name: member.name,
-    Surname: member.surname,
-    Email: member.email ? member.email : null,
-    Specialization: member.specialization ? member.specialization : null,
-    AssignedTasks: []
-})
-
-const taskToDto = (task: Task): TaskDto => ({
-    Id: task.id,
-    Title: task.title,
-    Description: task.description,
-    CreateTime: task.currentDate.toISOString(),
-    DeadLine: task.deadline == "отсутствует" ? null : task.deadline,
-    LeadTime: null,
-    Status: task.status,
-    PosX: task.x,
-    PosY: task.y,
-    SubTasks: task.dependsOn,
-    AssignedTasks: []
-});
-
-const subjectToDto = (subject: Subject): SubjectDto => ({
-    Id: subject.id,
-    Name: subject.name,
-    TeamId: subject.teamId ? subject.teamId : null,
-    Tasks: subject.tasks.map(taskToDto)
-});
-
-const teamToDto = (team: Team): TeamDto => ({
-    Id: team.id,
-    Name: team.name,
-    Subjects: team.subjects ? team.subjects : [],
-    Members: team.members.map(memberToDto)
-})
-
-const userToDto = (user: User): UserDto => ({
-    Id: user.id,
-    Subjects: user.subjects.map(subjectToDto),
-    Teams: user.teams.map(teamToDto)
-})
-
-class ApiService{
+export class ApiService{
     private api: string;
     private saved: boolean;
 
@@ -197,7 +111,7 @@ class ApiService{
         try{
             if(this.saved){
                 this.saved = false;
-                const saveData = userToDto(user);
+                const saveData = ConverterService.userToDto(user);
 
                 const response = await fetch(`${this.api}/save`, {
                     method: 'PUT',
@@ -224,3 +138,5 @@ class ApiService{
         }
     }
 }
+
+export const apiService = new ApiService();
