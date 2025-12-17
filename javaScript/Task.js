@@ -82,7 +82,7 @@ class Task{
             { text: 'Изменить', handler: this.openEditMenu.bind(this) },
             { text: 'Удалить', handler: this.deleteTask.bind(this) },
             { text: 'Добавить зависимость', handler: this.startLinking.bind(this) },
-            { text: 'Удалить зависимость', handler: this.startLinking.bind(this) },
+            { text: 'Удалить зависимость', handler: this.enableDeletingLinksMode.bind(this) },
             { text: 'Изменить статус', handler: this.openStatusMenu.bind(this) },
             { text: 'Добавить ответственного', handler: this.openResponsibleMenu.bind(this) }
         ];

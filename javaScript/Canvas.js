@@ -95,7 +95,7 @@ class Canvas{
     initLinkingEvents(){
         document.addEventListener('mousemove', this.updateTempLine.bind(this));
 
-        this.connectionsLayer.addEventListener('mousemove', (e) => {
+        document.addEventListener('mousemove', (e) => {
             if (!this.deletinglinksMode) return;
             
             const linkElement = e.target.closest('.link-line');
