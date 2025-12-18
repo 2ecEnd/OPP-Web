@@ -22,7 +22,7 @@ export class TeamMember {
         this.id = id ?? crypto.randomUUID();
     }
 
-    changeData(name: string, surname: string, email: string, specialization: string): void {
+    changeData(name: string, surname: string, email: string | null, specialization: string | null): void {
         this.name = name;
         this.surname = surname;
         this.email = email;

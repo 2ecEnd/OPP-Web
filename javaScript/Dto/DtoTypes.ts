@@ -12,7 +12,7 @@ export interface TaskDto{
     Title: string;
     Description: string;
     CreateTime: string;
-    DeadLine: string | null | Date;
+    DeadLine: string | null;
     LeadTime: string | null;
     Status: string;
     PosX: number;
