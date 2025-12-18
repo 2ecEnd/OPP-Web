@@ -1,8 +1,8 @@
-import type { Task } from "../Task";
+import { Task } from "../Task";
 import type { User } from "../User";
-import type { Subject } from "../Subject";
-import type { Team } from "../Team";
-import type { TeamMember } from "../TeamMember";
+import { Subject } from "../Subject";
+import { Team } from "../Team";
+import { TeamMember } from "../TeamMember";
 import type {
     MemberDto,
     TaskDto,
@@ -10,6 +10,7 @@ import type {
     TeamDto,
     UserDto
 } from "../Dto/DtoTypes";
+import { Status } from '../Enum/Enums';
 
 export class ConverterService {
     static memberToDto(member: TeamMember): MemberDto {
@@ -63,5 +64,50 @@ export class ConverterService {
             Subjects: user.subjects.map(subject => this.subjectToDto(subject)),
             Teams: user.teams.map(team => this.teamToDto(team))
         };
+    }
+
+    static dtoToTask(taskDto: TaskDto): Task{
+        return new Task(
+            taskDto.Id, 
+            taskDto.Title, 
+            taskDto.Description, 
+            taskDto.DeadLine == null ? false : true, 
+            taskDto.DeadLine == null ? "Отсутствует" : new Date(taskDto.DeadLine),
+            new Date(taskDto.CreateTime),
+            taskDto.PosX,
+            taskDto.PosY,
+            taskDto.SubTasks,
+            taskDto.AssignedTasks,
+            taskDto.Status as Status
+        );
+    }
+
+    static dtoToMember(memberDto: MemberDto): TeamMember{
+        return new TeamMember(
+            memberDto.Name,
+            memberDto.Surname,
+            memberDto.Email,
+            memberDto.Specialization,
+            memberDto.AssignedTasks,
+            memberDto.Id
+        )
+    }
+
+    static dtoToSubject(subjectDto: SubjectDto): Subject {
+        return new Subject(
+            subjectDto.Id, 
+            subjectDto.Name,
+            subjectDto.Tasks.map(this.dtoToTask), 
+            subjectDto.TeamId
+        );
+    }
+
+    static dtoToTeam(teamDto: TeamDto): Team {
+        return new Team(
+            teamDto.Name, 
+            teamDto.Subjects,
+            teamDto.Members.map(this.dtoToMember), 
+            teamDto.Id,
+        );
     }
 }

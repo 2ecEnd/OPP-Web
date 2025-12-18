@@ -1,179 +1,155 @@
-import { Task } from "./Task";
 import { Team } from "./Team";
 import { Subject } from "./Subject";
-import { apiService } from './Services/ApiService';
-
-export enum Role {
-    USER = 'Пользователь',
-    ADMIN = 'Админ'
-};
+import { ApiService } from './Services/ApiService';
+import { ConverterService } from './Services/ConverterService';
+import { Role } from './Enum/Enums';
+import type { SubjectDto, TeamDto, UserDto } from "./Dto/DtoTypes";
 
 export class User{
-
     public id: string;
     public subjects: Subject[];
     public teams: Team[];
     private role: Role;
+    private apiService: ApiService;
 
-    constructor(id: string, subjects: Subject[] = [], teams: Team[] = []){
+    private readonly DEBOUNCE_TIME: number = 3000;
+    private readonly BATCH_LIMIT: number = 10;
+    private countOfChanges: number = 0;
+    private timer: number | null = null;
+
+    public subjectsService: UserSubjectsService = new UserSubjectsService(this);
+    public teamsService: UserTeamsService = new UserTeamsService(this);
+
+    constructor(id: string, subjectsDtos: SubjectDto[] = [], teamsDtos: TeamDto[] = [], apiService: ApiService){
         this.id = id;
-        this.subjects = [];
-        this.teams = teams;
+        this.subjects = subjectsDtos.map(ConverterService.dtoToSubject);
+        this.teams = teamsDtos.map(ConverterService.dtoToTeam);
         this.role = Role.ADMIN;
-
-        subjects.forEach(subject => {
-            const tasks: Task[] = [];
-            subject.tasks.forEach(task => {
-                tasks.push(
-                    new Task(task.id, task.title, task.description, task.deadline == null ? false : true, new Date(task.deadline), new Date(task.createTime), task.posX, task.posY, task.subTasks, task.assignedTasks)
-                )
-            });
-            
-
-            this.subjects.push(new Subject(subject.id, subject.name, tasks, subject.teamId));
-        });
+        this.apiService = apiService;
     }
 
-    async saveUser(){
-        await apiService.saveUserData(this);
+    async makeChange(): Promise<void>{
+        this.countOfChanges += 1;
+
+        if (this.countOfChanges >= this.BATCH_LIMIT){
+            this.save();
+            return;
+        }
+
+        this.resetTimer();
     }
 
-    async updateUserData(){
-        const newData = await apiService.getUserData();
+    private resetTimer(): void{
+        if (this.timer) clearTimeout(this.timer);
 
-        this.id = newData.id;
-        this.subjects = [];
-        newData.subjects.forEach(subject => {
-            const tasks = [];
-            subject.tasks.forEach(task => {
-                tasks.push(
-                    new Task(task.id, task.title, task.description, task.deadLine == null ? false : true, new Date(task.deadLine), new Date(task.createTime), task.posX, task.posY, task.subTasks, task.assignedTasks)
-                )
-            });
-
-            this.subjects.push(new Subject(subject.name, tasks, subject.id, subject.teamId));
-        });
-
-        this.teams = [];
-        newData.teams.forEach(team => {
-            var members = [];
-            team.members.forEach(member => {
-                members.push(new TeamMember(member.name, member.surname, member.email, member.specialization, member.assignedTasks, member.id));
-            });
-            this.teams.push(new Team(team.name, team.subjects, members, team.id));
-        });
+        this.timer = setTimeout(async () => {
+            if (this.countOfChanges > 0) {
+                await this.save();
+            }
+        }, this.DEBOUNCE_TIME);
     }
 
-    async addTeam(team) {
-        if (!this.teams) this.teams = [];
-
-        this.teams.push(team);
-        await this.saveUser();
-
-        return team.id;
+    async save(): Promise<void>{
+        await this.apiService.saveUserData(this);
+        this.countOfChanges = 0;
     }
 
-    async addSubject(subject) {
-        if (!this.subjects) this.subjects = [];
+    async updateUserData(): Promise<void>{
+        const newData: UserDto | undefined = await this.apiService.getUserData();
+        if (!newData) return;
 
-        this.subjects.push(subject);
-        await this.saveUser();
+        this.id = newData.Id;
+        this.subjects = newData.Subjects.map(ConverterService.dtoToSubject);
+        this.teams = newData.Teams.map(ConverterService.dtoToTeam);
+    }
+}
+
+class UserSubjectsService{
+    private user: User;
+
+    constructor(user: User){
+        this.user = user;
+    }
+
+    async addSubject(subject: Subject): Promise<string> {
+        if (!this.user.subjects) this.user.subjects = [];
+
+        this.user.subjects.push(subject);
+        await this.user.makeChange();
 
         return subject.id;
     }
 
-    async removeTeam(teamId) {
-        this.teams = this.teams.filter(team => team.id !== teamId);
-        await this.saveUser();
+    async removeSubject(subjectId: string): Promise<void> {
+        this.user.subjects = this.user.subjects.filter(subject => subject.id !== subjectId);
+        await this.user.makeChange();
     }
 
-    async removeSubject(subjectId) {
-        this.subjects = this.subjects.filter(subject => subject.id !== subjectId);
-        await this.saveUser();
+    async getSubjects(): Promise<Subject[]> {
+        await this.user.updateUserData();
+        return this.user.subjects;
     }
 
-    async getTeams() {
-        await this.updateUserData();
-        return this.teams;
+    async getSubjectById(subjectId: string): Promise<Subject | undefined>{
+        await this.user.updateUserData();
+        return this.user.subjects.find(subject => subject.id === subjectId);
     }
 
-    async getSubjects() {
-        await this.updateUserData();
-        return this.subjects;
-    }
-
-    async getTeamById(teamId){
-        await this.updateUserData();
-        return this.teams.find(team => team.id === teamId);
-    }
-
-    async getSubjectById(subjectId){
-        await this.updateUserData();
-        return this.subjects.find(subject => subject.id === subjectId);
-    }
-
-    async changeSubject(subjectId, name){
+    async changeSubject(subjectId: string, name: string): Promise<void>{
         const subject = await this.getSubjectById(subjectId);
+        if(!subject) return;
+
         subject.name = name;
-        await this.saveUser();
+        await this.user.makeChange();
     }
 
-    async changeSubjectData(subjectId, subjectData){
+    async changeSubjectData(subjectId: string, subjectData: Subject): Promise<void>{
         const subject = await this.getSubjectById(subjectId);
+        if(!subject) return;
+
         subject.tasks = subjectData.tasks;
         subject.teamId = subjectData.teamId;
 
-        await this.saveUser();
+        await this.user.makeChange();
+    }
+}
+
+class UserTeamsService{
+    private user: User;
+
+    constructor(user: User){
+        this.user = user;
     }
 
-    async changeTeam(teamId, name){
+    async addTeam(team: Team): Promise<string> {
+        if (!this.user.teams) this.user.teams = [];
+
+        this.user.teams.push(team);
+        await this.user.makeChange();
+
+        return team.id;
+    }
+
+    async removeTeam(teamId: string): Promise<void> {
+        this.user.teams = this.user.teams.filter(team => team.id !== teamId);
+        await this.user.makeChange();
+    }
+
+    async getTeams(): Promise<Team[]> {
+        await this.user.updateUserData();
+        return this.user.teams;
+    }
+
+    async getTeamById(teamId: string): Promise<Team | undefined>{
+        await this.user.updateUserData();
+        return this.user.teams.find(team => team.id === teamId);
+    }
+
+    async changeTeam(teamId: string, name: string): Promise<void>{
         const team = await this.getTeamById(teamId);
+        if(!team) return;
+
         team.name = name;
-        await this.saveUser();
-    }
-
-    async addMemberInTeam(team, member){
-        for(var i = 0; i < this.teams.length; ++i){
-            if(this.teams[i].id === team.id){
-                this.teams[i].members.push(member);
-                await this.saveUser();
-                break;
-            }
-        }
-    }
-
-    async changeMemberInTeam(team, member){
-        for(var i = 0; i < this.teams.length; ++i){
-            if(this.teams[i].id === team.id){
-                for(var j = 0; j < this.teams[i].members.length; ++j){
-                    if(this.teams[i].members[j].id === member.id){
-                        this.teams[i].members[j] = member;
-                        break;
-                    }
-                }
-                await apiService.saveUserData(user);
-                break;
-            }
-        }
-    }
-
-    async removeMemberFromTeam(team, member){
-        for(var i = 0; i < this.teams.length; ++i){
-            if(this.teams[i].id === team.id){
-                this.teams[i].members = this.teams[i].members.filter(m => m.id !== member.id);
-                await this.saveUser();
-                break;
-            }
-        }
-    }
-
-    async getTaskById(taskId){
-        await this.updateUserData();
-        for(var i = 0; i < this.subjects.length; ++i){
-            for(var j = 0; j < this.subjects[i].tasks.length; j++)
-            if(this.subjects[i].tasks[j].id === taskId){
-                return this.subjects[i].tasks[j];
-            }
-        }
+        await this.user.makeChange();
     }
 }

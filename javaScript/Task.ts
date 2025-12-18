@@ -1,10 +1,5 @@
 import { AssignedTask } from "./AssignedTask";
-
-export enum Status {
-  DONE = 'Выполнено',
-  IN_PROGRESS = 'В процессе',
-  NOT_ACCEPTED = 'Не принято'
-}
+import { Status } from './Enum/Enums';
 
 export class Task{
 
@@ -15,7 +10,7 @@ export class Task{
     public deadline: Date | string;
     public currentDate: Date;
     public dependsOn: string[];
-    public assignedTasks: AssignedTask[];
+    public assignedTasks: string[];
     public status: Status;
     public x: number;
     public y: number;
@@ -31,7 +26,7 @@ export class Task{
         x: number,
         y: number,
         dependsOn: string[] = [],
-        assignedTasks: AssignedTask[] = [],
+        assignedTasks: string[] = [],
         status: Status = Status.NOT_ACCEPTED
 ) {
         this.title = title;

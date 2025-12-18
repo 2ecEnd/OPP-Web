@@ -1,16 +1,16 @@
 export class TeamMember {
     name: string;
     surname: string;
-    email: string;
-    specialization: string;
+    email: string | null;
+    specialization: string | null;
     assignedTasks: string[];
     id: string;
 
     constructor(
         name: string,
         surname: string,
-        email: string,
-        specialization: string,
+        email: string | null,
+        specialization: string | null,
         assignedTasks: string[] = [],
         id: string | null = null
     ) {
