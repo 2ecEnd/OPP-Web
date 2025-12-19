@@ -30,7 +30,7 @@ export class ConverterService {
             Title: task.title,
             Description: task.description,
             CreateTime: task.currentDate.toISOString(),
-            DeadLine: task.deadline == "отсутствует" ? null : task.deadline,
+            DeadLine: task.deadline == "отсутствует" ? null : task.deadline!.toString(),
             LeadTime: null,
             Status: task.status,
             PosX: task.x,
