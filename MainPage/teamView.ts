@@ -1,4 +1,4 @@
-function createTeamView(teamType, teamId){
+export function createTeamView(teamType: string, teamId: string){
     const newElement = document.createElement('div');
     newElement.classList.add('contentItem');
     newElement.style.display = 'flex';

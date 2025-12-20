@@ -11,4 +11,8 @@ export class Team{
         this.members = members;
         this.id = id ?? crypto.randomUUID();
     }
+
+    removeMember(member: TeamMember){
+        this.members = this.members.filter(m => m.id != member.id)
+    }
 }

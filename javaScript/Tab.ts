@@ -1,9 +1,9 @@
 export class Tab {
     public type: string;
-    public id: string;
-    public name: string;
+    public id: string | null;
+    public name: string | null;
 
-    constructor(type: string, id: string, name: string) {
+    constructor(type: string, id: string | null, name: string | null) {
         this.type = type;
         this.id = id;
         this.name = name;
