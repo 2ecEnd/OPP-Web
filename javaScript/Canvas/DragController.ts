@@ -6,7 +6,7 @@ export class DragController{
     private canvas: Canvas
     public isDraggingObject: boolean;
     public draggedObject: HTMLElement | null;
-    private draggedTask: Task | null;
+    private draggedTask: Task | null | undefined;
     private objectLastX: number;
     private objectLastY: number;
     
@@ -68,13 +68,13 @@ export class DragController{
         `;
         this.draggedObject.dataset.x = x.toString();
         this.draggedObject.dataset.y = y.toString();
-        this.draggedTask.x = x;
-        this.draggedTask.y = y;
+        this.draggedTask.view.x = x;
+        this.draggedTask.view.y = y;
 
         this.canvas.linkController.editingLinks.forEach(link => {
-            const start = GeometryController.getCenter(link.startTask.container!);
-            const end = GeometryController.getCenter(link.endTask.container!);
-            const edgePoint = GeometryController.getEdgePoint(start, end, link.endTask.container!)
+            const start = GeometryController.getCenter(link.startTask.view.container!);
+            const end = GeometryController.getCenter(link.endTask.view.container!);
+            const edgePoint = GeometryController.getEdgePoint(start, end, link.endTask.view.container!)
 
             if (this.draggedTask === link.startTask){
                 const center = GeometryController.getCenter(this.draggedObject!);

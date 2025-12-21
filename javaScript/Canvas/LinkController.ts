@@ -2,7 +2,7 @@ import type { Task } from "../Task";
 import type { Canvas } from "./Canvas";
 import { GeometryController, type Point } from "./GeometryController";
 
-interface LinkData{
+export interface LinkData{
     line: SVGLineElement,
     startTask: Task;
     endTask: Task;
@@ -101,9 +101,9 @@ export class LinkController{
     }
 
     updateTempLine(e: MouseEvent): void{
-        if (!this.linkingMode || !this.linkingStartTask || !this.linkingStartTask.container || !this.tempLine) return;
+        if (!this.linkingMode || !this.linkingStartTask || !this.linkingStartTask.view.container || !this.tempLine) return;
 
-        const start: Point = GeometryController.getCenter(this.linkingStartTask.container);
+        const start: Point = GeometryController.getCenter(this.linkingStartTask.view.container);
 
         const canvasRect = this.canvas.canvas.getBoundingClientRect();
 
@@ -163,10 +163,10 @@ export class LinkController{
         const newLinkLine = document.createElementNS(svgNS, 'line');
         newLinkLine.classList.add('link-line');
 
-        const start = GeometryController.getCenter(startTask.container!);
-        const end = GeometryController.getCenter(endTask.container!);
+        const start = GeometryController.getCenter(startTask.view.container!);
+        const end = GeometryController.getCenter(endTask.view.container!);
 
-        const edgePoint = GeometryController.getEdgePoint(start, end, endTask.container!);
+        const edgePoint = GeometryController.getEdgePoint(start, end, endTask.view.container!);
 
         newLinkLine.setAttribute('x1', start.x.toString());
         newLinkLine.setAttribute('y1', start.y.toString());
