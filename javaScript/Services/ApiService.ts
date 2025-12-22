@@ -45,7 +45,7 @@ export class ApiService{
         return false;
     }
 
-    async login(email: string, password: string): Promise<void>{
+    async login(email: string, password: string): Promise<boolean>{
         try{
             const response = await fetch(`${this.api}/login`, {
                 method: 'POST',
@@ -68,6 +68,7 @@ export class ApiService{
                 //         AccessToken: ${data.AccessToken}
                 //         RefreshToken: ${data.RefreshToken}`);
                 window.location.href = '../MainPage/screen.html';
+                return true;
             } 
             else {
                 alert('Ошибка входа');
@@ -77,6 +78,8 @@ export class ApiService{
             console.error('Ошибка:', error);
             alert('Сетевая ошибка');
         }
+
+        return false;
     }
 
     async getUserData(): Promise<UserDto | undefined>{
