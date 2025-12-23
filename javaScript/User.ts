@@ -1,6 +1,6 @@
 import { Team } from "./Team";
 import { Subject } from "./Subject";
-import { ApiService } from './Services/ApiService';
+import { apiService, ApiService } from './Services/ApiService';
 import { ConverterService } from './Services/ConverterService';
 import { Role } from './Enum/Enums';
 import type { SubjectDto, TeamDto, UserDto } from "./Dto/DtoTypes";
@@ -153,3 +153,15 @@ class UserTeamsService{
         await this.user.makeChange();
     }
 }
+
+
+export var user: User | null = null;
+
+export async function initUser(){
+    const userData = await apiService.getUserData();
+    if(userData == null) return;
+
+    user = new User(userData.Id, userData.Subjects, userData.Teams, apiService);
+}
+
+initUser();

@@ -1,5 +1,5 @@
 import { Registration } from "./Registration";
-import { DOMService } from "./DOMService";
+import { DOMService } from "./Services/DOMService";
 import { Login } from "./Login";
 import { apiService, type ApiService } from "./Services/ApiService";
 

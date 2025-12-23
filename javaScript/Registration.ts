@@ -1,5 +1,5 @@
 import type { ApiService } from "./Services/ApiService";
-import { DOMService } from "./DOMService";
+import { DOMService } from "./Services/DOMService";
 
 export class Registration{
     private container: HTMLElement;

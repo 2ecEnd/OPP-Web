@@ -48,11 +48,11 @@ export class Canvas{
 
     initExistingTasks(): void{
         this.subject.tasks.forEach((task: Task) => {
-            this.canvas.appendChild(task.createDom());
+            this.canvas.appendChild(task.view.createDom());
         });
         this.subject.tasks.forEach((task: Task) => {
             task.dependsOn.forEach((id: string) => {
-                this.connectionsLayer.appendChild(this.linkController.createLine(task, this.subject.getTask(id)));
+                this.connectionsLayer.appendChild(this.linkController.createLine(task, this.subject.getTask(id)!));
             });
         });
     }

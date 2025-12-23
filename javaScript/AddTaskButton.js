@@ -15,5 +15,3 @@ class AddTaskButton{
         this.menu.showSelf("create", null);
     }
 }
-
-var addTaskButton = null;
