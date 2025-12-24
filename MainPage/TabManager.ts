@@ -2,7 +2,9 @@ import type { Subject } from "../javaScript/Subject";
 import type { Team } from "../javaScript/Team";
 import type { TeamMember } from "../javaScript/TeamMember";
 import { ToolBar } from "../javaScript/ToolBar";
-import type { User } from "../javaScript/User";
+import { user, type User } from "../javaScript/User";
+import { showAddMemberDialog } from "./AddMemberDialog";
+import { showAssignedTasksDialog } from "./AssignedTasksDialog";
 
 export class TabManager{
 
@@ -244,7 +246,7 @@ export class TabManager{
         const infoBtn = this.createInfoButton(team, member);
         const deleteBtn = this.createDeleteButton(team, member, btnContainer);
         
-        btnContainer.appendChild(infoBtn);
+        btnContainer.appendChild(infoBtn!);
         btnContainer.appendChild(deleteBtn);
         
         return btnContainer;
@@ -254,13 +256,21 @@ export class TabManager{
         const infoBtn = document.createElement('img');
         infoBtn.src = "../images/eye.svg";
         infoBtn.className = 'x';
+
+        if(!team) return;
         
         infoBtn.addEventListener('mouseup', async function() {
+            const subjects = (await user.subjectsService.getSubjects()).filter(it => it.id in team.subjects)
             const assignedTasks: string[] = [];
             member?.assignedTasks.forEach(taskId => {
-                assignedTasks.push(user.getTaskById(taskId).title);
+                for(var i = 0; i < subjects.length; i++){
+                    var task = subjects[i]?.getTask(taskId);
+                    if(!task) continue;
+                    assignedTasks.push(task.title);
+                    break;
+                }
             });
-            showAssignedTasksDialog(team, member, assignedTasks);
+            showAssignedTasksDialog(team!, member!, assignedTasks);
         });
         
         return infoBtn;
@@ -305,7 +315,7 @@ export class TabManager{
         });
         
         addMemberBtn.addEventListener('mouseup', function() {
-            showAddMemberDialog(team);
+            showAddMemberDialog(team!);
         });
         
         btnContainer.appendChild(addMemberBtn);
@@ -372,3 +382,5 @@ export class TabManager{
         }
     }
 };
+
+export var tabManager = new TabManager(user);

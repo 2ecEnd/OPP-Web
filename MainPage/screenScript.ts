@@ -1,7 +1,8 @@
-import { User } from "../javaScript/User";
+import { user, User } from "../javaScript/User";
 import { apiService } from "../javaScript/Services/ApiService";
-import { TabManager } from "./TabManager";
+import { tabManager, TabManager } from "./TabManager";
 import { createTeamView } from "./teamView";
+import { changeTeamDialog } from "./changeTeamDialog";
 
 document.addEventListener('DOMContentLoaded', async function() {
     const teamsItem = document.querySelector('.unselectedActionPanelItem');
@@ -10,10 +11,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     const teamType = "team";
     const subjectType = "subject";
-
-    let userDto = await apiService.getUserData()
-    let user = new User(userDto?.Id ?? "", userDto?.Subjects, userDto?.Teams, apiService)
-    const tabManager = new TabManager(user)
 
     if(tabManager.toolbar.getActiveTab() === null){
         tabManager.setActiveTab(tabManager.toolbar.homeBtnType, null);
@@ -149,9 +146,3 @@ document.addEventListener('DOMContentLoaded', async function() {
         });
     }
 });
-
-
-export function isValidEmail(email: string) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-}

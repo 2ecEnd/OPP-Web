@@ -15,4 +15,20 @@ export class Team{
     removeMember(member: TeamMember){
         this.members = this.members.filter(m => m.id != member.id)
     }
+
+    addMember(member: TeamMember){
+        this.members.push(member)
+    }
+
+    changeMember(member: TeamMember){
+        this.members.forEach(m => {
+            if(m.id == member.id) {
+                m.name = member.name
+                m.surname = member.surname
+                m.email = member.email
+                m.specialization = member.specialization
+                m.assignedTasks = member.assignedTasks
+            }
+        });
+    }
 }
