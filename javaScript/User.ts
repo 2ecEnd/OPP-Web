@@ -155,13 +155,17 @@ class UserTeamsService{
 }
 
 
-export var user: User | null = null;
+export var user: User;
 
 export async function initUser(){
     const userData = await apiService.getUserData();
-    if(userData == null) return;
-
-    user = new User(userData.Id, userData.Subjects, userData.Teams, apiService);
+    if(userData == null){
+        console.log(`Required user not found`);
+        user = new User('guest', [], [], apiService);
+    }
+    else{
+        user = new User(userData.Id, userData.Subjects, userData.Teams, apiService);
+    }
 }
 
 initUser();

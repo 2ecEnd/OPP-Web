@@ -1,5 +1,7 @@
 import type { LinkData } from "./Canvas/LinkController";
+import { canvas } from "./InitEditor";
 import type { Task } from "./Task";
+import { user } from "./User";
 
 export class Subject{
 
@@ -18,7 +20,7 @@ export class Subject{
     }
 
     changeData(): void{
-        user.changeSubjectData(this.id, this);
+        user.subjectsService.changeSubjectData(this.id, this);
     }
 
     addTask(task: Task): void{
@@ -28,13 +30,13 @@ export class Subject{
 
     deleteTask(id: string): void{
         const taskToDelete: Task = this.tasks.find(task => task.id === id)!;
-        canvas.links.forEach((link: LinkData) => {
+        canvas.linkController.links.forEach((link: LinkData) => {
             if (link.startTask === taskToDelete || link.endTask === taskToDelete){
                 link.line.remove();
             }
         });
 
-        canvas.links = canvas.links.filter((link: LinkData) => 
+        canvas.linkController.links = canvas.linkController.links.filter((link: LinkData) => 
             link.startTask !== taskToDelete && link.endTask !== taskToDelete
         );
 
@@ -44,11 +46,11 @@ export class Subject{
             task.dependsOn.filter((t: string) => id !== taskToDelete.id);
         });
 
-        user.changeSubjectData(this.id, this);
+        user.subjectsService.changeSubjectData(this.id, this);
     }
 
     changeSubject(newName: string): void{
-        user.changeSubject(this.id, newName);
+        user.subjectsService.changeSubject(this.id, newName);
         this.name = newName;
         this.view.updateView();
     }
@@ -57,7 +59,7 @@ export class Subject{
         e.stopPropagation();
 
         this.view.container.remove();
-        user.removeSubject(this.id);
+        user.subjectsService.removeSubject(this.id);
     }
 
     getTask(id: string): Task | undefined{

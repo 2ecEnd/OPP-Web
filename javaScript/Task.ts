@@ -1,5 +1,6 @@
 import { AssignedTask } from "./AssignedTask";
 import { Status } from './Enum/Enums';
+import { addTaskMenu, canvas } from "./InitEditor";
 
 export class Task{
 
@@ -150,17 +151,17 @@ class TaskView{
     }
 
     openEditMenu(): void{
-        addTaskMenu.showSelf("edit", this);
+        addTaskMenu.showSelf("edit", this.model);
     }
 
     startLinking(): void {
         this.closeAllMenus();
-        canvas.startLinking(this);
+        canvas.linkController.startLinking(this.model);
     }
 
     enableDeletingLinksMode(): void {
         this.closeAllMenus();
-        canvas.enableDeletingLinksMode(this);
+        canvas.linkController.enableDeletingLinksMode(this.model);
     }
 
     createContextMenu(): HTMLElement {
