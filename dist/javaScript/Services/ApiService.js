@@ -91,11 +91,10 @@ export class ApiService {
             alert('Сетевая ошибка');
         }
     }
-    async saveUserData(user) {
+    async saveUserData(saveData) {
         try {
             if (this.saved) {
                 this.saved = false;
-                const saveData = ConverterService.userToDto(user);
                 const response = await fetch(`${this.api}/save`, {
                     method: 'PUT',
                     headers: {
