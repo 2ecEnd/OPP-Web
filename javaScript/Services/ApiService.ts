@@ -8,8 +8,8 @@ export class ApiService{
 
     constructor() {
         //this.api = 'http://localhost:5000/api/Auth';
-        this.api = 'https://localhost:7000/api/Auth';
-        //this.api = 'https://opp-back.onrender.com/api/Auth';
+        //this.api = 'https://localhost:7000/api/Auth';
+        this.api = 'https://opp-back.onrender.com/api/Auth';
         this.saved = true;
     }
 
