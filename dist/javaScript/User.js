@@ -40,7 +40,7 @@ export class User {
         }, this.DEBOUNCE_TIME);
     }
     async save() {
-        await this.apiService.saveUserData(this);
+        await this.apiService.saveUserData(ConverterService.userToDto(this));
         this.countOfChanges = 0;
     }
     async updateUserData() {

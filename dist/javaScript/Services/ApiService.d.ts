@@ -1,4 +1,3 @@
-import type { User } from "../User.js";
 import type { UserDto } from "../Dto/DtoTypes";
 export declare class ApiService {
     private api;
@@ -7,7 +6,7 @@ export declare class ApiService {
     register(email: string, password: string): Promise<boolean>;
     login(email: string, password: string): Promise<boolean>;
     getUserData(): Promise<UserDto | undefined>;
-    saveUserData(user: User): Promise<Response | undefined>;
+    saveUserData(saveData: UserDto): Promise<Response | undefined>;
 }
 export declare const apiService: ApiService;
 //# sourceMappingURL=ApiService.d.ts.map
