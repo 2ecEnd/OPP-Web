@@ -1,0 +1,41 @@
+import type { Subject } from "../javaScript/Subject";
+import type { Team } from "../javaScript/Team";
+import type { TeamMember } from "../javaScript/TeamMember";
+import { ToolBar } from "../javaScript/ToolBar";
+import { type User } from "../javaScript/User";
+export declare class TabManager {
+    toolbarView: HTMLDivElement;
+    originalActionPanel: HTMLDivElement;
+    originalContentArea: HTMLDivElement;
+    mainPanel: HTMLDivElement;
+    private teamType;
+    private subjectType;
+    toolbar: ToolBar;
+    private user;
+    constructor(user: User);
+    restoreMainPanel(): void;
+    createTab(type: string, id: string | null, name: string | null): HTMLDivElement;
+    closeTab(type: string, id: string): void;
+    addTab(type: string, id: string, name: string): void;
+    setActiveTab(type: string, id: string | null): void;
+    updateToolbar(): void;
+    showTabContent(type: string, id: string): Promise<void>;
+    showTeamContent(team: Team | undefined): void;
+    showSubjectContent(subject: Subject | undefined): void;
+    createTeamContent(team: Team | undefined): HTMLDivElement;
+    createTeamContainer(): HTMLDivElement;
+    createParticipantsColumn(team: Team | undefined): HTMLDivElement;
+    createParticipantsList(team: Team | undefined): HTMLDivElement;
+    createParticipantElement(team: Team | undefined, member: TeamMember | undefined): HTMLDivElement;
+    createParticipantButtonContainer(team: Team | undefined, member: TeamMember | undefined): HTMLDivElement;
+    createInfoButton(team: Team | undefined, member: TeamMember | undefined): HTMLImageElement | undefined;
+    createDeleteButton(team: Team | undefined, member: TeamMember | undefined, btnContainer: Element): HTMLImageElement;
+    createAddMemberButton(team: Team | undefined): HTMLDivElement;
+    createSubjectsColumn(team: Team | undefined): HTMLDivElement;
+    createSubjectsList(team: Team | undefined): HTMLDivElement;
+    addSubjectsToList(team: Team | undefined, subjectsList: Element): Promise<void>;
+    switchActiveItem(activeItem: Element, inactiveItem: Element): void;
+    clearContentArea(): void;
+}
+export declare var tabManager: TabManager;
+//# sourceMappingURL=TabManager.d.ts.map
