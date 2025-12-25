@@ -1,4 +1,3 @@
-import type { User } from "../User.js";
 import { ConverterService } from "./ConverterService.js";
 import type {
     UserDto
@@ -110,11 +109,10 @@ export class ApiService{
         }
     }
 
-    async saveUserData(user: User){
+    async saveUserData(saveData: UserDto){
         try{
             if(this.saved){
                 this.saved = false;
-                const saveData = ConverterService.userToDto(user);
 
                 const response = await fetch(`${this.api}/save`, {
                     method: 'PUT',
