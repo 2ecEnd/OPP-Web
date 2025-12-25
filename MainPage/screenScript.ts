@@ -2,6 +2,7 @@ import { initUser, user } from "../javaScript/User.js";
 import { tabManager } from "./TabManager.js";
 import { createTeamView } from "./teamView.js";
 import { changeTeamDialog } from "./changeTeamDialog.js";
+import { SubjectView } from "../javaScript/SubjectView.js";
 
 document.addEventListener('DOMContentLoaded', async function() {
     const teamsItem = document.querySelector('.unselectedActionPanelItem');
@@ -143,7 +144,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         if(!contentArea) return;
 
         subjects.forEach(subject => {
-            contentArea.appendChild(subject.getView().container);
+            contentArea.appendChild(new SubjectView(subject).container);
         });
     }
 });

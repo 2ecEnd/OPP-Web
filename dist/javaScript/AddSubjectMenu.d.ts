@@ -1,17 +1,17 @@
-import type { Subject } from "./Subject.js";
 declare class AddSubjectMenu {
     private container;
     private closeMenuButton;
     private form;
     private overlay;
     private type;
-    private currentSubject;
+    private currentName;
+    private changeSubjectAction;
     constructor();
     init(): void;
     handleSubmit(event: Event): void;
-    changeSubject(subject: Subject, name: string): void;
+    changeSubject(name: string): void;
     fillTheForm(): void;
-    showSelf(type: string, currentSubject: Subject): void;
+    showSelf(type: string, currentName: string, changeSubjectAction: (newName: string) => void): void;
     closeSelf(): void;
 }
 export declare const addSubjectMenu: AddSubjectMenu;

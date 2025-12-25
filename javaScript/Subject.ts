@@ -53,21 +53,13 @@ export class Subject{
     changeSubject(newName: string): void{
         user.subjectsService.changeSubject(this.id, newName);
         this.name = newName;
-        //this.view.updateView();
     }
 
-    deleteSubject(e: Event): void{
-        e.stopPropagation();
-
-        //this.view.container.remove();
+    deleteSubject(): void{
         user.subjectsService.removeSubject(this.id);
     }
 
     getTask(id: string): Task | undefined{
         return this.tasks.find(task => task.id === id);
     }
-
-    /*getView(): SubjectView{
-        return this.view;
-    }*/
 }

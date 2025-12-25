@@ -1,12 +1,11 @@
-import type { Subject } from "./Subject.js"
-
 class AddSubjectMenu{
     private container: HTMLElement
     private closeMenuButton: HTMLElement
     private form: HTMLFormElement
     private overlay: HTMLElement
     private type: string
-    private currentSubject: Subject | null
+    private currentName: string | null
+    private changeSubjectAction: (newName: string) => void
     constructor(){
         this.container = document.getElementById('add-subject-menu')!;
         this.closeMenuButton = document.getElementById('close-subject-menu-button')!;
@@ -14,7 +13,8 @@ class AddSubjectMenu{
         this.overlay = document.getElementById('overlay')!;
 
         this.type = "";
-        this.currentSubject = null;
+        this.currentName = null;
+        this.changeSubjectAction = () => {};
 
         this.init();
     }
@@ -31,7 +31,7 @@ class AddSubjectMenu{
         const submitButton = this.form.querySelector('#subjectFormSubmitButton')!;
 
         //if(this.type === "create") this.createSubject(name);
-        if(this.type === "edit" && this.currentSubject) this.changeSubject(this.currentSubject, name);
+        if(this.type === "edit") this.changeSubject(name);
 
         this.form.reset();
         submitButton.innerHTML = "Добавить";
@@ -39,26 +39,27 @@ class AddSubjectMenu{
         this.closeSelf();
     }
 
-    changeSubject(subject: Subject, name: string){
-        subject.changeSubject(name);
+    changeSubject(name: string){
+        this.changeSubjectAction(name);
     }
 
     fillTheForm(){
         const name = this.form.querySelector('#subjectFormTitleInput')! as HTMLInputElement;
         const submitButton = this.form.querySelector('#subjectFormSubmitButton')!;
 
-        name.value = this.currentSubject?.name ?? "";
-        console.log(this.currentSubject)
+        name.value = this.currentName ?? "";
+        console.log(this.currentName)
 
         submitButton.innerHTML = "Изменить";
     }
 
-    showSelf(type: string, currentSubject: Subject){
+    showSelf(type: string, currentName: string, changeSubjectAction: (newName: string) => void){
         this.container.classList.add('active');
         this.overlay.classList.add('active');
 
         this.type = type;
-        this.currentSubject = currentSubject;
+        this.currentName = currentName;
+        this.changeSubjectAction = changeSubjectAction;
 
         if(this.type === "edit") this.fillTheForm();
     }
