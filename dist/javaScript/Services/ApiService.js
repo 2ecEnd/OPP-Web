@@ -3,8 +3,8 @@ export class ApiService {
     saved;
     constructor() {
         //this.api = 'http://localhost:5000/api/Auth';
-        // this.api = 'https://localhost:7000/api/Auth';
-        this.api = 'https://opp-back.onrender.com/api/Auth';
+        this.api = 'https://localhost:7000/api/Auth';
+        //this.api = 'https://opp-back.onrender.com/api/Auth';
         this.saved = true;
     }
     async register(email, password) {
@@ -20,6 +20,9 @@ export class ApiService {
                 })
             });
             if (response.status === 201) {
+                const data = await response.json();
+                localStorage.setItem('AccessToken', data.AccessToken);
+                localStorage.setItem('RefreshToken', data.RefreshToken);
                 alert('Регистрация успешна');
                 window.location.href = '../MainPage/screen.html';
                 return true;
