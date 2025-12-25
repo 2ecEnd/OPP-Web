@@ -17,6 +17,8 @@ export class DragController{
         this.draggedTask = null;
         this.objectLastX = 0;
         this.objectLastY = 0;
+
+        this.initObjectsEvents();
     }
 
 
