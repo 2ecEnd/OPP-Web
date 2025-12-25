@@ -3,6 +3,7 @@ import { user } from "../javaScript/User.js";
 import { createTeamView } from "./teamView.js";
 import { tabManager } from "./TabManager.js";
 import { Subject } from "../javaScript/Subject.js";
+import { SubjectView } from "../javaScript/SubjectView.js";
 const addButton = document.querySelector('.addButton');
 const modalOverlay = document.getElementById('modalOverlay');
 const modalInput = document.getElementById('modalInput');
@@ -60,7 +61,7 @@ createBtn?.addEventListener('click', async function () {
         else if (activeItemText === 'Subjects') {
             const newSubject = new Subject(null, name, [], null);
             await user.subjectsService.addSubject(newSubject);
-            contentArea?.appendChild(newSubject.getView().container);
+            contentArea?.appendChild(new SubjectView(newSubject).container);
         }
         closeModal();
     }
