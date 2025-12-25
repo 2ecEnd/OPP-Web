@@ -14,6 +14,8 @@ export class Task{
     public assignedTasks: string[]; // idшники людей, ответственных за эту задачу
     public status: Status;
     public view: TaskView;
+    public x: number;
+    public y: number;
 
     constructor(
         id: string | null = null,
@@ -39,6 +41,8 @@ export class Task{
         this.id = id ?? crypto.randomUUID();
         this.status = status;
         this.view = new TaskView(x, y, this);
+        this.x = x;
+        this.y = y;
     }
 
     setStatus(status: Status): void{

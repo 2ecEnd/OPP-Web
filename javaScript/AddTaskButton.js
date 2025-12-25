@@ -1,17 +1,17 @@
-class AddTaskButton{
-    constructor(){
-        this.button = document.getElementById('add-task-button');
-        this.menu = null;
-
+import { DOMService } from "./Services/DOMService";
+export class AddTaskButton {
+    menu;
+    button;
+    constructor(menu) {
+        this.button = DOMService.getElementById('add-task-button');
+        this.menu = menu;
         this.init();
     }
-
-    init(){
+    init() {
         this.button.addEventListener('click', this.openMenu.bind(this));
-        this.menu = addTaskMenu;
     }
-
-    openMenu(){
+    openMenu() {
         this.menu.showSelf("create", null);
     }
 }
+//# sourceMappingURL=AddTaskButton.js.map

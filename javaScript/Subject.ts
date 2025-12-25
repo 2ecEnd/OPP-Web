@@ -1,3 +1,4 @@
+import { addSubjectMenu } from "./AddSubjectMenu";
 import type { LinkData } from "./Canvas/LinkController";
 import { canvas } from "./InitEditor";
 import type { Task } from "./Task";

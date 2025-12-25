@@ -2,6 +2,7 @@ import { AddTaskButton } from "./AddTaskButton";
 import { AddTaskMenu } from "./AddTaskMenu";
 import { Canvas } from "./Canvas/Canvas";
 import { Subject } from "./Subject";
+import { ToolBar } from "./ToolBar";
 import { initUser, user } from "./User";
 
 export var canvas: Canvas;
@@ -12,8 +13,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     if(!user) await initUser();
     if(!user) return;
     
-    const activeTab = toolbar.getActiveTab();
-    let currentSubject = activeTab.type == "subject" ? await user.subjectsService.getSubjectById(activeTab.id) : new Subject("test", '', undefined, null);
+    const activeTab = new ToolBar().getActiveTab();
+    let currentSubject = activeTab?.type == "subject" ? await user.subjectsService.getSubjectById(activeTab!.id!) : new Subject("test", '', undefined, null);
 
     if (!currentSubject) {
         console.log(`Required subject not found in InitEditor`);

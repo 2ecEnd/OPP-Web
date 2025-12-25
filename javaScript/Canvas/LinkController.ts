@@ -121,15 +121,15 @@ export class LinkController{
 
         const targetTask = this.canvas.subject.getTask(targetTaskDom.id)
 
-        if(!this.validateLinking(this.linkingStartTask, targetTask)){
+        if(!this.validateLinking(this.linkingStartTask, targetTask!)){
             this.stopLinking();
             alert("Нельзя связать с этой задачей");
             return;
         }
 
-        this.linkingStartTask.addDependency(targetTask);
+        this.linkingStartTask.addDependency(targetTask!);
 
-        this.canvas.connectionsLayer.appendChild(this.createLine(this.linkingStartTask, targetTask));
+        this.canvas.connectionsLayer.appendChild(this.createLine(this.linkingStartTask, targetTask!));
         this.canvas.subject.changeData();
         this.stopLinking();
     }
@@ -148,7 +148,7 @@ export class LinkController{
             visited.push(currentTaskId);
 
             const currentTask = this.canvas.subject.getTask(currentTaskId);
-            currentTask.dependsOn.forEach((id: string) => {
+            currentTask!.dependsOn.forEach((id: string) => {
                 if(!visited.some(x => x === id)){
                     stack.push(id);
                 }
