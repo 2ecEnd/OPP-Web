@@ -50,7 +50,7 @@ export class User{
     }
 
     async save(): Promise<void>{
-        await this.apiService.saveUserData(this);
+        await this.apiService.saveUserData(ConverterService.userToDto(this));
         this.countOfChanges = 0;
     }
 
