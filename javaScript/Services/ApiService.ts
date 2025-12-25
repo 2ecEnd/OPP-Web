@@ -84,6 +84,37 @@ export class ApiService{
 
         return false;
     }
+    
+    async logout(): Promise<boolean>{
+        try{
+            const response = await fetch(`${this.api}/logout`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    RefreshToken: localStorage.getItem('RefreshToken')
+                })
+            });
+            
+            if (response.status === 200) {
+                localStorage.removeItem('AccessToken');
+                localStorage.removeItem('RefreshToken');
+
+                window.location.href = '../../pages/registrationPage.html';
+                return true;
+            } 
+            else {
+                alert('Ошибка выхода');
+            }
+        }
+        catch (error){
+            console.error('Ошибка:', error);
+            alert('Сетевая ошибка');
+        }
+
+        return false;
+    }
 
     async getUserData(): Promise<UserDto | undefined>{
         const token = localStorage.getItem('AccessToken');

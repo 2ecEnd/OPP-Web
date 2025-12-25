@@ -5,6 +5,7 @@ export declare class ApiService {
     constructor();
     register(email: string, password: string): Promise<boolean>;
     login(email: string, password: string): Promise<boolean>;
+    logout(): Promise<boolean>;
     getUserData(): Promise<UserDto | undefined>;
     saveUserData(user: UserDto): Promise<Response | undefined>;
 }
