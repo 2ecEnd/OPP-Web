@@ -34,7 +34,7 @@ export class ToolBar {
         }
         try {
             const data = JSON.parse(savedData);
-            this.tabs = (data.tabs || []);
+            this.tabs = (data.tabs || []).map(tab => new Tab(tab.type, tab.id, tab.name));
             this.activeTab = data.activeTab || -1;
         }
         catch (error) {
