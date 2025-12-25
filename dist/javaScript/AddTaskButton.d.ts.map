@@ -1,0 +1,1 @@
+{"version":3,"file":"AddTaskButton.d.ts","sourceRoot":"","sources":["../../javaScript/AddTaskButton.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,WAAW,EAAE,MAAM,eAAe,CAAC;AAGjD,qBAAa,aAAa;IACtB,OAAO,CAAC,IAAI,CAAc;IAC1B,OAAO,CAAC,MAAM,CAAc;gBAEhB,IAAI,EAAE,WAAW;IAO7B,IAAI;IAIJ,QAAQ;CAGX"}
