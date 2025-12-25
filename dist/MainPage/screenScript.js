@@ -1,5 +1,5 @@
-import { user, User } from "../javaScript/User.js";
-import { tabManager, TabManager } from "./TabManager.js";
+import { initUser, user } from "../javaScript/User.js";
+import { tabManager } from "./TabManager.js";
 import { createTeamView } from "./teamView.js";
 import { changeTeamDialog } from "./changeTeamDialog.js";
 document.addEventListener('DOMContentLoaded', async function () {
@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     const contentArea = document.querySelector('.contentArea');
     const teamType = "team";
     const subjectType = "subject";
+    if (!user)
+        await initUser();
     if (tabManager.toolbar.getActiveTab() === null || tabManager.toolbar.getActiveTab()?.type === tabManager.toolbar.homeBtnType) {
         tabManager.setActiveTab(tabManager.toolbar.homeBtnType, null);
         await setUserSubjects();
