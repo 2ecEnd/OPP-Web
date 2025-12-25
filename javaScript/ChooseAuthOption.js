@@ -1,33 +1,36 @@
-class ChooseAuthOption{
-    constructor(){
-        this.container = document.getElementById('option-choice-container');
-        this.loginOption = document.getElementById('option-authentication');
-        this.registerOption = document.getElementById('option-registration');
-
+import { Registration } from "./Registration";
+import { DOMService } from "./Services/DOMService";
+import { Login } from "./Login";
+import { apiService } from "./Services/ApiService";
+class ChooseAuthOption {
+    container;
+    loginOption;
+    registerOption;
+    registrationMenu;
+    loginMenu;
+    constructor() {
+        this.container = DOMService.getElementById('option-choice-container');
+        this.loginOption = DOMService.getElementById('option-authentication');
+        this.registerOption = DOMService.getElementById('option-registration');
+        this.registrationMenu = new Registration(apiService);
+        this.loginMenu = new Login(apiService);
         this.init();
     }
-    
-    init(){
+    init() {
         this.loginOption.addEventListener('click', this.openLoginMenu.bind(this));
         this.registerOption.addEventListener('click', this.openRegisterMenu.bind(this));
-
-        this.registrationMenu = new Registration();
-        this.loginMenu = new Login();
     }
-
-    openLoginMenu(){
+    openLoginMenu() {
         this.toggleVisibility();
         this.loginMenu.toggleVisibility();
     }
-
-    openRegisterMenu(){
+    openRegisterMenu() {
         this.toggleVisibility();
         this.registrationMenu.toggleVisibility();
     }
-
-    toggleVisibility(){
+    toggleVisibility() {
         this.container.classList.toggle('active');
     }
 }
-
-const chooseAuthOption = new ChooseAuthOption();
+export const chooseAuthOption = new ChooseAuthOption();
+//# sourceMappingURL=ChooseAuthOption.js.map

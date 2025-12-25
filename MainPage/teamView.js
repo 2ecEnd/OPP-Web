@@ -1,4 +1,4 @@
-function createTeamView(teamType, teamId){
+export function createTeamView(teamType, teamId) {
     const newElement = document.createElement('div');
     newElement.classList.add('contentItem');
     newElement.style.display = 'flex';
@@ -8,3 +8,4 @@ function createTeamView(teamType, teamId){
     newElement.setAttribute('data-id', teamId);
     return newElement;
 }
+//# sourceMappingURL=teamView.js.map

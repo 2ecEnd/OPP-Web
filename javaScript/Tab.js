@@ -1,8 +1,14 @@
-class Tab{
-    constructor(type, id, name){
+export class Tab {
+    type;
+    id;
+    name;
+    constructor(type, id, name) {
         this.type = type;
         this.id = id;
-        this.name = name
+        this.name = name;
     }
-    copy() { return new Tab(this.type, this.id, this.name); }
+    copy() {
+        return new Tab(this.type, this.id, this.name);
+    }
 }
+//# sourceMappingURL=Tab.js.map

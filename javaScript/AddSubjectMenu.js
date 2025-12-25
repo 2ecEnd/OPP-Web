@@ -1,64 +1,56 @@
-class AddSubjectMenu{
-    constructor(){
+class AddSubjectMenu {
+    container;
+    closeMenuButton;
+    form;
+    overlay;
+    type;
+    currentSubject;
+    constructor() {
         this.container = document.getElementById('add-subject-menu');
         this.closeMenuButton = document.getElementById('close-subject-menu-button');
         this.form = document.getElementById('add-subject-form');
         this.overlay = document.getElementById('overlay');
-
         this.type = "";
         this.currentSubject = null;
-
         this.init();
     }
-
-    init(){
+    init() {
         this.form.addEventListener('submit', this.handleSubmit.bind(this));
         this.closeMenuButton.addEventListener('click', this.closeSelf.bind(this));
     }
-
-    handleSubmit(event){
+    handleSubmit(event) {
         event.preventDefault();
-
         const name = this.form.querySelector('#subjectFormTitleInput').value;
         const submitButton = this.form.querySelector('#subjectFormSubmitButton');
-
-        if(this.type === "create") this.createSubject(name);
-        else if(this.type === "edit") this.changeSubject(this.currentSubject, name);
-
+        //if(this.type === "create") this.createSubject(name);
+        if (this.type === "edit" && this.currentSubject)
+            this.changeSubject(this.currentSubject, name);
         this.form.reset();
         submitButton.innerHTML = "Добавить";
-
         this.closeSelf();
     }
-
-    changeSubject(subject, name){
+    changeSubject(subject, name) {
         subject.changeSubject(name);
     }
-
-    fillTheForm(){
+    fillTheForm() {
         const name = this.form.querySelector('#subjectFormTitleInput');
         const submitButton = this.form.querySelector('#subjectFormSubmitButton');
-
-        name.value = this.currentSubject.name;
-        console.log(this.currentSubject)
-
+        name.value = this.currentSubject?.name ?? "";
+        console.log(this.currentSubject);
         submitButton.innerHTML = "Изменить";
     }
-
-    showSelf(type, currentSubject){
+    showSelf(type, currentSubject) {
         this.container.classList.add('active');
         this.overlay.classList.add('active');
-
         this.type = type;
         this.currentSubject = currentSubject;
-
-        if(this.type === "edit") this.fillTheForm();
+        if (this.type === "edit")
+            this.fillTheForm();
     }
-
-    closeSelf(){
+    closeSelf() {
         this.container.classList.remove('active');
         this.overlay.classList.remove('active');
     }
 }
-
-const addSubjectMenu = new AddSubjectMenu();
+export const addSubjectMenu = new AddSubjectMenu();
+//# sourceMappingURL=AddSubjectMenu.js.map
