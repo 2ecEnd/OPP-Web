@@ -1,6 +1,6 @@
-import type { Canvas } from "./Canvas/Canvas";
-import { DOMService } from "./Services/DOMService";
-import { Task } from "./Task";
+import type { Canvas } from "./Canvas/Canvas.js";
+import { DOMService } from "./Services/DOMService.js";
+import { Task } from "./Task.js";
 
 export class AddTaskMenu{
     private container: HTMLElement;

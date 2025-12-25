@@ -1,8 +1,8 @@
-import { addSubjectMenu } from "./AddSubjectMenu";
-import type { LinkData } from "./Canvas/LinkController";
-import { canvas } from "./InitEditor";
-import type { Task } from "./Task";
-import { user } from "./User";
+import { addSubjectMenu } from "./AddSubjectMenu.js";
+import type { LinkData } from "./Canvas/LinkController.js";
+import { canvas } from "./InitEditor.js";
+import type { Task } from "./Task.js";
+import { user } from "./User.js";
 
 export class Subject{
 

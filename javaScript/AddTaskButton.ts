@@ -1,5 +1,5 @@
-import type { AddTaskMenu } from "./AddTaskMenu";
-import { DOMService } from "./Services/DOMService";
+import type { AddTaskMenu } from "./AddTaskMenu.js";
+import { DOMService } from "./Services/DOMService.js";
 
 export class AddTaskButton{
     private menu: AddTaskMenu;

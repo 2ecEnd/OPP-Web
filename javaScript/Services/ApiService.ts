@@ -1,5 +1,5 @@
-import type { User } from "../User";
-import { ConverterService } from "./ConverterService";
+import type { User } from "../User.js";
+import { ConverterService } from "./ConverterService.js";
 import type {
     UserDto
 } from "../Dto/DtoTypes";

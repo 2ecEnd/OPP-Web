@@ -1,9 +1,9 @@
-import { Team } from "./Team";
-import { Subject } from "./Subject";
-import { apiService, ApiService } from './Services/ApiService';
-import { ConverterService } from './Services/ConverterService';
-import { Role } from './Enum/Enums';
-import type { SubjectDto, TeamDto, UserDto } from "./Dto/DtoTypes";
+import { Team } from "./Team.js";
+import { Subject } from "./Subject.js";
+import { apiService, ApiService } from './Services/ApiService.js';
+import { ConverterService } from './Services/ConverterService.js';
+import { Role } from './Enum/Enums.js';
+import type { SubjectDto, TeamDto, UserDto } from "./Dto/DtoTypes.js";
 
 export class User{
     public id: string;

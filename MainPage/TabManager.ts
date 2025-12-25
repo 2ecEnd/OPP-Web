@@ -1,10 +1,10 @@
-import type { Subject } from "../javaScript/Subject";
-import type { Team } from "../javaScript/Team";
-import type { TeamMember } from "../javaScript/TeamMember";
-import { ToolBar } from "../javaScript/ToolBar";
-import { user, type User } from "../javaScript/User";
-import { showAddMemberDialog } from "./AddMemberDialog";
-import { showAssignedTasksDialog } from "./AssignedTasksDialog";
+import type { Subject } from "../javaScript/Subject.js";
+import type { Team } from "../javaScript/Team.js";
+import type { TeamMember } from "../javaScript/TeamMember.js";
+import { ToolBar } from "../javaScript/ToolBar.js";
+import { user, type User } from "../javaScript/User.js";
+import { showAddMemberDialog } from "./AddMemberDialog.js";
+import { showAssignedTasksDialog } from "./AssignedTasksDialog.js";
 
 export class TabManager{
 
