@@ -1,6 +1,6 @@
-import type { Task } from "../Task";
-import type { Canvas } from "./Canvas";
-import { GeometryController } from "./GeometryController";
+import type { Task } from "../Task.js";
+import type { Canvas } from "./Canvas.js";
+import { GeometryController } from "./GeometryController.js";
 
 export class DragController{
     private canvas: Canvas

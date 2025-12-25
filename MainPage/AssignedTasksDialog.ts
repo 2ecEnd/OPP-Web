@@ -1,6 +1,6 @@
-import type { Team } from "../javaScript/Team";
-import type { TeamMember } from "../javaScript/TeamMember";
-import { isValidEmail } from "./SupportScript";
+import type { Team } from "../javaScript/Team.js";
+import type { TeamMember } from "../javaScript/TeamMember.js";
+import { isValidEmail } from "./SupportScript.js";
 
 export function showAssignedTasksDialog(team: Team, member: TeamMember, assignedTasks: string[]){
     const overlay = document.createElement('div');

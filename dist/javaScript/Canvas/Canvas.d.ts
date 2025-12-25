@@ -1,5 +1,5 @@
-import type { Subject } from "../Subject";
-import { LinkController } from "./LinkController";
+import type { Subject } from "../Subject.js";
+import { LinkController } from "./LinkController.js";
 export declare class Canvas {
     subject: Subject;
     viewport: HTMLElement;

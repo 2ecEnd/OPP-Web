@@ -1,7 +1,7 @@
-import { Team } from "./Team";
-import { Subject } from "./Subject";
-import { ApiService } from './Services/ApiService';
-import type { SubjectDto, TeamDto } from "./Dto/DtoTypes";
+import { Team } from "./Team.js";
+import { Subject } from "./Subject.js";
+import { ApiService } from './Services/ApiService.js';
+import type { SubjectDto, TeamDto } from "./Dto/DtoTypes.js";
 export declare class User {
     id: string;
     subjects: Subject[];

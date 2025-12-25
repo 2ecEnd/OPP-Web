@@ -1,8 +1,7 @@
-import { user, User } from "../javaScript/User";
-import { apiService } from "../javaScript/Services/ApiService";
-import { tabManager, TabManager } from "./TabManager";
-import { createTeamView } from "./teamView";
-import { changeTeamDialog } from "./changeTeamDialog";
+import { user, User } from "../javaScript/User.js";
+import { tabManager, TabManager } from "./TabManager.js";
+import { createTeamView } from "./teamView.js";
+import { changeTeamDialog } from "./changeTeamDialog.js";
 
 document.addEventListener('DOMContentLoaded', async function() {
     const teamsItem = document.querySelector('.unselectedActionPanelItem');

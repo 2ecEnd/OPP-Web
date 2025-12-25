@@ -1,7 +1,7 @@
-import { ToolBar } from "../javaScript/ToolBar";
-import { user } from "../javaScript/User";
-import { showAddMemberDialog } from "./AddMemberDialog";
-import { showAssignedTasksDialog } from "./AssignedTasksDialog";
+import { ToolBar } from "../javaScript/ToolBar.js";
+import { user } from "../javaScript/User.js";
+import { showAddMemberDialog } from "./AddMemberDialog.js";
+import { showAssignedTasksDialog } from "./AssignedTasksDialog.js";
 export class TabManager {
     toolbarView;
     originalActionPanel;

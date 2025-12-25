@@ -1,4 +1,4 @@
-import { isValidEmail } from "./SupportScript";
+import { isValidEmail } from "./SupportScript.js";
 export function showAssignedTasksDialog(team, member, assignedTasks) {
     const overlay = document.createElement('div');
     const modal = document.createElement('div');

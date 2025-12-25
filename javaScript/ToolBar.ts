@@ -1,4 +1,4 @@
-import { Tab } from "./Tab";
+import { Tab } from "./Tab.js";
 
 export class ToolBar{
     private tabs: Tab[]

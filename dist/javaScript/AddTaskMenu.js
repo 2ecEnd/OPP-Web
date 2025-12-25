@@ -1,5 +1,5 @@
-import { DOMService } from "./Services/DOMService";
-import { Task } from "./Task";
+import { DOMService } from "./Services/DOMService.js";
+import { Task } from "./Task.js";
 export class AddTaskMenu {
     container;
     closeMenuButton;

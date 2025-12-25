@@ -1,5 +1,5 @@
-import { TeamMember } from "../javaScript/TeamMember";
-import { isValidEmail } from "./SupportScript";
+import { TeamMember } from "../javaScript/TeamMember.js";
+import { isValidEmail } from "./SupportScript.js";
 export function showAddMemberDialog(team) {
     const overlay = document.createElement('div');
     const modal = document.createElement('div');

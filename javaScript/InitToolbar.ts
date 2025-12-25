@@ -1,4 +1,4 @@
-import { ToolBar } from "./ToolBar";
+import { ToolBar } from "./ToolBar.js";
 
 const nav = document.getElementById('nav');
 const toolbar = new ToolBar();

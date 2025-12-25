@@ -1,4 +1,4 @@
-import { GeometryController } from "./GeometryController";
+import { GeometryController } from "./GeometryController.js";
 export class LinkController {
     canvas;
     linkingMode;

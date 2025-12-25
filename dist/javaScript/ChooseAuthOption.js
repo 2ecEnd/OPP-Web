@@ -1,7 +1,7 @@
-import { Registration } from "./Registration";
-import { DOMService } from "./Services/DOMService";
-import { Login } from "./Login";
-import { apiService } from "./Services/ApiService";
+import { Registration } from "./Registration.js";
+import { DOMService } from "./Services/DOMService.js";
+import { Login } from "./Login.js";
+import { apiService } from "./Services/ApiService.js";
 class ChooseAuthOption {
     container;
     loginOption;

@@ -1,6 +1,6 @@
-import { addSubjectMenu } from "./AddSubjectMenu";
-import { canvas } from "./InitEditor";
-import { user } from "./User";
+import { addSubjectMenu } from "./AddSubjectMenu.js";
+import { canvas } from "./InitEditor.js";
+import { user } from "./User.js";
 export class Subject {
     id;
     name;

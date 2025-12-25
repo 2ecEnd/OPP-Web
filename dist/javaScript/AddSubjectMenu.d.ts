@@ -1,4 +1,4 @@
-import type { Subject } from "./Subject";
+import type { Subject } from "./Subject.js";
 declare class AddSubjectMenu {
     private container;
     private closeMenuButton;

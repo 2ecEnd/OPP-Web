@@ -1,4 +1,4 @@
-import type { Task } from "./Task";
+import type { Task } from "./Task.js";
 export declare class Subject {
     id: string;
     name: string;

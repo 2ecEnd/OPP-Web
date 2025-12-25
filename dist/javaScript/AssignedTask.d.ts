@@ -1,5 +1,5 @@
-import { TeamMember } from "./TeamMember";
-import { Task } from "./Task";
+import { TeamMember } from "./TeamMember.js";
+import { Task } from "./Task.js";
 export declare class AssignedTask {
     task: Task;
     teamMember: TeamMember;

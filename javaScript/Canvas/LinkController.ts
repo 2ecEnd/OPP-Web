@@ -1,6 +1,6 @@
-import type { Task } from "../Task";
-import type { Canvas } from "./Canvas";
-import { GeometryController, type Point } from "./GeometryController";
+import type { Task } from "../Task.js";
+import type { Canvas } from "./Canvas.js";
+import { GeometryController, type Point } from "./GeometryController.js";
 
 export interface LinkData{
     line: SVGLineElement,

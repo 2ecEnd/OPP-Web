@@ -1,16 +1,16 @@
-import { Task } from "../Task";
-import type { User } from "../User";
-import { Subject } from "../Subject";
-import { Team } from "../Team";
-import { TeamMember } from "../TeamMember";
+import { Task } from "../Task.js";
+import type { User } from "../User.js";
+import { Subject } from "../Subject.js";
+import { Team } from "../Team.js";
+import { TeamMember } from "../TeamMember.js";
 import type {
     MemberDto,
     TaskDto,
     SubjectDto,
     TeamDto,
     UserDto
-} from "../Dto/DtoTypes";
-import { Status } from '../Enum/Enums';
+} from "../Dto/DtoTypes.js";
+import { Status } from '../Enum/Enums.js';
 
 export class ConverterService {
     static memberToDto(member: TeamMember): MemberDto {

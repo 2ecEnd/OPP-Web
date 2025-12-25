@@ -1,4 +1,4 @@
-import { TeamMember } from "./TeamMember";
+import { TeamMember } from "./TeamMember.js";
 export declare class Team {
     name: string;
     subjects: string[];

@@ -1,8 +1,8 @@
-import { Task } from "../Task";
-import { Subject } from "../Subject";
-import { Team } from "../Team";
-import { TeamMember } from "../TeamMember";
-import { Status } from '../Enum/Enums';
+import { Task } from "../Task.js";
+import { Subject } from "../Subject.js";
+import { Team } from "../Team.js";
+import { TeamMember } from "../TeamMember.js";
+import { Status } from '../Enum/Enums.js';
 export class ConverterService {
     static memberToDto(member) {
         return {

@@ -1,5 +1,5 @@
-import type { Canvas } from "./Canvas/Canvas";
-import { Task } from "./Task";
+import type { Canvas } from "./Canvas/Canvas.js";
+import { Task } from "./Task.js";
 export declare class AddTaskMenu {
     private container;
     private closeMenuButton;

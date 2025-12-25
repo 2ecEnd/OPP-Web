@@ -1,8 +1,8 @@
-import type { Subject } from "../Subject";
-import type { Task } from "../Task";
-import { DragController } from "./DragController";
-import { LinkController } from "./LinkController";
-import { GeometryController } from "./GeometryController";
+import type { Subject } from "../Subject.js";
+import type { Task } from "../Task.js";
+import { DragController } from "./DragController.js";
+import { LinkController } from "./LinkController.js";
+import { GeometryController } from "./GeometryController.js";
 
 export class Canvas{
     public subject: Subject;

@@ -1,8 +1,8 @@
-import { Team } from "../javaScript/Team";
-import { user } from "../javaScript/User";
-import { createTeamView } from "./teamView";
-import { tabManager } from "./TabManager";
-import { Subject } from "../javaScript/Subject";
+import { Team } from "../javaScript/Team.js";
+import { user } from "../javaScript/User.js";
+import { createTeamView } from "./teamView.js";
+import { tabManager } from "./TabManager.js";
+import { Subject } from "../javaScript/Subject.js";
 const addButton = document.querySelector('.addButton');
 const modalOverlay = document.getElementById('modalOverlay');
 const modalInput = document.getElementById('modalInput');

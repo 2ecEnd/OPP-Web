@@ -1,4 +1,4 @@
-import type { Subject } from "./Subject"
+import type { Subject } from "./Subject.js"
 
 class AddSubjectMenu{
     private container: HTMLElement

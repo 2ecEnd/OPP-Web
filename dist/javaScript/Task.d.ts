@@ -1,4 +1,4 @@
-import { Status } from './Enum/Enums';
+import { Status } from './Enum/Enums.js';
 export declare class Task {
     id: string;
     title: string;

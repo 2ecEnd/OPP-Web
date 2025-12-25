@@ -1,4 +1,4 @@
-import { DOMService } from "./Services/DOMService";
+import { DOMService } from "./Services/DOMService.js";
 export class Registration {
     container;
     form;

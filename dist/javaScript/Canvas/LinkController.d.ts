@@ -1,5 +1,5 @@
-import type { Task } from "../Task";
-import type { Canvas } from "./Canvas";
+import type { Task } from "../Task.js";
+import type { Canvas } from "./Canvas.js";
 export interface LinkData {
     line: SVGLineElement;
     startTask: Task;

@@ -1,6 +1,6 @@
-import { AssignedTask } from "./AssignedTask";
-import { Status } from './Enum/Enums';
-import { addTaskMenu, canvas } from "./InitEditor";
+import { AssignedTask } from "./AssignedTask.js";
+import { Status } from './Enum/Enums.js';
+import { addTaskMenu, canvas } from "./InitEditor.js";
 
 export class Task{
 

@@ -1,8 +1,8 @@
-import type { Subject } from "../javaScript/Subject";
-import type { Team } from "../javaScript/Team";
-import type { TeamMember } from "../javaScript/TeamMember";
-import { ToolBar } from "../javaScript/ToolBar";
-import { type User } from "../javaScript/User";
+import type { Subject } from "../javaScript/Subject.js";
+import type { Team } from "../javaScript/Team.js";
+import type { TeamMember } from "../javaScript/TeamMember.js";
+import { ToolBar } from "../javaScript/ToolBar.js";
+import { type User } from "../javaScript/User.js";
 export declare class TabManager {
     toolbarView: HTMLDivElement;
     originalActionPanel: HTMLDivElement;

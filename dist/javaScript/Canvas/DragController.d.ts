@@ -1,4 +1,4 @@
-import type { Canvas } from "./Canvas";
+import type { Canvas } from "./Canvas.js";
 export declare class DragController {
     private canvas;
     isDraggingObject: boolean;

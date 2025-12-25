@@ -1,4 +1,4 @@
-import { user } from "../javaScript/User";
+import { user } from "../javaScript/User.js";
 export async function changeTeamDialog(team, element) {
     const overlay = document.createElement('div');
     const modal = document.createElement('div');

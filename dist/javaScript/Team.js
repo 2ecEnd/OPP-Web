@@ -1,4 +1,4 @@
-import { TeamMember } from "./TeamMember";
+import { TeamMember } from "./TeamMember.js";
 export class Team {
     name;
     subjects;

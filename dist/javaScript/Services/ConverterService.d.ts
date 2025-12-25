@@ -1,9 +1,9 @@
-import { Task } from "../Task";
-import type { User } from "../User";
-import { Subject } from "../Subject";
-import { Team } from "../Team";
-import { TeamMember } from "../TeamMember";
-import type { MemberDto, TaskDto, SubjectDto, TeamDto, UserDto } from "../Dto/DtoTypes";
+import { Task } from "../Task.js";
+import type { User } from "../User.js";
+import { Subject } from "../Subject.js";
+import { Team } from "../Team.js";
+import { TeamMember } from "../TeamMember.js";
+import type { MemberDto, TaskDto, SubjectDto, TeamDto, UserDto } from "../Dto/DtoTypes.js";
 export declare class ConverterService {
     static memberToDto(member: TeamMember): MemberDto;
     static taskToDto(task: Task): TaskDto;

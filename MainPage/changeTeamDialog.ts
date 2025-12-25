@@ -1,5 +1,5 @@
-import type { Team } from "../javaScript/Team";
-import { user } from "../javaScript/User";
+import type { Team } from "../javaScript/Team.js";
+import { user } from "../javaScript/User.js";
 
 export async function changeTeamDialog(team: Team, element: HTMLElement){
     const overlay = document.createElement('div');

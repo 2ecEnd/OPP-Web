@@ -1,5 +1,5 @@
-import type { ApiService } from "./Services/ApiService";
-import { DOMService } from "./Services/DOMService";
+import type { ApiService } from "./Services/ApiService.js";
+import { DOMService } from "./Services/DOMService.js";
 
 export class Login{
     private container: HTMLElement;

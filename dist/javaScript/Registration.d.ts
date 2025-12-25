@@ -1,4 +1,4 @@
-import type { ApiService } from "./Services/ApiService";
+import type { ApiService } from "./Services/ApiService.js";
 export declare class Registration {
     private container;
     private form;

@@ -1,4 +1,4 @@
-import { Tab } from "./Tab";
+import { Tab } from "./Tab.js";
 export declare class ToolBar {
     private tabs;
     activeTab: number;

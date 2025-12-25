@@ -1,4 +1,4 @@
-import type { AddTaskMenu } from "./AddTaskMenu";
+import type { AddTaskMenu } from "./AddTaskMenu.js";
 export declare class AddTaskButton {
     private menu;
     private button;

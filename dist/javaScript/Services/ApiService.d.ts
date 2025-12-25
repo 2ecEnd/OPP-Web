@@ -1,4 +1,4 @@
-import type { User } from "../User";
+import type { User } from "../User.js";
 import type { UserDto } from "../Dto/DtoTypes";
 export declare class ApiService {
     private api;

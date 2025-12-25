@@ -1,9 +1,9 @@
-import { AddTaskButton } from "./AddTaskButton";
-import { AddTaskMenu } from "./AddTaskMenu";
-import { Canvas } from "./Canvas/Canvas";
-import { Subject } from "./Subject";
-import { ToolBar } from "./ToolBar";
-import { initUser, user } from "./User";
+import { AddTaskButton } from "./AddTaskButton.js";
+import { AddTaskMenu } from "./AddTaskMenu.js";
+import { Canvas } from "./Canvas/Canvas.js";
+import { Subject } from "./Subject.js";
+import { ToolBar } from "./ToolBar.js";
+import { initUser, user } from "./User.js";
 
 export var canvas: Canvas;
 export var addTaskMenu: AddTaskMenu;
