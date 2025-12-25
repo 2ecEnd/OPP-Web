@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     const contentArea = document.querySelector('.contentArea');
     const teamType = "team";
     const subjectType = "subject";
-    if (tabManager.toolbar.getActiveTab() === null) {
+    if (tabManager.toolbar.getActiveTab() === null || tabManager.toolbar.getActiveTab()?.type === tabManager.toolbar.homeBtnType) {
         tabManager.setActiveTab(tabManager.toolbar.homeBtnType, null);
         await setUserSubjects();
     }
