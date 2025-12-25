@@ -42,8 +42,7 @@ export class ToolBar{
         try {
             const data = JSON.parse(savedData);
 
-            this.tabs = (data.tabs as Tab[] || [])
-                .filter(tabData => tabData instanceof Tab);
+            this.tabs = (data.tabs as Tab[] || []);
             
             this.activeTab = data.activeTab as number || -1;
         } catch (error) {
