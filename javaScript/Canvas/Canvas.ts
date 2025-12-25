@@ -2,10 +2,11 @@ import type { Subject } from "../Subject.js";
 import type { Task } from "../Task.js";
 import { DragController } from "./DragController.js";
 import { LinkController } from "./LinkController.js";
-import { GeometryController } from "./GeometryController.js";
+import { TaskView } from "../TaskView.js";
 
 export class Canvas{
     public subject: Subject;
+    public taskViews: TaskView[] = [];
     public viewport: HTMLElement;
     public canvas: HTMLElement;
     public connectionsLayer: HTMLElement;
@@ -48,11 +49,14 @@ export class Canvas{
 
     initExistingTasks(): void{
         this.subject.tasks.forEach((task: Task) => {
-            this.canvas.appendChild(task.view.createDom());
+            const newTaskView = new TaskView(task);
+            this.taskViews.push(newTaskView);
+            this.canvas.appendChild(newTaskView.createDom());
         });
-        this.subject.tasks.forEach((task: Task) => {
-            task.dependsOn.forEach((id: string) => {
-                this.connectionsLayer.appendChild(this.linkController.createLine(task, this.subject.getTask(id)!));
+        this.taskViews.forEach((taskView: TaskView) => {
+            taskView.model.dependsOn.forEach((id: string) => {
+                const endTaskView = this.taskViews.find(view => view.container.id === id)!;
+                this.connectionsLayer.appendChild(this.linkController.createLine(taskView, endTaskView));
             });
         });
     }

@@ -1,18 +1,19 @@
 import type { Task } from "../Task.js";
+import type { TaskView } from "../TaskView.js";
 import type { Canvas } from "./Canvas.js";
 import { GeometryController, type Point } from "./GeometryController.js";
 
 export interface LinkData{
     line: SVGLineElement,
-    startTask: Task;
-    endTask: Task;
+    startTask: TaskView;
+    endTask: TaskView;
 }
 
 export class LinkController{
     private canvas: Canvas
     public linkingMode: boolean;
     public deletinglinksMode: boolean;
-    public linkingStartTask: Task | null;
+    public linkingStartTask: TaskView | null;
     public tempLine: SVGElement | null;
     public links: LinkData[];
     public editingLinks: LinkData[];
@@ -90,7 +91,7 @@ export class LinkController{
         }
     }
 
-    startLinking(task: Task): void {
+    startLinking(task: TaskView): void {
         this.linkingMode = true;
         this.linkingStartTask = task;
         this.canvas.viewport.style.cursor = 'crosshair';
@@ -101,9 +102,9 @@ export class LinkController{
     }
 
     updateTempLine(e: MouseEvent): void{
-        if (!this.linkingMode || !this.linkingStartTask || !this.linkingStartTask.view.container || !this.tempLine) return;
+        if (!this.linkingMode || !this.linkingStartTask || !this.tempLine) return;
 
-        const start: Point = GeometryController.getCenter(this.linkingStartTask.view.container);
+        const start: Point = GeometryController.getCenter(this.linkingStartTask.container);
 
         const canvasRect = this.canvas.canvas.getBoundingClientRect();
 
@@ -119,7 +120,7 @@ export class LinkController{
     linkTasks(targetTaskDom: HTMLElement): void{
         if (!this.linkingMode || !this.linkingStartTask) return;
 
-        const targetTask = this.canvas.subject.getTask(targetTaskDom.id)
+        const targetTask = this.canvas.taskViews.find(taskView => taskView.container.id === targetTaskDom.id)
 
         if(!this.validateLinking(this.linkingStartTask, targetTask!)){
             this.stopLinking();
@@ -127,24 +128,24 @@ export class LinkController{
             return;
         }
 
-        this.linkingStartTask.addDependency(targetTask!);
+        this.linkingStartTask.model.addDependency(targetTask!.model);
 
         this.canvas.connectionsLayer.appendChild(this.createLine(this.linkingStartTask, targetTask!));
         this.canvas.subject.changeData();
         this.stopLinking();
     }
 
-    validateLinking(startTask: Task, endTask: Task): boolean{
-        if(startTask.id === endTask.id) return false;
-        if (endTask.dependsOn.some(taskId => taskId === startTask.id)) return false;
-        if (startTask.dependsOn.some(taskId => taskId === endTask.id)) return false;
+    validateLinking(startTask: TaskView, endTask: TaskView): boolean{
+        if(startTask.model.id === endTask.model.id) return false;
+        if (endTask.model.dependsOn.some(taskId => taskId === startTask.model.id)) return false;
+        if (startTask.model.dependsOn.some(taskId => taskId === endTask.model.id)) return false;
 
-        const visited: string[] = [endTask.id];
-        const stack: string[] = [...endTask.dependsOn];
+        const visited: string[] = [endTask.model.id];
+        const stack: string[] = [...endTask.model.dependsOn];
         while(stack.length > 0){
             const currentTaskId: string = stack.pop()!;
 
-            if(currentTaskId === startTask.id) return false;
+            if(currentTaskId === startTask.model.id) return false;
             visited.push(currentTaskId);
 
             const currentTask = this.canvas.subject.getTask(currentTaskId);
@@ -158,15 +159,15 @@ export class LinkController{
         return true;
     }
 
-    createLine(startTask: Task, endTask: Task): SVGElement{
+    createLine(startTask: TaskView, endTask: TaskView): SVGElement{
         const svgNS = 'http://www.w3.org/2000/svg';
         const newLinkLine = document.createElementNS(svgNS, 'line');
         newLinkLine.classList.add('link-line');
 
-        const start = GeometryController.getCenter(startTask.view.container!);
-        const end = GeometryController.getCenter(endTask.view.container!);
+        const start = GeometryController.getCenter(startTask.container);
+        const end = GeometryController.getCenter(endTask.container);
 
-        const edgePoint = GeometryController.getEdgePoint(start, end, endTask.view.container!);
+        const edgePoint = GeometryController.getEdgePoint(start, end, endTask.container);
 
         newLinkLine.setAttribute('x1', start.x.toString());
         newLinkLine.setAttribute('y1', start.y.toString());

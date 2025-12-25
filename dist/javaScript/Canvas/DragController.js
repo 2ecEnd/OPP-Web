@@ -32,7 +32,7 @@ export class DragController {
             this.objectLastY = e.clientY;
             this.draggedObject = target;
             this.canvas.linkController.editingLinks = [];
-            this.draggedTask = this.canvas.subject.getTask(this.draggedObject.id);
+            this.draggedTask = this.canvas.taskViews.find(view => view.container.id === this.draggedObject.id);
             if (!this.draggedTask)
                 return;
             this.canvas.linkController.links.forEach(link => {
@@ -57,12 +57,12 @@ export class DragController {
         `;
         this.draggedObject.dataset.x = x.toString();
         this.draggedObject.dataset.y = y.toString();
-        this.draggedTask.view.x = x;
-        this.draggedTask.view.y = y;
+        this.draggedTask.x = x;
+        this.draggedTask.y = y;
         this.canvas.linkController.editingLinks.forEach(link => {
-            const start = GeometryController.getCenter(link.startTask.view.container);
-            const end = GeometryController.getCenter(link.endTask.view.container);
-            const edgePoint = GeometryController.getEdgePoint(start, end, link.endTask.view.container);
+            const start = GeometryController.getCenter(link.startTask.container);
+            const end = GeometryController.getCenter(link.endTask.container);
+            const edgePoint = GeometryController.getEdgePoint(start, end, link.endTask.container);
             if (this.draggedTask === link.startTask) {
                 const center = GeometryController.getCenter(this.draggedObject);
                 link.line.setAttribute('x1', center.x.toString());
