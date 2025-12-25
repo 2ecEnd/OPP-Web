@@ -79,9 +79,9 @@ export class LinkController {
         this.canvas.connectionsLayer.appendChild(this.tempLine);
     }
     updateTempLine(e) {
-        if (!this.linkingMode || !this.linkingStartTask || !this.linkingStartTask.view.container || !this.tempLine)
+        if (!this.linkingMode || !this.linkingStartTask || !this.tempLine)
             return;
-        const start = GeometryController.getCenter(this.linkingStartTask.view.container);
+        const start = GeometryController.getCenter(this.linkingStartTask.container);
         const canvasRect = this.canvas.canvas.getBoundingClientRect();
         const mouseX = (e.clientX - canvasRect.left) / this.canvas.scale;
         const mouseY = (e.clientY - canvasRect.top) / this.canvas.scale;
@@ -93,29 +93,29 @@ export class LinkController {
     linkTasks(targetTaskDom) {
         if (!this.linkingMode || !this.linkingStartTask)
             return;
-        const targetTask = this.canvas.subject.getTask(targetTaskDom.id);
+        const targetTask = this.canvas.taskViews.find(taskView => taskView.container.id === targetTaskDom.id);
         if (!this.validateLinking(this.linkingStartTask, targetTask)) {
             this.stopLinking();
             alert("Нельзя связать с этой задачей");
             return;
         }
-        this.linkingStartTask.addDependency(targetTask);
+        this.linkingStartTask.model.addDependency(targetTask.model);
         this.canvas.connectionsLayer.appendChild(this.createLine(this.linkingStartTask, targetTask));
         this.canvas.subject.changeData();
         this.stopLinking();
     }
     validateLinking(startTask, endTask) {
-        if (startTask.id === endTask.id)
+        if (startTask.model.id === endTask.model.id)
             return false;
-        if (endTask.dependsOn.some(taskId => taskId === startTask.id))
+        if (endTask.model.dependsOn.some(taskId => taskId === startTask.model.id))
             return false;
-        if (startTask.dependsOn.some(taskId => taskId === endTask.id))
+        if (startTask.model.dependsOn.some(taskId => taskId === endTask.model.id))
             return false;
-        const visited = [endTask.id];
-        const stack = [...endTask.dependsOn];
+        const visited = [endTask.model.id];
+        const stack = [...endTask.model.dependsOn];
         while (stack.length > 0) {
             const currentTaskId = stack.pop();
-            if (currentTaskId === startTask.id)
+            if (currentTaskId === startTask.model.id)
                 return false;
             visited.push(currentTaskId);
             const currentTask = this.canvas.subject.getTask(currentTaskId);
@@ -131,9 +131,9 @@ export class LinkController {
         const svgNS = 'http://www.w3.org/2000/svg';
         const newLinkLine = document.createElementNS(svgNS, 'line');
         newLinkLine.classList.add('link-line');
-        const start = GeometryController.getCenter(startTask.view.container);
-        const end = GeometryController.getCenter(endTask.view.container);
-        const edgePoint = GeometryController.getEdgePoint(start, end, endTask.view.container);
+        const start = GeometryController.getCenter(startTask.container);
+        const end = GeometryController.getCenter(endTask.container);
+        const edgePoint = GeometryController.getEdgePoint(start, end, endTask.container);
         newLinkLine.setAttribute('x1', start.x.toString());
         newLinkLine.setAttribute('y1', start.y.toString());
         newLinkLine.setAttribute('x2', edgePoint.x.toString());

@@ -17,6 +17,6 @@ export class AddTaskButton{
     }
 
     openMenu(){
-        this.menu.showSelf("create", null);
+        this.menu.showSelfToCreate();
     }
 }

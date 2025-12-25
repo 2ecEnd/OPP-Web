@@ -11,7 +11,7 @@ export class AddTaskButton {
         this.button.addEventListener('click', this.openMenu.bind(this));
     }
     openMenu() {
-        this.menu.showSelf("create", null);
+        this.menu.showSelfToCreate();
     }
 }
 //# sourceMappingURL=AddTaskButton.js.map

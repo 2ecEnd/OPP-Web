@@ -1,15 +1,16 @@
 import type { Task } from "../Task.js";
+import type { TaskView } from "../TaskView.js";
 import type { Canvas } from "./Canvas.js";
 export interface LinkData {
     line: SVGLineElement;
-    startTask: Task;
-    endTask: Task;
+    startTask: TaskView;
+    endTask: TaskView;
 }
 export declare class LinkController {
     private canvas;
     linkingMode: boolean;
     deletinglinksMode: boolean;
-    linkingStartTask: Task | null;
+    linkingStartTask: TaskView | null;
     tempLine: SVGElement | null;
     links: LinkData[];
     editingLinks: LinkData[];
@@ -19,11 +20,11 @@ export declare class LinkController {
     initLinkingEvents(): void;
     enableDeletingLinksMode(task: Task): void;
     highlightLink(linkElement: HTMLElement): void;
-    startLinking(task: Task): void;
+    startLinking(task: TaskView): void;
     updateTempLine(e: MouseEvent): void;
     linkTasks(targetTaskDom: HTMLElement): void;
-    validateLinking(startTask: Task, endTask: Task): boolean;
-    createLine(startTask: Task, endTask: Task): SVGElement;
+    validateLinking(startTask: TaskView, endTask: TaskView): boolean;
+    createLine(startTask: TaskView, endTask: TaskView): SVGElement;
     stopLinking(): void;
 }
 //# sourceMappingURL=LinkController.d.ts.map

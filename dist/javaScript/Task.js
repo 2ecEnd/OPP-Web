@@ -1,5 +1,4 @@
 import { Status } from './Enum/Enums.js';
-//import { addTaskMenu, canvas } from "./InitEditor.js";
 export class Task {
     id;
     title;
@@ -10,7 +9,6 @@ export class Task {
     dependsOn;
     assignedTasks; // idшники людей, ответственных за эту задачу
     status;
-    //public view: TaskView;
     x;
     y;
     constructor(id = null, title, description, hasDeadline, deadline = "отсутствует", currentDate, x, y, dependsOn = [], assignedTasks = [], status = Status.NOT_ACCEPTED) {
@@ -23,19 +21,16 @@ export class Task {
         this.assignedTasks = assignedTasks;
         this.id = id ?? crypto.randomUUID();
         this.status = status;
-        //this.view = new TaskView(x, y, this);
         this.x = x;
         this.y = y;
     }
     setStatus(status) {
         this.status = status;
-        //this.view.changeStatusView(status);
     }
     changeTask(title, description, hasDeadline, deadline) {
         this.title = title;
         this.description = description;
         this.deadline = deadline;
-        //this.view.changeDataView();
     }
     addDependency(task) {
         this.dependsOn.push(task.id);
@@ -44,8 +39,6 @@ export class Task {
         this.assignedTasks.push(assignedTask);
     }
     deleteTask() {
-        //this.view.deleteView();
-        //canvas.subject.deleteTask(this.id);
     }
 }
 //# sourceMappingURL=Task.js.map

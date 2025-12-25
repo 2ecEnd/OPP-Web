@@ -1,7 +1,9 @@
 import type { Subject } from "../Subject.js";
 import { LinkController } from "./LinkController.js";
+import { TaskView } from "../TaskView.js";
 export declare class Canvas {
     subject: Subject;
+    taskViews: TaskView[];
     viewport: HTMLElement;
     canvas: HTMLElement;
     connectionsLayer: HTMLElement;

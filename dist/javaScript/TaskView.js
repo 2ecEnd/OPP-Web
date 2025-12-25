@@ -1,13 +1,13 @@
 import { Status } from './Enum/Enums.js';
 import { addTaskMenu, canvas } from "./InitEditor.js";
-class TaskView {
+export class TaskView {
     x;
     y;
     container = document.createElement('div');
     model;
-    constructor(x, y, model) {
-        this.x = x;
-        this.y = y;
+    constructor(model) {
+        this.x = model.x;
+        this.y = model.y;
         this.model = model;
     }
     changeStatusView(status) {
@@ -65,22 +65,29 @@ class TaskView {
         moreVertButton?.classList.remove('active');
     }
     openEditMenu() {
-        addTaskMenu.showSelf("edit", this.model);
+        addTaskMenu.showSelf("edit", this.model.title, this.model.description, this.model.hasDeadline, this.model.deadline, (title, description, hasDeadline, deadline) => {
+            this.model.changeTask(title, description, hasDeadline, deadline);
+            this.changeDataView();
+        });
     }
     startLinking() {
         this.closeAllMenus();
-        canvas.linkController.startLinking(this.model);
+        canvas.linkController.startLinking(this);
     }
     enableDeletingLinksMode() {
         this.closeAllMenus();
         canvas.linkController.enableDeletingLinksMode(this.model);
+    }
+    deleteActionHandler(e) {
+        this.model.deleteTask();
+        this.deleteView();
     }
     createContextMenu() {
         const contextMenu = document.createElement('div');
         contextMenu.className = 'task-context-menu task-menu';
         const actions = [
             { text: 'Изменить', handler: this.openEditMenu.bind(this) },
-            { text: 'Удалить', handler: this.model.deleteTask.bind(this) },
+            { text: 'Удалить', handler: this.deleteActionHandler.bind(this) },
             { text: 'Добавить зависимость', handler: this.startLinking.bind(this) },
             { text: 'Удалить зависимость', handler: this.enableDeletingLinksMode.bind(this) },
             { text: 'Изменить статус', handler: this.openStatusMenu.bind(this) },
@@ -107,7 +114,10 @@ class TaskView {
         statuses.forEach(({ text, value }) => {
             const button = document.createElement('button');
             button.textContent = text;
-            button.addEventListener('click', () => this.model.setStatus(value));
+            button.addEventListener('click', () => {
+                this.model.setStatus(value);
+                this.changeStatusView(value);
+            });
             statusMenu.appendChild(button);
         });
         return statusMenu;
@@ -194,6 +204,7 @@ class TaskView {
     }
     deleteView() {
         this.container.remove();
+        canvas.subject.deleteTask(this.model.id);
     }
 }
 //# sourceMappingURL=TaskView.js.map

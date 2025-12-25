@@ -2,15 +2,15 @@ import { Status } from './Enum/Enums.js';
 import { addTaskMenu, canvas } from "./InitEditor.js";
 import type { Task } from "./Task.js";
 
-class TaskView{
+export class TaskView{
     public x: number;
     public y: number;
     public container: HTMLElement = document.createElement('div');
-    private model: Task;
+    public model: Task;
 
-    constructor(x: number, y: number, model: Task){
-        this.x = x;
-        this.y = y;
+    constructor(model: Task){
+        this.x = model.x;
+        this.y = model.y;
         this.model = model;
     }
 
@@ -81,17 +81,32 @@ class TaskView{
     }
 
     openEditMenu(): void{
-        addTaskMenu.showSelf("edit", this.model);
+        addTaskMenu.showSelf(
+            "edit",
+            this.model.title,
+            this.model.description,
+            this.model.hasDeadline,
+            this.model.deadline,
+            (title: string, description: string, hasDeadline: boolean, deadline: string) => {
+                this.model.changeTask(title, description, hasDeadline, deadline);
+                this.changeDataView();
+            }
+        );
     }
 
     startLinking(): void {
         this.closeAllMenus();
-        canvas.linkController.startLinking(this.model);
+        canvas.linkController.startLinking(this);
     }
 
     enableDeletingLinksMode(): void {
         this.closeAllMenus();
         canvas.linkController.enableDeletingLinksMode(this.model);
+    }
+
+    deleteActionHandler(e: Event): void {
+        this.model.deleteTask();
+        this.deleteView();
     }
 
     createContextMenu(): HTMLElement {
@@ -100,7 +115,7 @@ class TaskView{
         
         const actions = [
             { text: 'Изменить', handler: this.openEditMenu.bind(this) },
-            { text: 'Удалить', handler: this.model.deleteTask.bind(this) },
+            { text: 'Удалить', handler: this.deleteActionHandler.bind(this) },
             { text: 'Добавить зависимость', handler: this.startLinking.bind(this) },
             { text: 'Удалить зависимость', handler: this.enableDeletingLinksMode.bind(this) },
             { text: 'Изменить статус', handler: this.openStatusMenu.bind(this) },
@@ -134,7 +149,10 @@ class TaskView{
         statuses.forEach(({ text, value }) => {
             const button = document.createElement('button');
             button.textContent = text;
-            button.addEventListener('click', () => this.model.setStatus(value));
+            button.addEventListener('click', () => {
+                this.model.setStatus(value);
+                this.changeStatusView(value);
+            });
             statusMenu.appendChild(button);
         });
 
@@ -242,5 +260,6 @@ class TaskView{
 
     deleteView(){
         this.container.remove();
+        canvas.subject.deleteTask(this.model.id);
     }
 }

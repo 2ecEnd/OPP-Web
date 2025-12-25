@@ -1,5 +1,6 @@
 import { DOMService } from "./Services/DOMService.js";
 import { Task } from "./Task.js";
+import { TaskView } from "./TaskView.js";
 export class AddTaskMenu {
     container;
     closeMenuButton;
@@ -10,7 +11,11 @@ export class AddTaskMenu {
     formSubmitButton;
     canvas;
     type;
-    currentTask;
+    title;
+    description;
+    hasDeadline;
+    deadline;
+    changeTaskAction;
     constructor(canvas) {
         this.container = DOMService.getElementById('add-task-context-menu');
         this.closeMenuButton = DOMService.getElementById('close-context-menu-button');
@@ -21,7 +26,11 @@ export class AddTaskMenu {
         this.formSubmitButton = DOMService.getElementById('formSubmitButton');
         this.canvas = canvas;
         this.type = "";
-        this.currentTask = null;
+        this.title = null;
+        this.description = null;
+        this.hasDeadline = null;
+        this.deadline = null;
+        this.changeTaskAction = () => { };
         this.init();
     }
     init() {
@@ -38,7 +47,7 @@ export class AddTaskMenu {
         if (this.type === "create")
             this.createTask(title, description, hasDeadline, deadline, new Date());
         else if (this.type === "edit")
-            this.changeTask(this.currentTask, title, description, hasDeadline, deadline);
+            this.changeTask(title, description, hasDeadline, deadline);
         this.clearForm();
         this.formSubmitButton.innerHTML = "Добавить";
         this.closeSelf();
@@ -50,34 +59,43 @@ export class AddTaskMenu {
     }
     createTask(title, description, hasDeadline, deadline, currentDate) {
         const newTask = new Task(null, title, description, hasDeadline, deadline, currentDate, 2500, 2500, [], []);
+        const newTaskView = new TaskView(newTask);
         this.canvas.subject.addTask(newTask);
-        this.canvas.canvas.appendChild(newTask.view.createDom());
+        this.canvas.taskViews.push(newTaskView);
+        this.canvas.canvas.appendChild(newTaskView.createDom());
     }
-    changeTask(task, title, description, hasDeadline, deadline) {
-        task.changeTask(title, description, hasDeadline, deadline);
+    changeTask(title, description, hasDeadline, deadline) {
+        this.changeTaskAction(title, description, hasDeadline, deadline);
     }
-    showSelf(type, currentTask) {
+    showSelfToCreate() {
+        this.container.classList.add('active');
+        this.overlay.classList.add('active');
+        this.type = "create";
+    }
+    showSelf(type, title, description, hasDeadline, deadline, changeTaskAction) {
         this.container.classList.add('active');
         this.overlay.classList.add('active');
         this.type = type;
-        this.currentTask = currentTask;
+        this.title = title;
+        this.description = description;
+        this.hasDeadline = hasDeadline;
+        this.deadline = deadline;
+        this.changeTaskAction = changeTaskAction;
         if (this.type === "edit")
             this.fillTheForm();
     }
     fillTheForm() {
-        if (!this.currentTask)
-            return;
         const title = DOMService.getElementById('formTitleInput');
         const description = DOMService.getElementById('formDescriptionInput');
         const hasDeadline = DOMService.getElementById('formDeadLineCheck');
         const deadline = DOMService.getElementById('formDeadLineInput');
-        title.value = this.currentTask.title;
-        description.value = this.currentTask.description;
-        hasDeadline.checked = this.currentTask.hasDeadline;
+        title.value = this.title;
+        description.value = this.description;
+        hasDeadline.checked = this.hasDeadline;
         hasDeadline.dispatchEvent(new Event('change'));
-        this.currentTask.hasDeadline ? this.deadlineContainer.classList.remove('disabled') : this.deadlineContainer.classList.add('disabled');
-        deadline.value = this.currentTask.deadline.toString();
-        deadline.disabled = !this.currentTask.hasDeadline;
+        this.hasDeadline ? this.deadlineContainer.classList.remove('disabled') : this.deadlineContainer.classList.add('disabled');
+        deadline.value = this.deadline.toString();
+        deadline.disabled = !this.hasDeadline;
         this.formSubmitButton.innerHTML = "Изменить";
     }
     clearForm() {
