@@ -90,7 +90,7 @@ export class ApiService {
             alert('Сетевая ошибка');
         }
     }
-    async saveUserData(saveData) {
+    async saveUserData(user) {
         try {
             if (this.saved) {
                 this.saved = false;
@@ -99,7 +99,7 @@ export class ApiService {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ saveData })
+                    body: JSON.stringify({ user })
                 });
                 if (response.status === 200) {
                     this.saved = true;

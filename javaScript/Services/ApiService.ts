@@ -108,7 +108,7 @@ export class ApiService{
         }
     }
 
-    async saveUserData(saveData: UserDto){
+    async saveUserData(user: UserDto){
         try{
             if(this.saved){
                 this.saved = false;
@@ -118,7 +118,7 @@ export class ApiService{
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({saveData})
+                    body: JSON.stringify({user})
                 });
 
                 if (response.status === 200) {
