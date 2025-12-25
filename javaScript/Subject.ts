@@ -1,6 +1,6 @@
-import type { LinkData } from "./Canvas/LinkController.js";
-import { canvas } from "./InitEditor.js";
-import { SubjectView } from "./SubjectView.js";
+//import type { LinkData } from "./Canvas/LinkController.js";
+//import { canvas } from "./InitEditor.js";
+//import { SubjectView } from "./SubjectView.js";
 import type { Task } from "./Task.js";
 import { user } from "./User.js";
 
@@ -10,14 +10,14 @@ export class Subject{
     public name: string;
     public tasks: Task[];
     public teamId: string | null;
-    private view: SubjectView;
+    //private view: SubjectView;
 
     constructor(id: string | null = null, name: string, tasks: Task[] = [], teamId: string | null){
         this.id = id ?? crypto.randomUUID();
         this.tasks = tasks;
         this.name = name;
         this.teamId = teamId;
-        this.view = new SubjectView(this);
+        //this.view = new SubjectView(this);
     }
 
     changeData(): void{
@@ -31,15 +31,15 @@ export class Subject{
 
     deleteTask(id: string): void{
         const taskToDelete: Task = this.tasks.find(task => task.id === id)!;
-        canvas.linkController.links.forEach((link: LinkData) => {
+        /*canvas.linkController.links.forEach((link: LinkData) => {
             if (link.startTask === taskToDelete || link.endTask === taskToDelete){
                 link.line.remove();
             }
-        });
+        });*/
 
-        canvas.linkController.links = canvas.linkController.links.filter((link: LinkData) => 
+        /*canvas.linkController.links = canvas.linkController.links.filter((link: LinkData) => 
             link.startTask !== taskToDelete && link.endTask !== taskToDelete
-        );
+        );*/
 
         this.tasks = this.tasks.filter(task => task.id !== id);
 
@@ -53,13 +53,13 @@ export class Subject{
     changeSubject(newName: string): void{
         user.subjectsService.changeSubject(this.id, newName);
         this.name = newName;
-        this.view.updateView();
+        //this.view.updateView();
     }
 
     deleteSubject(e: Event): void{
         e.stopPropagation();
 
-        this.view.container.remove();
+        //this.view.container.remove();
         user.subjectsService.removeSubject(this.id);
     }
 
@@ -67,7 +67,7 @@ export class Subject{
         return this.tasks.find(task => task.id === id);
     }
 
-    getView(): SubjectView{
+    /*getView(): SubjectView{
         return this.view;
-    }
+    }*/
 }
