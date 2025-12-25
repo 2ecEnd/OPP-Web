@@ -97,7 +97,7 @@ export class ConverterService {
         return new Subject(
             subjectDto.Id, 
             subjectDto.Name,
-            subjectDto.Tasks.map(this.dtoToTask), 
+            subjectDto.Tasks.map(taskDto => ConverterService.dtoToTask(taskDto)), 
             subjectDto.TeamId
         );
     }
@@ -106,7 +106,7 @@ export class ConverterService {
         return new Team(
             teamDto.Name, 
             teamDto.Subjects,
-            teamDto.Members.map(this.dtoToMember), 
+            teamDto.Members.map(memberDto => ConverterService.dtoToMember(memberDto)), 
             teamDto.Id,
         );
     }

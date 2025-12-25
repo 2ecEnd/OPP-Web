@@ -59,10 +59,10 @@ export class ConverterService {
         return new TeamMember(memberDto.Name, memberDto.Surname, memberDto.Email, memberDto.Specialization, memberDto.AssignedTasks, memberDto.Id);
     }
     static dtoToSubject(subjectDto) {
-        return new Subject(subjectDto.Id, subjectDto.Name, subjectDto.Tasks.map(this.dtoToTask), subjectDto.TeamId);
+        return new Subject(subjectDto.Id, subjectDto.Name, subjectDto.Tasks.map(taskDto => ConverterService.dtoToTask(taskDto)), subjectDto.TeamId);
     }
     static dtoToTeam(teamDto) {
-        return new Team(teamDto.Name, teamDto.Subjects, teamDto.Members.map(this.dtoToMember), teamDto.Id);
+        return new Team(teamDto.Name, teamDto.Subjects, teamDto.Members.map(memberDto => ConverterService.dtoToMember(memberDto)), teamDto.Id);
     }
 }
 //# sourceMappingURL=ConverterService.js.map
