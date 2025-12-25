@@ -74,7 +74,7 @@ createBtn?.addEventListener('click', async function() {
         else if (activeItemText === 'Subjects'){
           const newSubject = new Subject(null, name, [], null);
           await user.subjectsService.addSubject(newSubject);
-          contentArea?.appendChild(newSubject.getView.container);
+          contentArea?.appendChild(newSubject.getView().container);
         }
 
         closeModal();

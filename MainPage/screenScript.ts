@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         if(!contentArea) return;
 
         subjects.forEach(subject => {
-            contentArea.appendChild(subject.view.container);
+            contentArea.appendChild(subject.getView().container);
         });
     }
 });
