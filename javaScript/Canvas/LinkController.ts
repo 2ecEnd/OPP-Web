@@ -29,6 +29,9 @@ export class LinkController{
         this.links = [];
         this.editingLinks = [];
         this.selectedLink = null;
+
+        this.initArrowMarker();
+        this.initLinkingEvents();
     }
     
     initArrowMarker(): void {

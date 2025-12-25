@@ -13,6 +13,7 @@ export class DragController {
         this.draggedTask = null;
         this.objectLastX = 0;
         this.objectLastY = 0;
+        this.initObjectsEvents();
     }
     initObjectsEvents() {
         this.canvas.canvas.addEventListener('mousedown', this.onObjectMouseDown.bind(this));
