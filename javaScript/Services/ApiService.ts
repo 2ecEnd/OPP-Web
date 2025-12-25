@@ -118,7 +118,7 @@ export class ApiService{
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({user})
+                    body: JSON.stringify(user)
                 });
 
                 if (response.status === 200) {
