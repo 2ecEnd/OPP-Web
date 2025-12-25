@@ -45,6 +45,9 @@ export class Canvas{
 
         this.dragController = new DragController(this);
         this.linkController = new LinkController(this);
+
+        this.initExistingTasks();
+        this.initCanvasEvents();
     }
 
     initExistingTasks(): void{

@@ -36,6 +36,8 @@ export class Canvas {
         this.lastY = 0;
         this.dragController = new DragController(this);
         this.linkController = new LinkController(this);
+        this.initExistingTasks();
+        this.initCanvasEvents();
     }
     initExistingTasks() {
         this.subject.tasks.forEach((task) => {
