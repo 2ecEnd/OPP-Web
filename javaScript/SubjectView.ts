@@ -31,7 +31,11 @@ export class SubjectView{
     openEditMenu(e: Event): void{
         e.stopPropagation();
 
-        addSubjectMenu.showSelf("edit", this.model.name, this.updateView);
+        addSubjectMenu.showSelf(
+            "edit",
+            this.model.name,
+            (newName: string) => { this.updateView(newName); }
+        );
     }
 
     createContextMenu(): HTMLElement {
