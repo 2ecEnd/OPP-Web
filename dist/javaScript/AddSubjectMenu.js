@@ -4,14 +4,16 @@ class AddSubjectMenu {
     form;
     overlay;
     type;
-    currentSubject;
+    currentName;
+    changeSubjectAction;
     constructor() {
         this.container = document.getElementById('add-subject-menu');
         this.closeMenuButton = document.getElementById('close-subject-menu-button');
         this.form = document.getElementById('add-subject-form');
         this.overlay = document.getElementById('overlay');
         this.type = "";
-        this.currentSubject = null;
+        this.currentName = null;
+        this.changeSubjectAction = () => { };
         this.init();
     }
     init() {
@@ -23,27 +25,28 @@ class AddSubjectMenu {
         const name = this.form.querySelector('#subjectFormTitleInput').value;
         const submitButton = this.form.querySelector('#subjectFormSubmitButton');
         //if(this.type === "create") this.createSubject(name);
-        if (this.type === "edit" && this.currentSubject)
-            this.changeSubject(this.currentSubject, name);
+        if (this.type === "edit")
+            this.changeSubject(name);
         this.form.reset();
         submitButton.innerHTML = "Добавить";
         this.closeSelf();
     }
-    changeSubject(subject, name) {
-        subject.changeSubject(name);
+    changeSubject(name) {
+        this.changeSubjectAction(name);
     }
     fillTheForm() {
         const name = this.form.querySelector('#subjectFormTitleInput');
         const submitButton = this.form.querySelector('#subjectFormSubmitButton');
-        name.value = this.currentSubject?.name ?? "";
-        console.log(this.currentSubject);
+        name.value = this.currentName ?? "";
+        console.log(this.currentName);
         submitButton.innerHTML = "Изменить";
     }
-    showSelf(type, currentSubject) {
+    showSelf(type, currentName, changeSubjectAction) {
         this.container.classList.add('active');
         this.overlay.classList.add('active');
         this.type = type;
-        this.currentSubject = currentSubject;
+        this.currentName = currentName;
+        this.changeSubjectAction = changeSubjectAction;
         if (this.type === "edit")
             this.fillTheForm();
     }

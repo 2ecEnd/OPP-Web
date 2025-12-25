@@ -7,6 +7,11 @@ export class SubjectView {
         this.container = document.createElement('div');
         this.createView();
     }
+    deleteActionHandler(e) {
+        e.stopPropagation();
+        this.model.deleteSubject();
+        this.container.remove();
+    }
     openContextMenu(e) {
         e.stopPropagation();
         const moreVertButton = this.container.querySelector('.more-vert-button');
@@ -16,14 +21,14 @@ export class SubjectView {
     }
     openEditMenu(e) {
         e.stopPropagation();
-        addSubjectMenu.showSelf("edit", this.model);
+        addSubjectMenu.showSelf("edit", this.model.name, this.updateView);
     }
     createContextMenu() {
         const contextMenu = document.createElement('div');
         contextMenu.className = 'subject-context-menu subject-menu';
         const actions = [
             { text: 'Изменить', handler: this.openEditMenu.bind(this) },
-            { text: 'Удалить', handler: this.model.deleteSubject.bind(this.model) }
+            { text: 'Удалить', handler: this.deleteActionHandler.bind(this) }
         ];
         actions.forEach(({ text, handler }) => {
             const button = document.createElement('button');
@@ -55,8 +60,9 @@ export class SubjectView {
         newElement.appendChild(this.createContextMenu());
         newElement.querySelector('.more-vert-button').addEventListener('click', this.openContextMenu.bind(this));
     }
-    updateView() {
-        this.container.querySelector('.subject-info').children[0].textContent = this.model.name;
+    updateView(newName) {
+        this.model.changeSubject(newName);
+        this.container.querySelector('.subject-info').children[0].textContent = newName;
     }
 }
 //# sourceMappingURL=SubjectView.js.map

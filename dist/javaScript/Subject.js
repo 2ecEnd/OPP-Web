@@ -38,11 +38,8 @@ export class Subject {
     changeSubject(newName) {
         user.subjectsService.changeSubject(this.id, newName);
         this.name = newName;
-        //this.view.updateView();
     }
-    deleteSubject(e) {
-        e.stopPropagation();
-        //this.view.container.remove();
+    deleteSubject() {
         user.subjectsService.removeSubject(this.id);
     }
     getTask(id) {

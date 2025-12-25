@@ -9,7 +9,7 @@ export declare class Subject {
     addTask(task: Task): void;
     deleteTask(id: string): void;
     changeSubject(newName: string): void;
-    deleteSubject(e: Event): void;
+    deleteSubject(): void;
     getTask(id: string): Task | undefined;
 }
 //# sourceMappingURL=Subject.d.ts.map

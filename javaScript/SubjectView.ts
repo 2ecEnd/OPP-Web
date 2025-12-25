@@ -12,6 +12,12 @@ export class SubjectView{
         this.createView();
     }
 
+    deleteActionHandler(e: Event): void {
+        e.stopPropagation();
+        this.model.deleteSubject();
+        this.container.remove();
+    }
+
     openContextMenu(e: Event): void {
         e.stopPropagation();
 
@@ -25,7 +31,7 @@ export class SubjectView{
     openEditMenu(e: Event): void{
         e.stopPropagation();
 
-        addSubjectMenu.showSelf("edit", this.model);
+        addSubjectMenu.showSelf("edit", this.model.name, this.updateView);
     }
 
     createContextMenu(): HTMLElement {
@@ -34,7 +40,7 @@ export class SubjectView{
         
         const actions = [
             { text: 'Изменить', handler: this.openEditMenu.bind(this) },
-            { text: 'Удалить', handler: this.model.deleteSubject.bind(this.model) }
+            { text: 'Удалить', handler: this.deleteActionHandler.bind(this) }
         ];
 
         actions.forEach(({ text, handler}) => {
@@ -76,7 +82,8 @@ export class SubjectView{
             this.openContextMenu.bind(this));
     }
 
-    updateView(): void {
-        this.container.querySelector('.subject-info')!.children[0]!.textContent = this.model.name;
+    updateView(newName: string): void {
+        this.model.changeSubject(newName);
+        this.container.querySelector('.subject-info')!.children[0]!.textContent = newName;
     }
 }
