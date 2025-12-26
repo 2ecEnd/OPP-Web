@@ -1,8 +1,9 @@
 import { initUser, user } from "../javaScript/User.js";
-import { tabManager } from "./TabManager.js";
+import { TabManager } from "./TabManager.js";
 import { createTeamView } from "./teamView.js";
 import { changeTeamDialog } from "./changeTeamDialog.js";
 import { SubjectView } from "../javaScript/SubjectView.js";
+import { AddDialog } from "./addDialog.js";
 document.addEventListener('DOMContentLoaded', async function () {
     const teamsItem = document.querySelector('.unselectedActionPanelItem');
     const subjectsItem = document.querySelector('.selectedActionPanelItem');
@@ -11,6 +12,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     const subjectType = "subject";
     if (!user)
         await initUser();
+    const tabManager = new TabManager(user);
+    const addDialog = new AddDialog(tabManager);
     if (tabManager.toolbar.getActiveTab() === null || tabManager.toolbar.getActiveTab()?.type === tabManager.toolbar.homeBtnType) {
         tabManager.setActiveTab(tabManager.toolbar.homeBtnType, null);
         await setUserSubjects();
