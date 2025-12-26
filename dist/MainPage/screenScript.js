@@ -4,9 +4,11 @@ import { createTeamView } from "./teamView.js";
 import { changeTeamDialog } from "./changeTeamDialog.js";
 import { SubjectView } from "../javaScript/SubjectView.js";
 import { AddDialog } from "./addDialog.js";
+import { apiService } from "../javaScript/Services/ApiService.js";
 document.addEventListener('DOMContentLoaded', async function () {
     const teamsItem = document.querySelector('.unselectedActionPanelItem');
     const subjectsItem = document.querySelector('.selectedActionPanelItem');
+    const logoutButton = document.querySelector('.logoutButton');
     const contentArea = document.querySelector('.contentArea');
     const teamType = "team";
     const subjectType = "subject";
@@ -39,6 +41,10 @@ document.addEventListener('DOMContentLoaded', async function () {
             clearContentArea();
             setUserSubjects();
         }
+    });
+    logoutButton?.addEventListener('click', async function () {
+        await apiService.logout();
+        window.location.href = '../pages/registrationPage.html';
     });
     //обновил
     contentArea?.addEventListener('click', function (e) {
