@@ -19,7 +19,7 @@ export declare class TabManager {
     addTab(type: string, id: string, name: string): void;
     setActiveTab(type: string, id: string | null): void;
     updateToolbar(): void;
-    showTabContent(type: string, id: string): Promise<void>;
+    showTabContent: (type: string, id: string) => Promise<void>;
     showTeamContent(team: Team | undefined): void;
     showSubjectContent(subject: Subject | undefined): void;
     createTeamContent(team: Team | undefined): HTMLDivElement;

@@ -117,7 +117,7 @@ export class TabManager {
         }
         this.toolbarView.replaceWith(newToolbar);
     }
-    async showTabContent(type, id) {
+    showTabContent = async (type, id) => {
         if (type == this.teamType) {
             const team = await this.user.teamsService.getTeamById(id);
             this.showTeamContent(team);
@@ -126,7 +126,7 @@ export class TabManager {
             const subject = await this.user.subjectsService.getSubjectById(id);
             this.showSubjectContent(subject);
         }
-    }
+    };
     showTeamContent(team) {
         this.mainPanel.innerHTML = '';
         const teamContent = this.createTeamContent(team);
