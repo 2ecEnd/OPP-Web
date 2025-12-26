@@ -37,5 +37,4 @@ export declare class TabManager {
     switchActiveItem(activeItem: Element, inactiveItem: Element): void;
     clearContentArea(): void;
 }
-export declare var tabManager: TabManager;
 //# sourceMappingURL=TabManager.d.ts.map
