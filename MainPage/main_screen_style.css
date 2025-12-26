@@ -297,3 +297,25 @@ body {
     justify-content: space-between;
     align-items: center;
 }
+
+.logoutButton{
+  margin: auto auto 20px 15px;
+  font-size: 28px;
+  width: fit-content;
+  min-width: 168px;
+  height: 48px;
+
+  border-radius: 8px;
+  border: none;
+  transition: transform 0.05s ease, box-shadow 0.1s ease;
+}
+
+.logoutButton:hover{
+  border: solid 2px rgb(117, 117, 117);
+  cursor: pointer;
+}
+
+.logoutButton:active{
+  transform: scale(0.95);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
