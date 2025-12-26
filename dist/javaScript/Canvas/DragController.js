@@ -58,8 +58,8 @@ export class DragController {
         `;
         this.draggedObject.dataset.x = x.toString();
         this.draggedObject.dataset.y = y.toString();
-        this.draggedTask.x = x;
-        this.draggedTask.y = y;
+        this.draggedTask.model.x = x;
+        this.draggedTask.model.y = y;
         this.canvas.linkController.editingLinks.forEach(link => {
             const start = GeometryController.getCenter(link.startTask.container);
             const end = GeometryController.getCenter(link.endTask.container);
