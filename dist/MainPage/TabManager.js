@@ -24,8 +24,8 @@ export class TabManager {
         this.mainPanel.appendChild(this.originalContentArea);
         const restoredTeamsItem = this.mainPanel.querySelector('.unselectedActionPanelItem');
         const restoredSubjectsItem = this.mainPanel.querySelector('.selectedActionPanelItem');
-        const switchActiveItem = this.switchActiveItem;
-        const clearContentArea = this.clearContentArea;
+        const switchActiveItem = this.switchActiveItem.bind(this);
+        const clearContentArea = this.clearContentArea.bind(this);
         if (restoredTeamsItem && restoredSubjectsItem) {
             restoredTeamsItem.addEventListener('click', function () {
                 if (!restoredTeamsItem.classList.contains('selectedActionPanelItem')) {
@@ -50,8 +50,8 @@ export class TabManager {
             newTab.innerHTML = `
                 <img class="house" src="../images/house.svg" alt="Иконка дома">
             `;
-            const setActiveTab = this.setActiveTab;
-            const restoreMainPanel = this.restoreMainPanel;
+            const setActiveTab = this.setActiveTab.bind(this);
+            const restoreMainPanel = this.restoreMainPanel.bind(this);
             newTab.addEventListener('click', function (e) {
                 setActiveTab(type, id);
                 restoreMainPanel();
@@ -65,10 +65,10 @@ export class TabManager {
             <img class="x" src="../images/x-lg.svg" alt="Иконка крестика">
         `;
         const toolbar = this.toolbar;
-        const closeTab = this.closeTab;
-        const setActiveTab = this.setActiveTab;
-        const restoreMainPanel = this.restoreMainPanel;
-        const showTabContent = this.showTabContent;
+        const closeTab = this.closeTab.bind(this);
+        const setActiveTab = this.setActiveTab.bind(this);
+        const restoreMainPanel = this.restoreMainPanel.bind(this);
+        const showTabContent = this.showTabContent.bind(this);
         const closeBtn = newTab.querySelector('.x');
         closeBtn?.addEventListener('click', function (e) {
             e.stopPropagation();
@@ -84,7 +84,7 @@ export class TabManager {
         });
         newTab.addEventListener('click', async function () {
             setActiveTab(type, id);
-            showTabContent(type, id);
+            await showTabContent(type, id);
         });
         return newTab;
     }
