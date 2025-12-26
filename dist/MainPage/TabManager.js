@@ -68,7 +68,6 @@ export class TabManager {
         const closeTab = this.closeTab.bind(this);
         const setActiveTab = this.setActiveTab.bind(this);
         const restoreMainPanel = this.restoreMainPanel.bind(this);
-        const showTabContent = this.showTabContent.bind(this);
         const closeBtn = newTab.querySelector('.x');
         closeBtn?.addEventListener('click', function (e) {
             e.stopPropagation();
@@ -82,9 +81,9 @@ export class TabManager {
                 closeTab(type, id);
             }
         });
-        newTab.addEventListener('click', async function () {
-            setActiveTab(type, id);
-            await showTabContent(type, id);
+        newTab.addEventListener('click', async () => {
+            this.setActiveTab(type, id);
+            await this.showTabContent(type, id);
         });
         return newTab;
     }
