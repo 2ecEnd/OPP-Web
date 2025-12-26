@@ -145,7 +145,7 @@ export class TabManager{
         this.toolbarView.replaceWith(newToolbar);
     }
 
-    async showTabContent(type: string, id: string) {
+    showTabContent = async(type: string, id: string) => {
         if(type == this.teamType){
             const team = await this.user.teamsService.getTeamById(id);
             this.showTeamContent(team);
