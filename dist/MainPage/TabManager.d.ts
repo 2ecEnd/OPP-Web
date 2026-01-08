@@ -28,6 +28,7 @@ export declare class TabManager {
     createParticipantsList(team: Team | undefined): HTMLDivElement;
     createParticipantElement(team: Team | undefined, member: TeamMember | undefined): HTMLDivElement;
     createParticipantButtonContainer(team: Team | undefined, member: TeamMember | undefined): HTMLDivElement;
+    updateParticipantsList(team: Team | undefined): Element | undefined;
     createInfoButton(team: Team | undefined, member: TeamMember | undefined): HTMLImageElement | undefined;
     createDeleteButton(team: Team | undefined, member: TeamMember | undefined, btnContainer: Element): HTMLImageElement;
     createAddMemberButton(team: Team | undefined): HTMLDivElement;

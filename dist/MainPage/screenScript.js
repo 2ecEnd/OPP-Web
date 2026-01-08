@@ -96,8 +96,8 @@ document.addEventListener('DOMContentLoaded', async function () {
             delBtn.textContent = "X";
             delBtn.style.color = "white";
             delBtn.style.fontSize = '32px';
-            delBtn.addEventListener('mouseup', async function () {
-                event?.stopPropagation();
+            delBtn.addEventListener('mouseup', async (e) => {
+                e.stopPropagation();
                 await user.teamsService.removeTeam(team.id);
                 tabManager.closeTab(teamType, team.id);
                 contentArea.removeChild(newElement);
@@ -108,9 +108,9 @@ document.addEventListener('DOMContentLoaded', async function () {
             changeBtn.textContent = "R";
             changeBtn.style.color = "white";
             changeBtn.style.fontSize = '32px';
-            changeBtn.addEventListener('mouseup', async function () {
-                event?.stopPropagation();
-                await changeTeamDialog(team, newElement);
+            changeBtn.addEventListener('mouseup', async (e) => {
+                e.stopPropagation();
+                changeTeamDialog(team, newElement);
             });
             const buttons = document.createElement('div');
             buttons.style.display = 'flex';

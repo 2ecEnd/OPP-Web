@@ -251,6 +251,34 @@ export class TabManager{
         return btnContainer;
     }
 
+    updateParticipantsList(team: Team | undefined) 
+    {
+        if (team === undefined)
+        {
+            console.log("team is undefined at updateParticipantsList");
+            return;
+        }
+
+        const participantsList = document.getElementsByClassName('participantsList')[0];
+        if (!participantsList)
+            return;
+        
+        while(participantsList?.hasChildNodes())
+            participantsList.firstChild?.remove()
+
+        if (!(team.members) || team.members.length <= 0)
+            participantsList.textContent = 'Нет участников';
+        else
+        {
+            team.members.forEach(member => {
+                const participantElement = this.createParticipantElement(team, member);
+                participantsList.appendChild(participantElement);
+            });
+        } 
+        
+        return participantsList;
+    }
+
     createInfoButton(team: Team | undefined, member: TeamMember | undefined) {
         const infoBtn = document.createElement('img');
         infoBtn.src = "../images/eye.svg";

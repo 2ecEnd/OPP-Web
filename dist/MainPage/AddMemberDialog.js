@@ -1,5 +1,7 @@
 import { TeamMember } from "../javaScript/TeamMember.js";
 import { isValidEmail } from "./SupportScript.js";
+import { user } from "../javaScript/User.js";
+import { tabManager } from "./TabManager.js";
 export function showAddMemberDialog(team) {
     const overlay = document.createElement('div');
     const modal = document.createElement('div');
@@ -56,22 +58,18 @@ export function showAddMemberDialog(team) {
         const surname = input2.value.trim();
         const email = input3.value.trim();
         const specialization = input4.value.trim();
-        if (name !== "" && surname !== "") {
-            if (email === "" || isValidEmail(email)) {
-                team.addMember(new TeamMember(name, surname, email, specialization));
-                document.body.removeChild(overlay);
-            }
-            else {
-                alert("Пожалуйста, введите корректный email адрес");
-            }
-        }
-        else {
+        if (name === "" || surname === "")
             alert("Пожалуйста, заполните имя и фамилию");
+        else if (email === "" || !isValidEmail(email))
+            alert("Пожалуйста, введите корректный email адрес");
+        else {
+            team.addMember(new TeamMember(name, surname, email, specialization));
+            tabManager.updateParticipantsList(team);
+            user.save();
+            document.body.removeChild(overlay);
         }
-        document.body.removeChild(overlay);
     };
     button2.onclick = () => {
-        console.log('Кнопка 2 нажата');
         document.body.removeChild(overlay);
     };
     overlay.onclick = (e) => {
