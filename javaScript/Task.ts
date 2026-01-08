@@ -59,6 +59,15 @@ export class Task{
         this.assignedTasks.push(assignedTask);
     }
 
+    deleteDependency(task: Task): void{
+        for(let i = 0; i < this.dependsOn.length; ++i){
+            if(this.dependsOn[i] == task.id){
+                this.dependsOn.splice(i, 1);
+                break;
+            }
+        }
+    }
+
     deleteTask(): void{
     }
 }

@@ -54,9 +54,29 @@ export class LinkController {
                 return;
             this.highlightLink(linkElement);
         });
+        document.addEventListener('mouseup', (e) => {
+            if (!this.deletinglinksMode)
+                return;
+            const linkElement = e.target.closest('.link-line');
+            if (!linkElement)
+                return;
+            this.deleteLink(linkElement);
+            this.deletinglinksMode = false;
+        });
     }
     enableDeletingLinksMode(task) {
         this.deletinglinksMode = true;
+    }
+    deleteLink(linkElement) {
+        for (let i = 0; i < this.links.length; i++) {
+            let l = this.links[i];
+            if (l?.line == linkElement) {
+                l.startTask.model.deleteDependency(l.endTask.model);
+                this.canvas.connectionsLayer.removeChild(linkElement);
+                this.links.splice(i, 1);
+                break;
+            }
+        }
     }
     highlightLink(linkElement) {
         document.querySelectorAll('.link-line').forEach((link) => {

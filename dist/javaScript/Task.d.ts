@@ -16,6 +16,7 @@ export declare class Task {
     changeTask(title: string, description: string, hasDeadline: boolean, deadline: Date | string): void;
     addDependency(task: Task): void;
     addAssignedTask(assignedTask: string): void;
+    deleteDependency(task: Task): void;
     deleteTask(): void;
 }
 //# sourceMappingURL=Task.d.ts.map
