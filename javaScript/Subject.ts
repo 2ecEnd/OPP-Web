@@ -10,14 +10,12 @@ export class Subject{
     public name: string;
     public tasks: Task[];
     public teamId: string | null;
-    //private view: SubjectView;
 
     constructor(id: string | null = null, name: string, tasks: Task[] = [], teamId: string | null){
         this.id = id ?? crypto.randomUUID();
         this.tasks = tasks;
         this.name = name;
         this.teamId = teamId;
-        //this.view = new SubjectView(this);
     }
 
     changeData(): void{

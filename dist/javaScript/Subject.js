@@ -4,13 +4,11 @@ export class Subject {
     name;
     tasks;
     teamId;
-    //private view: SubjectView;
     constructor(id = null, name, tasks = [], teamId) {
         this.id = id ?? crypto.randomUUID();
         this.tasks = tasks;
         this.name = name;
         this.teamId = teamId;
-        //this.view = new SubjectView(this);
     }
     changeData() {
         user.subjectsService.changeSubjectData(this.id, this);

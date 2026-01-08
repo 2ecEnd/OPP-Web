@@ -1,5 +1,7 @@
 import { addSubjectMenu } from "./AddSubjectMenu.js";
 import type { Subject } from "./Subject.js";
+import type { Team } from "./Team.js";
+import { user } from "./User.js";
 
 export class SubjectView{
     private model: Subject;
@@ -38,12 +40,102 @@ export class SubjectView{
         );
     }
 
+    openAssignMenu(e: Event): void {
+        e.stopPropagation();
+        
+        const menu = document.createElement('div');
+        menu.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            max-height: 80vh;
+            background-color: #2C2C2C;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            z-index: 10000;
+            overflow-y: auto;
+        `;
+    
+        const scrollContainer = document.createElement('div');
+        scrollContainer.style.cssText = `
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: calc(80vh - 40px);
+            overflow-y: auto;
+        `;
+        
+        user.teams.forEach((team: Team) => {
+            const teamItem = document.createElement('div');
+            teamItem.style.cssText = `
+                background-color: #383838;
+                color: white;
+                padding: 15px;
+                border-radius: 8px;
+                cursor: pointer;
+                text-align: center;
+                transition: background-color 0.2s;
+                user-select: none;
+            `;
+            
+            teamItem.textContent = team.name;
+            
+            teamItem.addEventListener('click', (event) => {
+                event.stopPropagation();
+                this.model.teamId = team.id;
+                removeMenu();
+            });
+            
+            teamItem.addEventListener('mouseenter', () => {
+                teamItem.style.backgroundColor = '#454545';
+            });
+            
+            teamItem.addEventListener('mouseleave', () => {
+                teamItem.style.backgroundColor = '#383838';
+            });
+            
+            scrollContainer.appendChild(teamItem);
+        });
+        
+        menu.appendChild(scrollContainer);
+        document.body.appendChild(menu);
+        
+        const removeMenu = () => {
+            if (menu && menu.parentNode) {
+                menu.parentNode.removeChild(menu);
+            }
+            document.removeEventListener('click', outsideClickListener);
+            document.removeEventListener('keydown', escapeClickListener);
+        };
+        
+        const outsideClickListener = (event: MouseEvent) => {
+            if (!menu.contains(event.target as Node)) {
+                removeMenu();
+            }
+        };
+        
+        const escapeClickListener = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') {
+                removeMenu();
+            }
+        };
+        
+        setTimeout(() => {
+            document.addEventListener('click', outsideClickListener);
+            document.addEventListener('keydown', escapeClickListener);
+        }, 0);
+    }
+
     createContextMenu(): HTMLElement {
         const contextMenu: HTMLElement = document.createElement('div');
         contextMenu.className = 'subject-context-menu subject-menu';
         
         const actions = [
             { text: 'Изменить', handler: this.openEditMenu.bind(this) },
+            { text: 'Назначить', handler: this.openAssignMenu.bind(this) },
             { text: 'Удалить', handler: this.deleteActionHandler.bind(this) }
         ];
 
