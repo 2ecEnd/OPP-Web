@@ -43,5 +43,14 @@ export class Subject {
     getTask(id) {
         return this.tasks.find(task => task.id === id);
     }
+    getTeamName() {
+        if (!this.teamId)
+            return "";
+        for (let i = 0; i < user.teams.length; ++i) {
+            if (user.teams[i]?.id == this.teamId)
+                return user.teams[i].name;
+        }
+        return "";
+    }
 }
 //# sourceMappingURL=Subject.js.map

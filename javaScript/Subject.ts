@@ -60,4 +60,14 @@ export class Subject{
     getTask(id: string): Task | undefined{
         return this.tasks.find(task => task.id === id);
     }
+
+    getTeamName(): string{
+        if(!this.teamId) return "";
+        
+        for(let i = 0; i < user.teams.length; ++i){
+            if(user.teams[i]?.id == this.teamId) return user.teams[i]!.name
+        }
+
+        return "";
+    }
 }
