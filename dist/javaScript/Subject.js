@@ -37,6 +37,10 @@ export class Subject {
         user.subjectsService.changeSubject(this.id, newName);
         this.name = newName;
     }
+    setTeam(teamId) {
+        this.teamId = teamId;
+        this.changeData();
+    }
     deleteSubject() {
         user.subjectsService.removeSubject(this.id);
     }

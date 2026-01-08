@@ -53,6 +53,11 @@ export class Subject{
         this.name = newName;
     }
 
+    setTeam(teamId: string): void{
+        this.teamId = teamId;
+        this.changeData();
+    }
+
     deleteSubject(): void{
         user.subjectsService.removeSubject(this.id);
     }
