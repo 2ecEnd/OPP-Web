@@ -1,6 +1,7 @@
 import { Status } from './Enum/Enums.js';
 import { addTaskMenu, canvas } from "./InitEditor.js";
 import type { Task } from "./Task.js";
+import { user } from "./User.js";
 
 export class TaskView{
     public x: number;
@@ -163,15 +164,8 @@ export class TaskView{
         const responsibleMenu = document.createElement('div');
         responsibleMenu.className = 'task-responsible-menu task-menu';
 
-        
-
-        const availablePeople = [
-            { id: 1, name: 'Иван Иванов' },
-            { id: 2, name: 'Мария Петрова' },
-            { id: 3, name: 'Алексей Сидоров' },
-            { id: 4, name: 'Елена Кузнецова' },
-            { id: 5, name: 'Дмитрий Волков' }
-        ];
+        const currSubject = user.subjects.find(s => s.tasks.find(t => t.id === this.model.id));
+        const availablePeople = user.teams.find(t => t.id === currSubject?.teamId)?.members;
 
         const select: HTMLSelectElement = document.createElement('select');
         select.className = 'responsible-select';
@@ -183,10 +177,10 @@ export class TaskView{
         defaultOption.selected = true;
         select.appendChild(defaultOption);
 
-        availablePeople.forEach(person => {
+        availablePeople!.forEach(person => {
             const option = document.createElement('option');
             option.value = person.id.toString();
-            option.textContent = person.name;
+            option.textContent = person.name + ' ' + person.surname;
             option.dataset.personName = person.name;
             select.appendChild(option);
         });
@@ -198,11 +192,11 @@ export class TaskView{
         select.addEventListener('change', (e) => {
             if (select.value) {
                 const selectedOption = select.options[select.selectedIndex];
-                const selectedPerson = availablePeople.find(p => p.id.toString() == select.value);
+                const selectedPerson = availablePeople!.find(p => p.id.toString() == select.value);
                 
                 const assignedPersonBlock = this.container.querySelector('.assigned-person p');
                 if (assignedPersonBlock) {
-                    assignedPersonBlock.textContent = `Ответственный: ${selectedPerson!.name}`;
+                    assignedPersonBlock.textContent = `Ответственный: ${selectedPerson!.name} ${selectedPerson!.surname}`;
                 }
             }
         });
