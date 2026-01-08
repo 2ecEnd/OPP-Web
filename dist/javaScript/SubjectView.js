@@ -64,8 +64,8 @@ export class SubjectView {
             teamItem.textContent = team.name;
             teamItem.addEventListener('click', (event) => {
                 event.stopPropagation();
-                this.model.teamId = team.id;
-                this.container.querySelector('.subject-info').children[1].textContent = team.name;
+                this.model.setTeam(team.id);
+                this.container.querySelector('.subject-info').children[1].textContent = `Команда: ${team.name}`;
                 removeMenu();
             });
             teamItem.addEventListener('mouseenter', () => {
