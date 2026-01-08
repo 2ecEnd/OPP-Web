@@ -1,4 +1,5 @@
 import type { Subject } from "../javaScript/Subject.js";
+import type { Tab } from "../javaScript/Tab.js";
 import type { Team } from "../javaScript/Team.js";
 import type { TeamMember } from "../javaScript/TeamMember.js";
 import { ToolBar } from "../javaScript/ToolBar.js";
@@ -409,3 +410,5 @@ export class TabManager{
         }
     }
 };
+
+export const tabManager = new TabManager(user); 
