@@ -65,6 +65,7 @@ export class SubjectView {
             teamItem.addEventListener('click', (event) => {
                 event.stopPropagation();
                 this.model.teamId = team.id;
+                this.container.querySelector('.subject-info').children[1].textContent = team.name;
                 removeMenu();
             });
             teamItem.addEventListener('mouseenter', () => {
@@ -126,7 +127,7 @@ export class SubjectView {
             <div class="miniature"></div>
             <div class="subject-info">
                 <p>Название: ${this.model.name}</p>
-                <p>Команда: </p>
+                <p>Команда: ${this.model.getTeamName()}</p>
             </div>
             <div class="more-vert-button">
                 <img src="../images/More vertical.svg" alt="">

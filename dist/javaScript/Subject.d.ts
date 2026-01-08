@@ -11,5 +11,6 @@ export declare class Subject {
     changeSubject(newName: string): void;
     deleteSubject(): void;
     getTask(id: string): Task | undefined;
+    getTeamName(): string;
 }
 //# sourceMappingURL=Subject.d.ts.map
