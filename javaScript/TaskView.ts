@@ -253,7 +253,8 @@ export class TaskView{
         this.container.dataset.x = this.x.toString();
         this.container.dataset.y = this.y.toString();
 
-        this.model.setStatus(Status.NOT_ACCEPTED)
+        this.changeStatusView(this.model.status);
+        console.log(this.model.status);
 
         return newTask;
     }

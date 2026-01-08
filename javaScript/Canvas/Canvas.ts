@@ -72,6 +72,7 @@ export class Canvas{
 
         document.addEventListener('keydown', this.onKeyDown.bind(this));
         document.addEventListener('keyup', this.onKeyUp.bind(this));
+        this.updateTransform();
     }
 
     onWheel(e: WheelEvent): void {
