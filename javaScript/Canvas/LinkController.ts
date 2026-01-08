@@ -73,10 +73,33 @@ export class LinkController{
 
             this.highlightLink(linkElement);
         });
+
+        document.addEventListener('mouseup', (e) => {
+            if (!this.deletinglinksMode) return;
+            
+            const linkElement: SVGLineElement | null = (e.target as HTMLElement).closest('.link-line');
+            if(!linkElement) return;
+
+            this.deleteLink(linkElement);
+            this.deletinglinksMode = false;
+        });
     }
 
     enableDeletingLinksMode(task: Task): void{
         this.deletinglinksMode = true;
+    }
+
+    deleteLink(linkElement: SVGLineElement): void {
+        for(let i = 0; i < this.links.length; i++){
+            let l = this.links[i];
+            if(l?.line == linkElement){
+                l.startTask.model.deleteDependency(l.endTask.model);
+                this.canvas.connectionsLayer.removeChild(linkElement);
+                this.links.splice(i, 1);
+                break;
+            }
+        }
+        
     }
 
     highlightLink(linkElement: HTMLElement): void {

@@ -19,6 +19,7 @@ export declare class LinkController {
     initArrowMarker(): void;
     initLinkingEvents(): void;
     enableDeletingLinksMode(task: Task): void;
+    deleteLink(linkElement: SVGLineElement): void;
     highlightLink(linkElement: HTMLElement): void;
     startLinking(task: TaskView): void;
     updateTempLine(e: MouseEvent): void;
