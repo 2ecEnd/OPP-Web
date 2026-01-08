@@ -6,6 +6,7 @@ export declare class SubjectView {
     deleteActionHandler(e: Event): void;
     openContextMenu(e: Event): void;
     openEditMenu(e: Event): void;
+    openAssignMenu(e: Event): void;
     createContextMenu(): HTMLElement;
     createView(): void;
     updateView(newName: string): void;
