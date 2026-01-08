@@ -244,11 +244,12 @@ export class TabManager {
         deleteBtn.src = "../images/x-lg.svg";
         deleteBtn.className = 'x';
         deleteBtn.addEventListener('mouseup', async function () {
-            team?.removeMember(member);
             const participantElement = btnContainer.closest('.participantItem');
-            if (participantElement && participantElement.parentNode) {
+            if (participantElement && participantElement.parentNode)
                 participantElement.parentNode.removeChild(participantElement);
-            }
+            team?.removeMember(member);
+            user.teams.find(t => t.id === team?.id)?.removeMember(member);
+            await user.makeChange();
         });
         return deleteBtn;
     }
