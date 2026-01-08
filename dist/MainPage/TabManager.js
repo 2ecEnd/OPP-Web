@@ -329,5 +329,4 @@ export class TabManager {
     }
 }
 ;
-export var tabManager = new TabManager(user);
 //# sourceMappingURL=TabManager.js.map
