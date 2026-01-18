@@ -38,6 +38,14 @@ export class Task {
     addAssignedTask(assignedTask) {
         this.assignedTasks.push(assignedTask);
     }
+    deleteAssignedTask(assignedTask) {
+        for (let i = 0; i < this.assignedTasks.length; ++i) {
+            if (this.assignedTasks[i] == assignedTask) {
+                this.assignedTasks.splice(i, 1);
+                break;
+            }
+        }
+    }
     deleteDependency(task) {
         for (let i = 0; i < this.dependsOn.length; ++i) {
             if (this.dependsOn[i] == task.id) {

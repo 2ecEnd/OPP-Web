@@ -19,5 +19,16 @@ export class TeamMember {
         this.email = email;
         this.specialization = specialization;
     }
+    addAssignedTask(assignedTask) {
+        this.assignedTasks.push(assignedTask);
+    }
+    deleteAssignedTask(assignedTask) {
+        for (let i = 0; i < this.assignedTasks.length; ++i) {
+            if (this.assignedTasks[i] == assignedTask) {
+                this.assignedTasks.splice(i, 1);
+                break;
+            }
+        }
+    }
 }
 //# sourceMappingURL=TeamMember.js.map

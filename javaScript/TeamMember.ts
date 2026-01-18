@@ -28,4 +28,17 @@ export class TeamMember {
         this.email = email;
         this.specialization = specialization;
     }
+
+    addAssignedTask(assignedTask: string): void{
+        this.assignedTasks.push(assignedTask);
+    }
+
+    deleteAssignedTask(assignedTask: string): void{
+        for(let i = 0; i < this.assignedTasks.length; ++i){
+            if(this.assignedTasks[i] == assignedTask){
+                this.assignedTasks.splice(i, 1);
+                break;
+            }
+        }
+    }
 }

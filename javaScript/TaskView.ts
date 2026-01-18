@@ -193,6 +193,8 @@ export class TaskView{
             if (select.value) {
                 const selectedOption = select.options[select.selectedIndex];
                 const selectedPerson = availablePeople!.find(p => p.id.toString() == select.value);
+                this.model.addAssignedTask(selectedPerson!.id);
+                selectedPerson?.addAssignedTask(this.model.id);
                 
                 const assignedPersonBlock = this.container.querySelector('.assigned-person p');
                 if (assignedPersonBlock) {
