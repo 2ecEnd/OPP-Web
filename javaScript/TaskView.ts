@@ -165,7 +165,8 @@ export class TaskView{
         responsibleMenu.className = 'task-responsible-menu task-menu';
 
         const currSubject = user.subjects.find(s => s.tasks.find(t => t.id === this.model.id));
-        const availablePeople = user.teams.find(t => t.id === currSubject?.teamId)?.members || [];
+        var availablePeople = user.teams.find(t => t.id === currSubject?.teamId)?.members;
+        if(!availablePeople) availablePeople = [];
 
         const select: HTMLSelectElement = document.createElement('select');
         select.className = 'responsible-select';
