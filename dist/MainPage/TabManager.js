@@ -224,7 +224,7 @@ export class TabManager {
         if (!team)
             return;
         infoBtn.addEventListener('mouseup', async function () {
-            const subjects = (await user.subjectsService.getSubjects()).filter(it => it.id in team.subjects);
+            const subjects = (await user.subjectsService.getSubjects()).filter(it => team.subjects.includes(it.id));
             const assignedTasks = [];
             member?.assignedTasks.forEach(taskId => {
                 for (var i = 0; i < subjects.length; i++) {
