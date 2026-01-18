@@ -6,7 +6,7 @@ export class Task{
     public title: string;
     public description: string;
     public hasDeadline: boolean;
-    public deadline: Date | string;
+    public deadline: Date | null;
     public currentDate: Date;
     public dependsOn: string[];
     public assignedTasks: string[]; // idшники людей, ответственных за эту задачу
@@ -19,7 +19,7 @@ export class Task{
         title: string,
         description: string,
         hasDeadline: boolean,
-        deadline: Date | string = "отсутствует",
+        deadline: Date | null,
         currentDate: Date,
         x: number,
         y: number,
@@ -31,7 +31,7 @@ export class Task{
         this.title = title;
         this.description = description;
         this.hasDeadline = hasDeadline;
-        this.deadline = hasDeadline ? deadline : "отсутствует";
+        this.deadline = deadline;
         this.currentDate = currentDate;
         this.dependsOn = dependsOn;
         this.assignedTasks = assignedTasks;
@@ -45,7 +45,7 @@ export class Task{
         this.status = status;
     }
 
-    changeTask(title: string, description: string, hasDeadline: boolean, deadline: Date | string): void{
+    changeTask(title: string, description: string, hasDeadline: boolean, deadline: Date | null): void{
         this.title = title;
         this.description = description;
         this.deadline = deadline;

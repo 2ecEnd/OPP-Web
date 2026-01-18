@@ -45,9 +45,9 @@ export class AddTaskMenu {
         const hasDeadline = DOMService.getElementById('formDeadLineCheck').checked;
         const deadline = DOMService.getElementById('formDeadLineInput').value;
         if (this.type === "create")
-            this.createTask(title, description, hasDeadline, deadline, new Date());
+            this.createTask(title, description, hasDeadline, deadline == "" ? null : new Date(deadline), new Date());
         else if (this.type === "edit")
-            this.changeTask(title, description, hasDeadline, deadline);
+            this.changeTask(title, description, hasDeadline, deadline == "" ? null : new Date(deadline));
         this.clearForm();
         this.formSubmitButton.innerHTML = "Добавить";
         this.closeSelf();
@@ -94,7 +94,7 @@ export class AddTaskMenu {
         hasDeadline.checked = this.hasDeadline;
         hasDeadline.dispatchEvent(new Event('change'));
         this.hasDeadline ? this.deadlineContainer.classList.remove('disabled') : this.deadlineContainer.classList.add('disabled');
-        deadline.value = this.deadline.toString();
+        deadline.value = this.deadline == null ? "" : this.deadline.toString();
         deadline.disabled = !this.hasDeadline;
         this.formSubmitButton.innerHTML = "Изменить";
     }

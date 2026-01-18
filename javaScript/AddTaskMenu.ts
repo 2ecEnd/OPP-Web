@@ -17,8 +17,8 @@ export class AddTaskMenu{
     private title: string | null;
     private description: string | null;
     private hasDeadline: boolean | null;
-    private deadline: string | Date | null;
-    private changeTaskAction: (title: string, description: string, hasDeadline: boolean, deadline: string) => void
+    private deadline: Date | null;
+    private changeTaskAction: (title: string, description: string, hasDeadline: boolean, deadline: Date | null) => void
 
     constructor(canvas: Canvas){
         this.container = DOMService.getElementById('add-task-context-menu');
@@ -54,8 +54,10 @@ export class AddTaskMenu{
         const hasDeadline: boolean = DOMService.getElementById<HTMLInputElement>('formDeadLineCheck').checked;
         const deadline: string = DOMService.getElementById<HTMLInputElement>('formDeadLineInput').value;
 
-        if(this.type === "create") this.createTask(title, description, hasDeadline, deadline, new Date());
-        else if(this.type === "edit") this.changeTask(title, description, hasDeadline, deadline);
+        if(this.type === "create") 
+            this.createTask(title, description, hasDeadline, deadline == "" ? null : new Date(deadline), new Date());
+        else if(this.type === "edit") 
+            this.changeTask(title, description, hasDeadline, deadline == "" ? null : new Date(deadline));
 
         this.clearForm();
         this.formSubmitButton.innerHTML = "Добавить";
@@ -70,7 +72,7 @@ export class AddTaskMenu{
         input.disabled = !input.disabled;
     }
 
-    createTask(title: string, description: string, hasDeadline: boolean, deadline: string, currentDate: Date): void{
+    createTask(title: string, description: string, hasDeadline: boolean, deadline: Date | null, currentDate: Date): void{
         const newTask: Task = new Task(null, title, description, hasDeadline, deadline, currentDate, 2500, 2500, [], []);
         const newTaskView = new TaskView(newTask);
 
@@ -79,7 +81,7 @@ export class AddTaskMenu{
         this.canvas.canvas.appendChild(newTaskView.createDom());
     }
 
-    changeTask(title: string, description: string, hasDeadline: boolean, deadline: string){
+    changeTask(title: string, description: string, hasDeadline: boolean, deadline: Date | null){
         this.changeTaskAction(title, description, hasDeadline, deadline);
     }
 
@@ -95,8 +97,8 @@ export class AddTaskMenu{
         title: string,
         description: string,
         hasDeadline: boolean,
-        deadline: string | Date,
-        changeTaskAction: (title: string, description: string, hasDeadline: boolean, deadline: string) => void
+        deadline: Date | null,
+        changeTaskAction: (title: string, description: string, hasDeadline: boolean, deadline: Date | null) => void
     ): void{
         this.container.classList.add('active');
         this.overlay.classList.add('active');
@@ -122,7 +124,7 @@ export class AddTaskMenu{
         hasDeadline.checked = this.hasDeadline!;
         hasDeadline.dispatchEvent(new Event('change'));
         this.hasDeadline ? this.deadlineContainer.classList.remove('disabled') : this.deadlineContainer.classList.add('disabled');
-        deadline.value = this.deadline!.toString();
+        deadline.value = this.deadline == null ? "" : this.deadline.toString();
         deadline.disabled = !this.hasDeadline;
 
         this.formSubmitButton.innerHTML = "Изменить";

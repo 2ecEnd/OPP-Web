@@ -20,7 +20,7 @@ export class ConverterService {
             Title: task.title,
             Description: task.description,
             CreateTime: task.currentDate.toISOString(),
-            DeadLine: task.deadline == "отсутствует" ? null : task.deadline.toString(),
+            DeadLine: task.deadline === null ? null : task.deadline.toISOString(),
             LeadTime: null,
             Status: task.status,
             PosX: task.x,
@@ -53,7 +53,7 @@ export class ConverterService {
         };
     }
     static dtoToTask(taskDto) {
-        return new Task(taskDto.Id, taskDto.Title, taskDto.Description, taskDto.DeadLine == null ? false : true, taskDto.DeadLine == null ? "Отсутствует" : new Date(taskDto.DeadLine), new Date(taskDto.CreateTime), taskDto.PosX, taskDto.PosY, taskDto.SubTasks, taskDto.AssignedTasks, taskDto.Status);
+        return new Task(taskDto.Id, taskDto.Title, taskDto.Description, taskDto.DeadLine == null ? false : true, taskDto.DeadLine == null ? null : new Date(taskDto.DeadLine), new Date(taskDto.CreateTime), taskDto.PosX, taskDto.PosY, taskDto.SubTasks, taskDto.AssignedTasks, taskDto.Status);
     }
     static dtoToMember(memberDto) {
         return new TeamMember(memberDto.Name, memberDto.Surname, memberDto.Email, memberDto.Specialization, memberDto.AssignedTasks, memberDto.Id);

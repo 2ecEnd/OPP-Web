@@ -88,7 +88,7 @@ export class TaskView{
             this.model.description,
             this.model.hasDeadline,
             this.model.deadline,
-            (title: string, description: string, hasDeadline: boolean, deadline: string) => {
+            (title: string, description: string, hasDeadline: boolean, deadline: Date | null) => {
                 this.model.changeTask(title, description, hasDeadline, deadline);
                 this.changeDataView();
             }
@@ -224,14 +224,14 @@ export class TaskView{
                 <p>${this.model.description}</p>
             </div>
             <div class="create-time task-block">
-                <p>Дата добавления: ${this.model.currentDate.toLocaleDateString('ru-RU')}</p>
+                <p>Дата добавления: ${this.model.currentDate.toLocaleString('ru-RU')}</p>
             </div>
             <div class="assigned-person task-block">
                 <p>Ответственный: ${""}
                 </p>
             </div>
             <div class="dead-line task-block">
-                <p>Дедлайн: ${this.model.deadline.toString().replace('T', ' ')}</p>
+                <p>Дедлайн: ${this.model.deadline == null ? "отсутствует" : this.model.deadline.toLocaleString('ru-RU')}</p>
             </div>
             <div class="more-vert-button">
                 <img src="images/More vertical.svg" alt="">

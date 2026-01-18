@@ -11,11 +11,11 @@ export class Task {
     status;
     x;
     y;
-    constructor(id = null, title, description, hasDeadline, deadline = "отсутствует", currentDate, x, y, dependsOn = [], assignedTasks = [], status = Status.NOT_ACCEPTED) {
+    constructor(id = null, title, description, hasDeadline, deadline, currentDate, x, y, dependsOn = [], assignedTasks = [], status = Status.NOT_ACCEPTED) {
         this.title = title;
         this.description = description;
         this.hasDeadline = hasDeadline;
-        this.deadline = hasDeadline ? deadline : "отсутствует";
+        this.deadline = deadline;
         this.currentDate = currentDate;
         this.dependsOn = dependsOn;
         this.assignedTasks = assignedTasks;

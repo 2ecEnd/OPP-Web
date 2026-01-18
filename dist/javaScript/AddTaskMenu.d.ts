@@ -18,10 +18,10 @@ export declare class AddTaskMenu {
     init(): void;
     handleSubmit(event: Event): void;
     toggleDeadlineInput(): void;
-    createTask(title: string, description: string, hasDeadline: boolean, deadline: string, currentDate: Date): void;
-    changeTask(title: string, description: string, hasDeadline: boolean, deadline: string): void;
+    createTask(title: string, description: string, hasDeadline: boolean, deadline: Date | null, currentDate: Date): void;
+    changeTask(title: string, description: string, hasDeadline: boolean, deadline: Date | null): void;
     showSelfToCreate(): void;
-    showSelf(type: string, title: string, description: string, hasDeadline: boolean, deadline: string | Date, changeTaskAction: (title: string, description: string, hasDeadline: boolean, deadline: string) => void): void;
+    showSelf(type: string, title: string, description: string, hasDeadline: boolean, deadline: Date | null, changeTaskAction: (title: string, description: string, hasDeadline: boolean, deadline: Date | null) => void): void;
     fillTheForm(): void;
     clearForm(): void;
     closeSelf(): void;
