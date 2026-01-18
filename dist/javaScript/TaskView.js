@@ -127,10 +127,7 @@ export class TaskView {
         const responsibleMenu = document.createElement('div');
         responsibleMenu.className = 'task-responsible-menu task-menu';
         const currSubject = user.subjects.find(s => s.tasks.find(t => t.id === this.model.id));
-        const availableTeam = user.teams.find(t => t.id === currSubject?.teamId);
-        var availablePeople = availableTeam?.members;
-        if (!availablePeople)
-            availablePeople = [];
+        var availablePeople = user.teams.find(t => t.id === currSubject?.teamId)?.members || [];
         const select = document.createElement('select');
         select.className = 'responsible-select';
         select.name = 'select';
@@ -151,6 +148,7 @@ export class TaskView {
         });
         select.addEventListener('change', async (e) => {
             if (select.value) {
+                availablePeople = user.teams.find(t => t.id === currSubject?.teamId)?.members || [];
                 const selectedOption = select.options[select.selectedIndex];
                 const selectedPerson = availablePeople.find(p => p.id.toString() == select.value);
                 this.model.addAssignedTask(selectedPerson.id);
