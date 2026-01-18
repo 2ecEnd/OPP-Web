@@ -146,7 +146,7 @@ export class TaskView {
         select.addEventListener('mousedown', (e) => {
             e.stopPropagation();
         });
-        select.addEventListener('change', (e) => {
+        select.addEventListener('change', async (e) => {
             if (select.value) {
                 const selectedOption = select.options[select.selectedIndex];
                 const selectedPerson = availablePeople.find(p => p.id.toString() == select.value);
@@ -156,6 +156,7 @@ export class TaskView {
                 if (assignedPersonBlock) {
                     assignedPersonBlock.textContent = `Ответственный: ${selectedPerson.name} ${selectedPerson.surname}`;
                 }
+                await user.makeChange();
             }
         });
         responsibleMenu.appendChild(select);
