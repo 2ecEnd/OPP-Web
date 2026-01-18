@@ -20,7 +20,7 @@ export class ConverterService {
             Surname: member.surname,
             Email: member.email ?? null,
             Specialization: member.specialization ?? null,
-            AssignedTasks: []
+            AssignedTasks: member.assignedTasks
         };
     }
     
@@ -36,7 +36,7 @@ export class ConverterService {
             PosX: task.x,
             PosY: task.y,
             SubTasks: task.dependsOn,
-            AssignedTasks: []
+            AssignedTasks: task.assignedTasks
         };
     }
     

@@ -11,7 +11,7 @@ export class ConverterService {
             Surname: member.surname,
             Email: member.email ?? null,
             Specialization: member.specialization ?? null,
-            AssignedTasks: []
+            AssignedTasks: member.assignedTasks
         };
     }
     static taskToDto(task) {
@@ -26,7 +26,7 @@ export class ConverterService {
             PosX: task.x,
             PosY: task.y,
             SubTasks: task.dependsOn,
-            AssignedTasks: []
+            AssignedTasks: task.assignedTasks
         };
     }
     static subjectToDto(subject) {
