@@ -166,6 +166,14 @@ export class TaskView {
     createDom() {
         const newTask = document.createElement('div');
         this.container = newTask;
+        const currSubject = user.subjects.find(s => s.tasks.find(t => t.id === this.model.id));
+        var availablePeople = user.teams.find(t => t.id === currSubject?.teamId)?.members || [];
+        var assigned = [];
+        for (var i = 0; i < availablePeople.length; i++) {
+            if (this.model.assignedTasks.includes(availablePeople[i].id)) {
+                assigned.push(availablePeople[i].name + " " + availablePeople[i].surname);
+            }
+        }
         newTask.className = 'draggable task';
         newTask.id = this.model.id;
         newTask.innerHTML = `
@@ -180,7 +188,7 @@ export class TaskView {
                 <p>Дата добавления: ${this.model.currentDate.toLocaleString('ru-RU')}</p>
             </div>
             <div class="assigned-person task-block">
-                <p>Ответственный: ${""}
+                <p>Ответственный: ${"" + assigned.join(", ")}
                 </p>
             </div>
             <div class="dead-line task-block">
