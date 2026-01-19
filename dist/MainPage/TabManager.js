@@ -272,7 +272,8 @@ export class TabManager {
             this.style.backgroundColor = 'rgb(44, 44, 44)';
         });
         addMemberBtn.addEventListener('mouseup', function () {
-            showAddMemberDialog(team);
+            var t = user.teams.find(t => t.id == team.id);
+            showAddMemberDialog(t);
         });
         btnContainer.appendChild(addMemberBtn);
         return btnContainer;

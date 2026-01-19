@@ -345,7 +345,8 @@ export class TabManager{
         });
         
         addMemberBtn.addEventListener('mouseup', function() {
-            showAddMemberDialog(team!);
+            var t = user.teams.find(t => t.id == team!.id);
+            showAddMemberDialog(t!);
         });
         
         btnContainer.appendChild(addMemberBtn);
