@@ -155,7 +155,16 @@ export class TaskView {
                 selectedPerson?.addAssignedTask(this.model.id);
                 const assignedPersonBlock = this.container.querySelector('.assigned-person p');
                 if (assignedPersonBlock) {
-                    assignedPersonBlock.textContent = `Ответственный: ${selectedPerson.name} ${selectedPerson.surname}`;
+                    var assigned = assignedPersonBlock.textContent.substring(15).split(", ");
+                    const personName = `${selectedPerson.name} ${selectedPerson.surname}`;
+                    const personIndex = assigned.indexOf(personName);
+                    if (personIndex !== -1) {
+                        assigned.splice(personIndex, 1);
+                    }
+                    else {
+                        assigned.push(personName);
+                    }
+                    assignedPersonBlock.textContent = `Ответственный: ${assigned.join(", ")}`;
                 }
                 await user.makeChange();
             }
