@@ -1,4 +1,5 @@
 import { addSubjectMenu } from "./AddSubjectMenu.js";
+import { ToolBar } from "./ToolBar.js";
 import { user } from "./User.js";
 export class SubjectView {
     model;
@@ -10,6 +11,8 @@ export class SubjectView {
     }
     deleteActionHandler(e) {
         e.stopPropagation();
+        var toolbar = new ToolBar();
+        toolbar.deleteTabByTypeAndId("subject", this.model.id);
         this.model.deleteSubject();
         this.container.remove();
     }
