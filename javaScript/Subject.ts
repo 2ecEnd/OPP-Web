@@ -42,7 +42,7 @@ export class Subject{
         this.tasks = this.tasks.filter(task => task.id !== id);
 
         this.tasks.forEach(task => {
-            task.dependsOn.filter((t: string) => id !== taskToDelete.id);
+            task.dependsOn = task.dependsOn.filter((t: string) => t !== id);
         });
 
         user.subjectsService.changeSubjectData(this.id, this);

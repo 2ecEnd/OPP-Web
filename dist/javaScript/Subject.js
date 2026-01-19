@@ -29,7 +29,7 @@ export class Subject {
         );*/
         this.tasks = this.tasks.filter(task => task.id !== id);
         this.tasks.forEach(task => {
-            task.dependsOn.filter((t) => id !== taskToDelete.id);
+            task.dependsOn = task.dependsOn.filter((t) => t !== id);
         });
         user.subjectsService.changeSubjectData(this.id, this);
     }
