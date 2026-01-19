@@ -33,6 +33,7 @@ export interface TeamDto {
 }
 export interface UserDto {
     Id: string;
+    Email: string | null;
     Teams: TeamDto[];
     Subjects: SubjectDto[];
 }

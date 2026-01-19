@@ -50,6 +50,9 @@ export class User {
         this.id = newData.Id;
         this.subjects = newData.Subjects.map(ConverterService.dtoToSubject);
         this.teams = newData.Teams.map(ConverterService.dtoToTeam);
+        const userName = document.getElementsByClassName("userName")[0];
+        if (userName)
+            userName.innerHTML = `${newData.Email}`;
     }
 }
 class UserSubjectsService {

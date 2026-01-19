@@ -61,6 +61,7 @@ export class ConverterService {
     static userToDto(user: User): UserDto {
         return {
             Id: user.id,
+            Email: null,
             Subjects: user.subjects.map(subject => this.subjectToDto(subject)),
             Teams: user.teams.map(team => this.teamToDto(team))
         };
