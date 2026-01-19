@@ -79,9 +79,8 @@ export class TaskView {
         this.closeAllMenus();
         canvas.linkController.enableDeletingLinksMode(this.model);
     }
-    deleteActionHandler(e) {
-        this.model.deleteTask();
-        this.deleteView();
+    async deleteActionHandler(e) {
+        await this.deleteView();
     }
     createContextMenu() {
         const contextMenu = document.createElement('div');
@@ -220,7 +219,7 @@ export class TaskView {
         console.log(this.model.status);
         return newTask;
     }
-    deleteView() {
+    async deleteView() {
         this.container.remove();
         canvas.linkController.links.forEach((link) => {
             if (link.startTask === this || link.endTask === this) {
@@ -229,10 +228,10 @@ export class TaskView {
         });
         canvas.linkController.links = canvas.linkController.links.filter((link) => link.startTask !== this && link.endTask !== this);
         const currSubject = user.subjects.find(s => s.tasks.find(t => t.id === this.model.id));
-        console.log(currSubject);
         const team = user.teams.find(t => t.id === currSubject?.teamId);
         team?.members.forEach(m => m.assignedTasks = m.assignedTasks.filter(a_t => a_t !== this.model.id));
         console.log(team);
+        await user.makeChange();
         canvas.subject.deleteTask(this.model.id);
     }
 }

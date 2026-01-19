@@ -15,11 +15,11 @@ export declare class TaskView {
     openEditMenu(): void;
     startLinking(): void;
     enableDeletingLinksMode(): void;
-    deleteActionHandler(e: Event): void;
+    deleteActionHandler(e: Event): Promise<void>;
     createContextMenu(): HTMLElement;
     createStatusMenu(): HTMLElement;
     createResponsibleMenu(): HTMLElement;
     createDom(): HTMLElement;
-    deleteView(): void;
+    deleteView(): Promise<void>;
 }
 //# sourceMappingURL=TaskView.d.ts.map

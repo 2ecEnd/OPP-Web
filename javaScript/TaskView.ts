@@ -106,9 +106,8 @@ export class TaskView{
         canvas.linkController.enableDeletingLinksMode(this.model);
     }
 
-    deleteActionHandler(e: Event): void {
-        this.model.deleteTask();
-        this.deleteView();
+    async deleteActionHandler(e: Event): Promise<void> {
+        await this.deleteView();
     }
 
     createContextMenu(): HTMLElement {
@@ -278,7 +277,7 @@ export class TaskView{
         return newTask;
     }
 
-    deleteView(){
+    async deleteView(){
         this.container.remove();
 
         canvas.linkController.links.forEach((link: LinkData) => {
@@ -292,10 +291,10 @@ export class TaskView{
         );
 
         const currSubject = user.subjects.find(s => s.tasks.find(t => t.id === this.model.id));
-        console.log(currSubject);
         const team = user.teams.find(t => t.id === currSubject?.teamId);
         team?.members.forEach(m => m.assignedTasks = m.assignedTasks.filter(a_t => a_t !== this.model.id));
         console.log(team);
+        await user.makeChange();
 
         canvas.subject.deleteTask(this.model.id);
     }
