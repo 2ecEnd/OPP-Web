@@ -18,15 +18,6 @@ export class Subject {
         this.changeData();
     }
     deleteTask(id) {
-        const taskToDelete = this.tasks.find(task => task.id === id);
-        /*canvas.linkController.links.forEach((link: LinkData) => {
-            if (link.startTask === taskToDelete || link.endTask === taskToDelete){
-                link.line.remove();
-            }
-        });*/
-        /*canvas.linkController.links = canvas.linkController.links.filter((link: LinkData) =>
-            link.startTask !== taskToDelete && link.endTask !== taskToDelete
-        );*/
         this.tasks = this.tasks.filter(task => task.id !== id);
         this.tasks.forEach(task => {
             task.dependsOn = task.dependsOn.filter((t) => t !== id);

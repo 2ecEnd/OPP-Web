@@ -228,6 +228,9 @@ export class TaskView {
             }
         });
         canvas.linkController.links = canvas.linkController.links.filter((link) => link.startTask !== this && link.endTask !== this);
+        const currSubject = user.subjects.find(s => s.tasks.find(t => t.id === this.model.id));
+        const team = user.teams.find(t => t.id === currSubject?.teamId);
+        team?.members.forEach(m => m.assignedTasks = m.assignedTasks.filter(a_t => a_t === this.model.id));
         canvas.subject.deleteTask(this.model.id);
     }
 }

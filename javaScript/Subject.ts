@@ -1,6 +1,3 @@
-//import type { LinkData } from "./Canvas/LinkController.js";
-//import { canvas } from "./InitEditor.js";
-//import { SubjectView } from "./SubjectView.js";
 import type { Task } from "./Task.js";
 import { user } from "./User.js";
 
@@ -28,17 +25,6 @@ export class Subject{
     }
 
     deleteTask(id: string): void{
-        const taskToDelete: Task = this.tasks.find(task => task.id === id)!;
-        /*canvas.linkController.links.forEach((link: LinkData) => {
-            if (link.startTask === taskToDelete || link.endTask === taskToDelete){
-                link.line.remove();
-            }
-        });*/
-
-        /*canvas.linkController.links = canvas.linkController.links.filter((link: LinkData) => 
-            link.startTask !== taskToDelete && link.endTask !== taskToDelete
-        );*/
-
         this.tasks = this.tasks.filter(task => task.id !== id);
 
         this.tasks.forEach(task => {
