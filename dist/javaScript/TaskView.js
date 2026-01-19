@@ -222,6 +222,12 @@ export class TaskView {
     }
     deleteView() {
         this.container.remove();
+        canvas.linkController.links.forEach((link) => {
+            if (link.startTask === this || link.endTask === this) {
+                link.line.remove();
+            }
+        });
+        canvas.linkController.links = canvas.linkController.links.filter((link) => link.startTask !== this && link.endTask !== this);
         canvas.subject.deleteTask(this.model.id);
     }
 }

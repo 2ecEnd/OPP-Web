@@ -1,3 +1,4 @@
+import type { LinkData } from './Canvas/LinkController.js';
 import { Status } from './Enum/Enums.js';
 import { addTaskMenu, canvas } from "./InitEditor.js";
 import type { Task } from "./Task.js";
@@ -208,7 +209,7 @@ export class TaskView{
                     } else {
                         assigned.push(personName);
                     }
-                    
+
                     assignedPersonBlock.textContent = `Ответственный: ${assigned.join(", ")}`;
                 }
                 await user.makeChange();
@@ -279,6 +280,15 @@ export class TaskView{
 
     deleteView(){
         this.container.remove();
+        canvas.linkController.links.forEach((link: LinkData) => {
+            if (link.startTask === this || link.endTask === this){
+                link.line.remove();
+            }
+        });
+
+        canvas.linkController.links = canvas.linkController.links.filter((link: LinkData) => 
+            link.startTask !== this && link.endTask !== this
+        );
         canvas.subject.deleteTask(this.model.id);
     }
 }
