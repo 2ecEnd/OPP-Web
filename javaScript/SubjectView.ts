@@ -1,3 +1,4 @@
+import { tabManager } from "../MainPage/TabManager.js";
 import { addSubjectMenu } from "./AddSubjectMenu.js";
 import type { Subject } from "./Subject.js";
 import type { Team } from "./Team.js";
@@ -17,8 +18,7 @@ export class SubjectView{
 
     deleteActionHandler(e: Event): void {
         e.stopPropagation();
-        var toolbar = new ToolBar();
-        toolbar.deleteTabByTypeAndId("subject", this.model.id);
+        tabManager.closeTab("subject", this.model.id);
         this.model.deleteSubject();
         this.container.remove();
     }
