@@ -12,7 +12,7 @@ export class User{
     private role: Role;
     private apiService: ApiService;
 
-    private readonly DEBOUNCE_TIME: number = 3000;
+    private readonly DEBOUNCE_TIME: number = 0;
     private readonly BATCH_LIMIT: number = 10;
     private countOfChanges: number = 0;
     private timer: number | null = null;

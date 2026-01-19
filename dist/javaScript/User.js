@@ -9,7 +9,7 @@ export class User {
     teams;
     role;
     apiService;
-    DEBOUNCE_TIME = 3000;
+    DEBOUNCE_TIME = 0;
     BATCH_LIMIT = 10;
     countOfChanges = 0;
     timer = null;
